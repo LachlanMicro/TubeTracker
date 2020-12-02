@@ -1,0 +1,23 @@
+D:\BSD\TubeScanner\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe.config
+D:\BSD\TubeScanner\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe
+D:\BSD\TubeScanner\TubeScanner\TubeScanner\bin\Debug\TubeScanner.pdb
+D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
+D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Controls.RackControl.resources
+D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Form1.resources
+D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Properties.Resources.resources
+D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.GenerateResource.cache
+D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CoreCompileInputs.cache
+D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.exe
+D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.pdb
+Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Controls.RackControl.resources
+Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Form1.resources
+Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Properties.Resources.resources
+Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Startup.resources
+Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.GenerateResource.cache
+Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CoreCompileInputs.cache
+Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe.config
+Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe
+Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\bin\Debug\TubeScanner.pdb
+Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.exe
+Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.pdb
+Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
