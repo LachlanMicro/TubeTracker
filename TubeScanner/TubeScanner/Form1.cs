@@ -30,21 +30,200 @@ namespace TubeScanner
 
         private async void Form1_Load(object sender, EventArgs e)
         {
+            //_rack = new Rack(8, 12); 
+
             rackControl = new RackControl(_rack);
             rackControl.Display(this, new Point(10, 75));
             rackControl.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Left);
 
             lbl_PlateID.Text = _rack.PlateID;
 
+            //_tScanner = new TScanner();
+            _tScanner.DleCommands.OnFootSwitchEvent += FootSwitchEvent;
+            //_tScanner.autoConnect();
+            if (_tScanner.dP.IsOpen)
+<<<<<<< Updated upstream
+            {
+                if (await _tScanner.DleCommands.sendNullCommand())
+                {
+                    Text = "Scanner connected on " + _tScanner.dP.PortName;
+                }
+                else
+                {
+                    Text = "Failed to connect";
+                }
+=======
+            {
+                if (await _tScanner.DleCommands.sendNullCommand())
+                {
+                    Text = "Scanner connected on " + _tScanner.dP.PortName;
+                }
+                else
+                {
+                    Text = "Failed to connect";
+                }
+
+            }
+            else
+            {
+                Text = "Scanner not found";
+            }
+
+        }
+
+        // Function to scan all tube positions
+        private async void FootSwitchEvent(object sender, EventArgs e)
+        {
+            if (_tScanner.dP.IsOpen)
+            {
+
+                Byte[] tubeData = await _tScanner.DleCommands.scanAllTubes();
+
+                if (tubeData != null)
+                {
+                    int bitNum = 0;
+                    char[,] bitMap = new char[8, 12];
+
+                    // Loop through the 12 column byte values
+                    for (int col = 0; col < 12; col++)
+                    {
+                        // Convert column byte from decimal to 8-bit binary string 
+                        string binary_column = Convert.ToString(tubeData[col], 2).PadLeft(8, '0');
+                        // Convert string to a character array
+                        char[] column_array = binary_column.ToCharArray(0, 8);
+
+                        // Loop through each row bit within the array
+                        for (int row = 0; row < 8; row++)
+                        {
+                            // Assign the value to the matrix 
+                            bitMap[row, col] = column_array[row];
+                        }
+                        Console.WriteLine(binary_column);
+                    }
+
+                    // Update the tube status based on the bit map matrix
+                    for (int row = 0; row < 8; row++)
+                    {
+                        for (int col = 0; col < 12; col++)
+                        {
+                            if (bitMap[row, col] == '1')
+                            {
+                                rackControl.UpdateTubeStatus(bitNum, Status.LOADED);
+                            }
+
+                            if (bitMap[row, col] == '0')
+                            {
+                                rackControl.UpdateTubeStatus(bitNum, Status.NOT_USED);
+                            }
+                            bitNum++;
+                        }
+                    }
+                }
+            }
+        }
+
+        /* Disables the close (X) button on window */
+        private const int CP_NOCLOSE_BUTTON = 0x200;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams myCp = base.CreateParams;
+                myCp.ClassStyle = myCp.ClassStyle | CP_NOCLOSE_BUTTON;
+                return myCp;
+            }
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            //for(int x = 0;x< _rack.TubeList.Count;x++)
-            // {
-            //     rackControl.UpdateTubeStatus(x, Status.LOADED);
-            // }
+            if (_tScanner.dP.IsOpen)
+            {
+                await _tScanner.DleCommands.runStatus(DleCommands.RunState.RUNNING);
+            }
 
+            /*
+            string barcode = String.Empty;
+>>>>>>> Stashed changes
+
+            }
+            else
+            {
+                Text = "Scanner not found";
+            }
+
+<<<<<<< Updated upstream
+        }
+
+        // Function to scan all tube positions
+        private async void FootSwitchEvent(object sender, EventArgs e)
+        {
+            if (_tScanner.dP.IsOpen)
+            {
+
+                Byte[] tubeData = await _tScanner.DleCommands.scanAllTubes();
+
+                if (tubeData != null)
+                {
+                    int bitNum = 0;
+                    char[,] bitMap = new char[8, 12];
+
+                    // Loop through the 12 column byte values
+                    for (int col = 0; col < 12; col++)
+                    {
+                        // Convert column byte from decimal to 8-bit binary string 
+                        string binary_column = Convert.ToString(tubeData[col], 2).PadLeft(8, '0');
+                        // Convert string to a character array
+                        char[] column_array = binary_column.ToCharArray(0, 8);
+
+                        // Loop through each row bit within the array
+                        for (int row = 0; row < 8; row++)
+                        {
+                            // Assign the value to the matrix 
+                            bitMap[row, col] = column_array[row];
+                        }
+                        Console.WriteLine(binary_column);
+                    }
+
+                    // Update the tube status based on the bit map matrix
+                    for (int row = 0; row < 8; row++)
+                    {
+                        for (int col = 0; col < 12; col++)
+                        {
+                            if (bitMap[row, col] == '1')
+                            {
+                                rackControl.UpdateTubeStatus(bitNum, Status.LOADED);
+                            }
+
+                            if (bitMap[row, col] == '0')
+                            {
+                                rackControl.UpdateTubeStatus(bitNum, Status.NOT_USED);
+                            }
+                            bitNum++;
+                        }
+                    }
+                }
+=======
+            lbl_Barcode.Text = barcode;*/
+        }
+
+        private async void button2_Click(object sender, EventArgs e)
+        {
+            if (_tScanner.dP.IsOpen)
+            {
+                await _tScanner.DleCommands.runStatus(DleCommands.RunState.PAUSED);
+>>>>>>> Stashed changes
+            }
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            if (_tScanner.dP.IsOpen)
+            {
+<<<<<<< Updated upstream
+                await _tScanner.DleCommands.runStatus(DleCommands.RunState.RUNNING);
+            }
+
+            /*
             string barcode = String.Empty;
 
             if (_bs.IsOpen)
@@ -52,15 +231,14 @@ namespace TubeScanner
                 barcode = await _bs.startScan();
             }
 
-            lbl_Barcode.Text = barcode;
+            lbl_Barcode.Text = barcode;*/
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
-            for (int x = 0; x < _rack.TubeList.Count; x++)
+            if (_tScanner.dP.IsOpen)
             {
-                if(x%2 == 0)
-                rackControl.UpdateTubeStatus(x, Status.READY_TO_LOAD);
+                await _tScanner.DleCommands.runStatus(DleCommands.RunState.PAUSED);
             }
         }
 
@@ -68,8 +246,9 @@ namespace TubeScanner
         {
             for (int x = 0; x < _rack.TubeList.Count; x++)
             {
-                if (x % 2 == 1)
-                    rackControl.UpdateTubeStatus(x, Status.REMOVED);
+=======
+>>>>>>> Stashed changes
+                rackControl.UpdateTextContent(x, eShowText.NO_SHOW);
             }
         }
 
@@ -77,39 +256,11 @@ namespace TubeScanner
         {
             for (int x = 0; x < _rack.TubeList.Count; x++)
             {
-                if (x % 3 == 0)
-                    rackControl.UpdateTubeStatus(x, Status.ERROR);
-            }
-        }
-
-        private async void button5_Click(object sender, EventArgs e)
-        {
-            var randY = new Random();
-            var randS = new Random();
-            for (int x = 0; x < 500; x++)
-            {
-               rackControl.UpdateTubeStatus(randY.Next(95), (Status)randS.Next(5));
-               await Task.Delay(50);
-            }
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            for (int x = 0; x < _rack.TubeList.Count; x++)
-            {
-                rackControl.UpdateTextContent(x, eShowText.NO_SHOW);
-            }
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            for (int x = 0; x < _rack.TubeList.Count; x++)
-            {
                 rackControl.UpdateTextContent(x, eShowText.SHOW_ID);
             }
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        private void button5_Click(object sender, EventArgs e)
         {
             for (int x = 0; x < _rack.TubeList.Count; x++)
             {
@@ -118,12 +269,22 @@ namespace TubeScanner
         }
 
         /* End run- save output file, clear display, return to startup */
-        private void btn_endRun_Click(object sender, EventArgs e)
+        private async void btn_endRun_Click(object sender, EventArgs e)
         {
+            if (_tScanner.dP.IsOpen)
+            {
+                await _tScanner.DleCommands.runStatus(DleCommands.RunState.STOPPED);
+                for (int x = 0; x < _rack.TubeList.Count; x++)
+                {
+                    rackControl.UpdateTubeStatus(x, Status.NOT_USED);
+                }
+            }
+
+            /*
             for (int x = 0; x < _rack.TubeList.Count; x++)
             {
                 _rack.TubeList[x].Status = Status.NOT_USED;
-            }
+            }*/
             
             this.Hide();
         }
