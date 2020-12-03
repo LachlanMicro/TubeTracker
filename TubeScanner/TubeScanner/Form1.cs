@@ -4,9 +4,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Interop;
 using TubeScanner.Classes;
 using TubeScanner.Controls;
 
@@ -19,6 +22,7 @@ namespace TubeScanner
         RackControl rackControl = null;
         public TScanner _tScanner;
         public OpticonScanner _bs;
+
 
         public Form1(Rack rack, TScanner tScanner, OpticonScanner bs)
         {
@@ -36,6 +40,18 @@ namespace TubeScanner
 
             lbl_PlateID.Text = _rack.PlateID;
 
+        }
+
+        /* Disables the close (X) button on window */
+        private const int CP_NOCLOSE_BUTTON = 0x200;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams myCp = base.CreateParams;
+                myCp.ClassStyle = myCp.ClassStyle | CP_NOCLOSE_BUTTON;
+                return myCp;
+            }
         }
 
         private async void button1_Click(object sender, EventArgs e)
