@@ -80,7 +80,7 @@ namespace TubeScanner
                     MessageBox.Show("Plate ID not found!");
                 }
 
-                 // 2. Input file of old format
+                // 2. Input file of old format
                 bool isPlateFound = true;
                 for (var lineNumber = 3; lineNumber < lines.Length; lineNumber++)
                 {
@@ -109,7 +109,7 @@ namespace TubeScanner
                     {
                         MessageBox.Show("Line " + (lineNumber + 1) + ": Tube position invalid, use format [row],[0],[column] \n e.g. A01");
                     }
-                
+
                 }
             }
             return true;

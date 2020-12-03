@@ -68,30 +68,47 @@ namespace TubeScanner.Classes
 
             ERROR_CODE_16BIT = 32000,
         }
-     
 
+        public enum LedColour
+        {
+            LED_OFF,
+            LED_RED,
+            LED_GREEN,
+            LED_YELLOW,
+        }
 
+        public enum LedState
+        {
+            LED_STATE_OFF,
+            LED_STATE_FLASHING,
+            LED_STATE_SOLID,
+        }
+
+        public enum RunState
+        {
+            RUNNING,
+            PAUSED,
+            STOPPED,
+        }
 
         enum CommandResponseTypeNumber
         {
             NULL_COMMAND = 0,
-            GET_DIAGNOSTIC_DATA = 1,
-            GET_MANUFACTURE_DATA = 2,
-            GET_CONFIG_DATA = 3,
-           
-           
+            SCAN_ALL = 1,
+            SET_LED = 2,
+            RUN_STATUS = 3,
+
+            GET_DIAGNOSTIC_DATA = 12,
+            GET_MANUFACTURE_DATA = 13,
+            GET_CONFIG_DATA = 14,
            
             SAVE_DIAGNOSTIC_DATA = 11,
             
-
             HOME = 24,
           
-
             SET_DIAGNOSTIC_DATA = 100,
             SET_MANUFACTURE_DATA = 101,
             SET_CONFIG_DATA = 102,
-                 
-
 
             STATUS_FOOTSWITCH = 126,
             STATUS_UPDATE = 127,
@@ -218,6 +235,11 @@ namespace TubeScanner.Classes
             else if (rxStatusFrame.funcCode == (Byte)CommandResponseTypeNumber.STATUS_UPDATE)
             {
                 Debug.WriteLine("   STATUS - STATUS_UPDATE");
+
+                if (OnFootSwitchEvent != null)
+                {
+                    OnFootSwitchEvent.Invoke(this, EventArgs.Empty);
+                }
             }
 
 
@@ -847,8 +869,62 @@ namespace TubeScanner.Classes
             return commandReply.success;
         }
 
-            
-               
+        public async Task<Byte[]> scanAllTubes()
+        {
+            CommandReply commandReply;
+            Byte[] tubeData = { };
+
+            Byte funcCode = (Byte)CommandResponseTypeNumber.SCAN_ALL;
+            Byte[] cmdData = new byte[12];
+            UInt16 cmdSize = 0;
+
+            commandReply = await sendGreenspanFrame(funcCode, cmdData, cmdSize, 5);
+            if (commandReply.success)
+            {
+                Byte[] data = new Byte[commandReply.numbytes];
+                Array.Copy(commandReply.data, 0, data, 0, commandReply.numbytes);
+
+                tubeData = data;
+            }
+
+            return tubeData;
+        }
+
+        public async Task<bool> selectLED(UInt16 row, UInt16 column, LedColour colour, LedState state)
+        {
+            CommandReply commandReply;
+            Byte funcCode = (Byte)CommandResponseTypeNumber.SET_LED;
+
+            Byte[] cmdData = new byte[6];
+            Byte[] rowData = BitConverter.GetBytes(row);
+            Byte[] columnData = BitConverter.GetBytes(column);
+
+            Array.Copy(rowData, 0, cmdData, 0, 2);
+            Array.Copy(columnData, 0, cmdData, 2, 2);
+            cmdData[4] = (Byte)colour;
+            cmdData[5] = (Byte)state;
+
+            UInt16 cmdSize = (UInt16)cmdData.Length;
+
+            commandReply = await sendGreenspanFrame(funcCode, cmdData, cmdSize, 1);
+
+            return commandReply.success;
+        }
+
+        public async Task<bool> runStatus(RunState status)
+        {
+            CommandReply commandReply;
+            Byte funcCode = (Byte)CommandResponseTypeNumber.RUN_STATUS;
+
+            Byte[] cmdData = new byte[2];
+            cmdData[0] = (Byte)status;
+
+            UInt16 cmdSize = (UInt16)cmdData.Length;
+
+            commandReply = await sendGreenspanFrame(funcCode, cmdData, cmdSize, 1);
+
+            return commandReply.success;
+        }
 
         public async Task<DiagnosticData> getDiagnosticData()
         {
