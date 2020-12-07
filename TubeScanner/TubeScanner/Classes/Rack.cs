@@ -12,6 +12,7 @@ namespace TubeScanner.Classes
         private int _columns = 0;
         private string _plateID;
         public List<Tube> TubeList = new List<Tube>();
+        public List<Tube> InitialTubeList = new List<Tube>();
         private string _inputFilename = string.Empty;
 
         public int Rows { get { return _rows; } }
@@ -45,6 +46,8 @@ namespace TubeScanner.Classes
                     id += (col + 1).ToString("D2");
                     Tube tube = new Tube(id, tubeNumber++);
                     TubeList.Add(tube);
+                    Tube initialTube = new Tube(id, tubeNumber++);
+                    InitialTubeList.Add(initialTube);
                 }
             }
         }
