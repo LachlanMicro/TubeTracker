@@ -120,7 +120,6 @@ namespace TubeScanner.Controls
                     button.Location = new Point(4, 4);
                     button.BackGroundcolor = new SolidBrush(this.BackColor);
 
-                   
                     button.Status = _rack.TubeList[index].Status;                
                     tubeButtons.Add(button);
                     
@@ -156,17 +155,39 @@ namespace TubeScanner.Controls
             ReLoad();
         }
 
-        private async void button_Click(object sender, EventArgs e)
+        private void button_Click(object sender, EventArgs e)
         {
             TubeButton TB = sender as TubeButton;
+            TB.Enabled = false;
             
             if (TB != null)
             {
-                TB.Status = Status.NOT_USED;
+                if (TB.Status == Status.READY_TO_LOAD)
+                {
+                    TB.Status = Status.LOADED;
+                }
+                else if (TB.Status == Status.LOADED)
+                {
+                    TB.Status = Status.REMOVED;
+                }
+                else if (TB.Status == Status.REMOVED)
+                {
+                    TB.Status = Status.LOADED;
+                }
+                else if (TB.Status == Status.NOT_USED)
+                {
+                    TB.Status = Status.ERROR;
+                }
+                else if (TB.Status == Status.ERROR)
+                {
+                    TB.Status = Status.NOT_USED;
+                }
             }
+
+            TB.Enabled = true;
         }
 
-        private async void button_DoubleClick(object sender, EventArgs e)
+        private void button_DoubleClick(object sender, EventArgs e)
         {
             TubeButton TB = sender as TubeButton;
 
