@@ -9,7 +9,6 @@ namespace TubeScanner.Classes
 {
    public enum Status
     {
-
         NOT_USED        = 0,
         READY_TO_LOAD   = 1,
         LOADED          = 2,

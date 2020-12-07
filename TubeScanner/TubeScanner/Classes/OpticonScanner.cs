@@ -9,10 +9,6 @@ using static TubeScanner.Classes.VariableTypesClass;
 namespace TubeScanner.Classes
 {
 
-
-
-
-
     public class OpticonScanner
     {
 

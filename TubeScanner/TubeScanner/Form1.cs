@@ -135,9 +135,9 @@ namespace TubeScanner
         {
             get
             {
-                CreateParams myCp = base.CreateParams;
-                myCp.ClassStyle = myCp.ClassStyle | CP_NOCLOSE_BUTTON;
-                return myCp;
+                CreateParams param = base.CreateParams;
+                param.ClassStyle = param.ClassStyle | CP_NOCLOSE_BUTTON;
+                return param;
             }
         }
 
@@ -194,10 +194,25 @@ namespace TubeScanner
         /* End run- save output file, clear display, return to startup */
         private async void btn_endRun_Click(object sender, EventArgs e)
         {
-            /* Save output file */
-            OutputFile outfile = new OutputFile();
-            outfile.WriteOutputFile("Z:/ENGINEERING/BSD Tracker/John Tongue Supplied/30-11-20/output log 2.txt", _rack.TubeList, _rack.PlateID, "aaaa", DateTime.Today.ToString());
+            DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Save Run?", "Ending Run", MessageBoxButtons.YesNoCancel);
+            if (dialogResult == DialogResult.Yes)
+            {
+                /* Save output file */
+                string[] currDateTime = DateTime.Today.ToString().Split(' ');
+                FileManager outfile = new FileManager();
+                outfile.WriteOutputFile("../../IO Files/output log 2.txt", _rack.TubeList, _rack.PlateID, "aaaa", currDateTime[0]);
 
+                quitToStartup();
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                quitToStartup();
+            }
+
+        }
+
+        private void quitToStartup()
+        {
             /* Clear tubes */
             if (_tScanner.dP.IsOpen)
             {
@@ -213,9 +228,10 @@ namespace TubeScanner
                 //_rack.TubeList[x].Status = Status.NOT_USED;
             //}
             //_rack.TubeList.Clear();
-            
+
             /* Close test window */
             this.Hide();
         }
+
     }
 }
