@@ -202,16 +202,16 @@ namespace TubeScanner
                 FileManager outfile = new FileManager();
                 outfile.WriteOutputFile("../../IO Files/output log 2.txt", _rack.TubeList, _rack.PlateID, "aaaa", currDateTime[0]);
 
-                quitToStartup();
+                quitToStartupAsync();
             }
             else if (dialogResult == DialogResult.No)
             {
-                quitToStartup();
+                quitToStartupAsync();
             }
 
         }
 
-        private void quitToStartup()
+        private async Task quitToStartupAsync()
         {
             /* Clear tubes */
             if (_tScanner.dP.IsOpen)
