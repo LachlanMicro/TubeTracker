@@ -34,7 +34,7 @@ namespace TubeScanner.Classes
                 }
             }
 
-            File.WriteAllLines(filename, outputContent);
+            //File.WriteAllLines(filename, outputContent);
         }
 
     }
