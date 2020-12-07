@@ -77,7 +77,7 @@ namespace TubeScanner.Classes
         }
 
 
-        public void WriteOutputFile(string filename, List<Tube> tList, string plateID, string userID, string date)
+        public void WriteOutputFile(string filename, List<TubeButton> tList, string plateID, string userID, string date)
         {
             List<string> outputContent = new List<string>();
 
@@ -89,11 +89,21 @@ namespace TubeScanner.Classes
             for (int i = 0; i < tList.Count; i++)
             {
                 /* if tube has no barcode, do not add to output file */
-                if (tList[i].Barcode != "")
-                {
-                    outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode);
-                    /* TODO add Error to each line */
-                }
+                //if (tList[i].Barcode != "")
+                //{
+                    if (tList[i].Status == Status.ERROR)
+                    {
+                        outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode + "\t" + "Tube placed in wrong well but accepted");
+                    }
+                    if (tList[i].Status == Status.REMOVED)
+                    {
+                        outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode + "\t" + "Tube removed");
+                    }
+                    if (tList[i].Status == Status.LOADED)
+                    {
+                        outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode + "\t" + "Tube placed correctly");
+                    }
+                //}
             }
 
             File.WriteAllLines(filename, outputContent);

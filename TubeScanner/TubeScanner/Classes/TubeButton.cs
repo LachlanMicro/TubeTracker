@@ -24,8 +24,20 @@ namespace TubeScanner.Classes
         private Color _foreGroundcolor = Color.Black;
         public Status _status = Status.NOT_USED;
         public eShowText _showText = eShowText.NO_SHOW;
+        private string _id;
+        private string _barcode;
 
+        public string Barcode
+        {
+            get { return _barcode; }
+            set { _barcode = value; }
+        }
 
+        public string ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
 
         private SolidBrush[] brushes = new SolidBrush[] {
         new SolidBrush(Color.LightCyan),    //EMPTY

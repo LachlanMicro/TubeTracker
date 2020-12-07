@@ -15,6 +15,7 @@ namespace TubeScanner.Controls
     {
         private Rack _rack = null;
         private List<TubeButton> tubeButtons = new List<TubeButton>();
+        public List<TubeButton> OutputTubeList = new List<TubeButton>();
 
         private char[] _letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ,'I','J','K','L','M','N'};
 
@@ -120,6 +121,8 @@ namespace TubeScanner.Controls
                     button.Location = new Point(4, 4);
                     button.BackGroundcolor = new SolidBrush(this.BackColor);
 
+                    button.ID = _rack.TubeList[index].ID;
+                    button.Barcode = _rack.TubeList[index].Barcode;
                     button.Status = _rack.TubeList[index].Status;                
                     tubeButtons.Add(button);
                     
@@ -159,28 +162,43 @@ namespace TubeScanner.Controls
         {
             TubeButton TB = sender as TubeButton;
             TB.Enabled = false;
-            
+
+            TubeButton dummy = new TubeButton();
+
             if (TB != null)
             {
+                dummy.ID = TB.ID;
+                dummy.Barcode = TB.Barcode;
+
                 if (TB.Status == Status.READY_TO_LOAD)
                 {
                     TB.Status = Status.LOADED;
+                    dummy.Status = Status.LOADED;
+                    OutputTubeList.Add(dummy);
                 }
                 else if (TB.Status == Status.LOADED)
                 {
                     TB.Status = Status.REMOVED;
+                    dummy.Status = Status.REMOVED;
+                    OutputTubeList.Add(dummy);
                 }
                 else if (TB.Status == Status.REMOVED)
                 {
                     TB.Status = Status.LOADED;
+                    dummy.Status = Status.LOADED;
+                    OutputTubeList.Add(dummy);
                 }
                 else if (TB.Status == Status.NOT_USED)
                 {
                     TB.Status = Status.ERROR;
+                    dummy.Status = Status.ERROR;
+                    OutputTubeList.Add(dummy);
                 }
                 else if (TB.Status == Status.ERROR)
                 {
                     TB.Status = Status.NOT_USED;
+                    dummy.Status = Status.REMOVED;
+                    OutputTubeList.Add(dummy);
                 }
             }
 

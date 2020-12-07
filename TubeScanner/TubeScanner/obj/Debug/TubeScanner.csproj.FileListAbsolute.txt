@@ -55,3 +55,4 @@ C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\
 C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe.config
 C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe
 C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.pdb
+C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
