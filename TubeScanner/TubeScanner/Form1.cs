@@ -191,10 +191,11 @@ namespace TubeScanner
             }
         }
 
+
         /* End run- save output file, clear display, return to startup */
         private async void btn_endRun_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Save Run?", "Ending Run", MessageBoxButtons.YesNoCancel);
+            DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Save and Quit Current Run?", "Ending Run", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
                 /* Save output file */
@@ -202,36 +203,28 @@ namespace TubeScanner
                 FileManager outfile = new FileManager();
                 outfile.WriteOutputFile("../../IO Files/output log 2.txt", _rack.TubeList, _rack.PlateID, "aaaa", currDateTime[0]);
 
-                quitToStartupAsync();
-            }
-            else if (dialogResult == DialogResult.No)
-            {
-                quitToStartupAsync();
-            }
-
-        }
-
-        private async Task quitToStartupAsync()
-        {
-            /* Clear tubes */
-            if (_tScanner.dP.IsOpen)
-            {
-                await _tScanner.DleCommands.runStatus(DleCommands.RunState.STOPPED);
-                for (int x = 0; x < _rack.TubeList.Count; x++)
+                /* Clear tubes */
+                if (_tScanner.dP.IsOpen)
                 {
-                    rackControl.UpdateTubeStatus(x, Status.NOT_USED);
+                    await _tScanner.DleCommands.runStatus(DleCommands.RunState.STOPPED);
+                    for (int x = 0; x < _rack.TubeList.Count; x++)
+                    {
+                        rackControl.UpdateTubeStatus(x, Status.NOT_USED);
+                    }
                 }
-            }
-            
-            //for (int x = 0; x < _rack.TubeList.Count; x++)
-            //{
-                //_rack.TubeList[x].Status = Status.NOT_USED;
-            //}
-            //_rack.TubeList.Clear();
 
-            /* Close test window */
-            this.Hide();
+                //for (int x = 0; x < _rack.TubeList.Count; x++)
+                //{
+                //_rack.TubeList[x].Status = Status.NOT_USED;
+                //}
+                //_rack.TubeList.Clear();
+
+                /* Close test window */
+                this.Hide();
+            }
+
         }
 
+        
     }
 }

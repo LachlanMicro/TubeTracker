@@ -44,14 +44,9 @@ namespace TubeScanner.Classes
         String Barcode = String.Empty;
         private bool _gotReply = false;
 
-
-
         DeviceConnectionMonitor deviceConnectionMonitor = new DeviceConnectionMonitor();
 
-
-
         public event EventHandler<SerialNewDataEventDataEventArgs> OnNewData;
-
 
         public bool IsOpen
         {
@@ -85,9 +80,6 @@ namespace TubeScanner.Classes
             _running = false;
 
             _barcodeScannerPort.Encoding = Encoding.UTF8;
-
-
-
         }
 
 
@@ -212,16 +204,11 @@ namespace TubeScanner.Classes
         }
 
 
-
-
-
         private void _DevicePort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
             int bytesToRead = 0;
             int byteIn = 0;
-
-
 
             try
             {
@@ -229,8 +216,6 @@ namespace TubeScanner.Classes
                 {
                     bytesToRead = sp.BytesToRead;
                 }
-
-
 
                 for (int x = 0; x < bytesToRead; x++)
                 {
@@ -247,23 +232,14 @@ namespace TubeScanner.Classes
                         {
                             Barcode += Convert.ToChar(byteIn);
                         }
-
                     }
                 }
-
-
             }
             catch (Exception ex)
             {
 
             }
-
         }
-
-
-
-
-
     }
 }
 

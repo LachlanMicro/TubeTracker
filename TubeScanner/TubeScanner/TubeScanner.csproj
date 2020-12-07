@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\ComPorts.cs" />
     <Compile Include="Classes\FileManager.cs" />
     <Compile Include="Classes\DeviceComms.cs" />
     <Compile Include="Classes\DeviceConnectionMonitor.cs" />

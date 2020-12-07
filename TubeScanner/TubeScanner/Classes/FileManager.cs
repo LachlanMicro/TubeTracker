@@ -56,7 +56,6 @@ namespace TubeScanner.Classes
                     /* Check if position valid (format: A01) */
                     if (Char.IsLetter(TPos[0]) && (Char.IsDigit(TPos[2])))
                     {
-
                         for (int index = 0; index < rack.TubeList.Count; index++)
                         {
                             if (rack.TubeList[index].ID.Equals(contents[0]))
@@ -68,9 +67,8 @@ namespace TubeScanner.Classes
                     }
                     else
                     {
-                        MessageBox.Show("Line " + (lineNumber + 1) + ": Tube position invalid, use format [row],[0],[column] \n e.g. A01");
+                        MessageBox.Show("Line" + (lineNumber + 1) + ": Tube position invalid, use format [row],[0],[column] \n e.g. A01");
                     }
-
                 }
             }
             return true;

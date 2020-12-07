@@ -27,7 +27,7 @@ namespace TubeScanner
 
         private void Startup_Load(object sender, EventArgs e)
         {
-
+            ConnectDevices();
         }
 
         private async void btnFileBrowse_Click(object sender, EventArgs e)
@@ -55,77 +55,80 @@ namespace TubeScanner
                         }
                     }
                 }
+
             }
         }
 
         private async void button2_ClickAsync(object sender, EventArgs e)
         {
-            TScanner _tScanner = new TScanner();
-
-            if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
+            if (ConnectDevices())
             {
+                TScanner _tScanner = new TScanner();
                 OpticonScanner _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
 
-
                 _tScanner.autoConnect();
-                if (_tScanner.dP.IsOpen)
-                {
-                    if (await _tScanner.DleCommands.sendNullCommand())
-                    {
-                        Text = "Scanner connected on " + _tScanner.dP.PortName;
-                    }
-                    else
-                    {
-                        Text = "Failed to connect";
-                    }
-
-                }
-                else
-                {
-                    Text = "Scanner not found";
-                }
 
                 if (_tScanner.deviceConnectionMonitor._scannerConnected)
                 {
                     _bs.Start();
                 }
 
-
-                if (_tScanner.dP.IsOpen && _bs.IsOpen)
-                {
-                    Form1 form = new Form1(rack, _tScanner, _bs);
-                    form.ShowDialog();
-
-                    _tScanner.dP.Stop();
-                    _bs.Stop();
-                }
-                else
-                {
-                    if (!_tScanner.dP.IsOpen && !_bs.IsOpen)
-                    {
-                        MessageBox.Show("Barcode Scanner and Tube Scanner Not Found!");
-                    }
-                    else if (!_tScanner.dP.IsOpen)
-                    {
-                        MessageBox.Show("Tube Scanner Not Found!");
-                    }
-                    else if (!_bs.IsOpen)
-                    {
-                        MessageBox.Show("Barcode Scanner Not Found!");
-                    }
-                }
-
-            }
-            else
-            {
-                OpticonScanner _bs = new OpticonScanner("COM0");
-
-                /*TODO error handling, for now open form for testing purposes */
                 Form1 form = new Form1(rack, _tScanner, _bs);
                 form.ShowDialog();
+
                 _tScanner.dP.Stop();
                 _bs.Stop();
             }
+            else
+            {
+                MessageBox.Show("Device/s not connected! Try reconnecting.");
+            }
+        }
+
+        private async void btn_connect_Click(object sender, EventArgs e)
+        {
+            ConnectDevices();
+        }
+
+
+        private bool ConnectDevices()
+        { 
+            TScanner _tScanner = new TScanner();
+
+            bool connected = true;
+
+            try
+            {
+                OpticonScanner _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
+                lbl_BS.ForeColor = Color.Green;
+                lbl_BS.Text = "BARCODE ONLINE ON " + _bs.PortName;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                lbl_BS.ForeColor = Color.Red;
+                lbl_BS.Text = "BARCODE OFFLINE";
+                connected = false;
+            }
+           
+             _tScanner.autoConnect();
+            //await _tScanner.DleCommands.sendNullCommand();
+
+            if (_tScanner.dP.IsOpen)
+            {
+                lbl_TS.ForeColor = Color.Green;
+                lbl_TS.Text = "INSTRUMENT ONLINE ON " + _tScanner.dP.PortName;
+            }
+            else
+            {
+                lbl_TS.ForeColor = Color.Red;
+                lbl_TS.Text = "INSTRUMENT OFFLINE";
+                connected = false;
+            }
+
+            _tScanner.dP.Stop();
+            //_bs.Stop();
+
+            return connected;
         }
     }
 }
