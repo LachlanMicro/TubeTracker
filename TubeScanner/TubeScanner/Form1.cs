@@ -48,9 +48,9 @@ namespace TubeScanner
         {
             get
             {
-                CreateParams myCp = base.CreateParams;
-                myCp.ClassStyle = myCp.ClassStyle | CP_NOCLOSE_BUTTON;
-                return myCp;
+                CreateParams param = base.CreateParams;
+                param.ClassStyle = param.ClassStyle | CP_NOCLOSE_BUTTON;
+                return param;
             }
         }
 
@@ -136,20 +136,35 @@ namespace TubeScanner
         /* End run- save output file, clear display, return to startup */
         private void btn_endRun_Click(object sender, EventArgs e)
         {
-            /* Save output file */
-            string[] currDateTime = DateTime.Today.ToString().Split(' ');
-            FileManager outfile = new FileManager();
-            outfile.WriteOutputFile("../../IO Files/output log 2.txt", _rack.TubeList, _rack.PlateID, "aaaa", currDateTime[0]);
+            DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Save Run?", "Ending Run", MessageBoxButtons.YesNoCancel);
+            if (dialogResult == DialogResult.Yes)
+            {
+                /* Save output file */
+                string[] currDateTime = DateTime.Today.ToString().Split(' ');
+                FileManager outfile = new FileManager();
+                outfile.WriteOutputFile("../../IO Files/output log 2.txt", _rack.TubeList, _rack.PlateID, "aaaa", currDateTime[0]);
 
+                quitToStartup();
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                quitToStartup();
+            }
+
+        }
+
+        private void quitToStartup()
+        {
             /* Clear tubes */
             for (int x = 0; x < _rack.TubeList.Count; x++)
             {
                 _rack.TubeList[x].Status = Status.NOT_USED;
             }
             //_rack.TubeList.Clear();
-            
+
             /* Close test window */
             this.Hide();
         }
+
     }
 }
