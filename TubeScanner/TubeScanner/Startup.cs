@@ -102,6 +102,9 @@ namespace TubeScanner
                             {
                                 rack.TubeList[index].Barcode = contents[1];
                                 rack.TubeList[index].Status = Status.READY_TO_LOAD;
+
+                                rack.InitialTubeList[index].Barcode = contents[1];
+                                rack.InitialTubeList[index].Status = Status.READY_TO_LOAD;
                             }
                         }
                     }

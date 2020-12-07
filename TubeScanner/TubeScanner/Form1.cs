@@ -97,12 +97,30 @@ namespace TubeScanner
                         {
                             if (bitMap[row, col] == '1')
                             {
-                                rackControl.UpdateTubeStatus(bitNum, Status.LOADED);
+                                if (_rack.InitialTubeList[bitNum].Status == Status.READY_TO_LOAD)
+                                {
+                                    rackControl.UpdateTubeStatus(bitNum, Status.LOADED);
+                                }
+                                else if (_rack.InitialTubeList[bitNum].Status == Status.NOT_USED)
+                                {
+                                    rackControl.UpdateTubeStatus(bitNum, Status.ERROR);
+                                }
                             }
 
                             if (bitMap[row, col] == '0')
                             {
-                                rackControl.UpdateTubeStatus(bitNum, Status.NOT_USED);
+                                if (_rack.InitialTubeList[bitNum].Status == Status.READY_TO_LOAD)
+                                {
+                                    rackControl.UpdateTubeStatus(bitNum, Status.READY_TO_LOAD);
+                                }
+                                if (_rack.InitialTubeList[bitNum].Status == Status.NOT_USED)
+                                {
+                                    rackControl.UpdateTubeStatus(bitNum, Status.NOT_USED);
+                                }
+                                if (_rack.InitialTubeList[bitNum].Status == Status.LOADED)
+                                {
+                                    rackControl.UpdateTubeStatus(bitNum, Status.REMOVED);
+                                }
                             }
                             bitNum++;
                         }
