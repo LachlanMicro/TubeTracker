@@ -136,11 +136,18 @@ namespace TubeScanner
         /* End run- save output file, clear display, return to startup */
         private void btn_endRun_Click(object sender, EventArgs e)
         {
+            /* Save output file */
+            OutputFile outfile = new OutputFile();
+            outfile.WriteOutputFile("Z:/ENGINEERING/BSD Tracker/John Tongue Supplied/30-11-20/output log 2.txt", _rack.TubeList, _rack.PlateID, "aaaa", DateTime.Today.ToString());
+
+            /* Clear tubes */
             for (int x = 0; x < _rack.TubeList.Count; x++)
             {
                 _rack.TubeList[x].Status = Status.NOT_USED;
             }
+            //_rack.TubeList.Clear();
             
+            /* Close test window */
             this.Hide();
         }
     }
