@@ -137,8 +137,9 @@ namespace TubeScanner
         private void btn_endRun_Click(object sender, EventArgs e)
         {
             /* Save output file */
-            OutputFile outfile = new OutputFile();
-            outfile.WriteOutputFile("Z:/ENGINEERING/BSD Tracker/John Tongue Supplied/30-11-20/output log 2.txt", _rack.TubeList, _rack.PlateID, "aaaa", DateTime.Today.ToString());
+            string[] currDateTime = DateTime.Today.ToString().Split(' ');
+            FileManager outfile = new FileManager();
+            outfile.WriteOutputFile("../../IO Files/output log 2.txt", _rack.TubeList, _rack.PlateID, "aaaa", currDateTime[0]);
 
             /* Clear tubes */
             for (int x = 0; x < _rack.TubeList.Count; x++)

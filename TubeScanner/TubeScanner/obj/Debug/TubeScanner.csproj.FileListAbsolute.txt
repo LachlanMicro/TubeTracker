@@ -21,3 +21,15 @@ Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\bin\Debug\TubeScann
 Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.exe
 Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.pdb
 Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe.config
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.pdb
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Controls.RackControl.resources
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Form1.resources
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Properties.Resources.resources
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Startup.resources
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.GenerateResource.cache
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CoreCompileInputs.cache
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.exe
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.pdb
