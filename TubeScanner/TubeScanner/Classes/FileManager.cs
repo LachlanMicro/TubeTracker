@@ -18,13 +18,48 @@ namespace TubeScanner.Classes
 
             if (File.Exists(rack.InputFilename))
             {
-                var lines = File.ReadAllLines(rack.InputFilename);
+                string[] inputLines = File.ReadAllLines(rack.InputFilename);
+                
+                /* First, we want to check no lines are empty, duplicated or exceed the list length over 96 */
+                List<string> usedLines = new List<string>();
+
+                string[] splitLine;
+
+                for (int i = 0; i < inputLines.Length; i++)
+                {
+                    /* Check empty */
+                    if (inputLines[i] != "")
+                    {
+                        bool isUnique = true;
+                        splitLine = inputLines[i].Split('\t');
+
+                        /* check duplicates */
+                        if (usedLines.Count() > 0)
+                        {
+                            for (int u = 0; u < usedLines.Count(); u++)
+                            {
+                                string[] splitUsed = usedLines[u].Split('\t');
+                                if (splitUsed[0] == splitLine[0] || splitUsed[1] == splitLine[1])
+                                {
+                                    isUnique = false;
+                                }
+                            }
+                        }
+                        if (isUnique)
+                            usedLines.Add(inputLines[i]);
+                    }
+
+                    if (usedLines.Count() >= rack.TubeList.Count())
+                    {
+                        break;
+                    }
+                }
 
                 /* Read header- Plate ID */
                 bool hFound = false;
-                for (int index = 0; index < rack.TubeList.Count; index++)
+                for (int index = 0; index < usedLines.Count(); index++)
                 {
-                    var header = lines[index].Split('\t');
+                    var header = usedLines[index].Split('\t');
 
                     if (header[0] == "Plate ID")
                     {
@@ -39,12 +74,12 @@ namespace TubeScanner.Classes
                 }
 
                 /* Tube data lines */
-                for (var lineNumber = 3; lineNumber < lines.Length; lineNumber++)
+                for (int lineNumber = 3; lineNumber < usedLines.Count(); lineNumber++)
                 {
-                    if (lines[lineNumber].Trim() == "End of File")
+                    if (usedLines[lineNumber].Trim() == "End of File")
                         break;
 
-                    string[] contents = lines[lineNumber].Split('\t');
+                    string[] contents = usedLines[lineNumber].Split('\t');
 
                     /* Check if position valid (format: A01) */
                     if (InputValid(contents[0]))
