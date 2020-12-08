@@ -44,7 +44,8 @@ namespace TubeScanner.Classes
         new SolidBrush(Color.LightGreen),   //READY_TO_LOAD
         new SolidBrush(Color.Green),         //LOADED
         new SolidBrush(Color.Red),              //ERROR
-        new SolidBrush(Color.OrangeRed) };        //REMOVED
+        new SolidBrush(Color.OrangeRed),        //REMOVED
+        new SolidBrush(Color.Yellow) };        //SELECTED
 
         public eShowText ShowText
         {

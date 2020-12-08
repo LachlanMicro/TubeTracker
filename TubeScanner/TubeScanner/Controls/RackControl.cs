@@ -148,6 +148,19 @@ namespace TubeScanner.Controls
             tubeButtons[tubeNumber].Status = status;
         }
 
+        public void UpdateTubeStatusNoNumber(string ID, Status status)
+        {
+            Console.WriteLine(ID);
+            for (int tubeNumber = 0; tubeNumber < _rack.TubeList.Count; tubeNumber++)
+            {
+                if (_rack.TubeList[tubeNumber].ID == ID)
+                {
+                    _rack.TubeList[tubeNumber].Status = status;
+                    tubeButtons[tubeNumber].Status = status;
+                }
+            }
+        }
+
         public void UpdateTextContent(int tubeNumber, eShowText showText)
         {            
             tubeButtons[tubeNumber].ShowText = showText;
@@ -170,10 +183,16 @@ namespace TubeScanner.Controls
                 dummy.ID = TB.ID;
                 dummy.Barcode = TB.Barcode;
 
-                if (TB.Status == Status.READY_TO_LOAD)
+                if (TB.Status == Status.SELECTED)
                 {
                     TB.Status = Status.LOADED;
                     dummy.Status = Status.LOADED;
+                    OutputTubeList.Add(dummy);
+                }
+                else if (TB.Status == Status.READY_TO_LOAD)
+                {
+                    TB.Status = Status.ERROR;
+                    dummy.Status = Status.ERROR;
                     OutputTubeList.Add(dummy);
                 }
                 else if (TB.Status == Status.LOADED)

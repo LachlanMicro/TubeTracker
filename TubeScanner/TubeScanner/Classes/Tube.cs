@@ -14,6 +14,7 @@ namespace TubeScanner.Classes
         LOADED          = 2,
         ERROR           = 3,
         REMOVED         = 4,
+        SELECTED        = 5,
     }
 
     public class Tube

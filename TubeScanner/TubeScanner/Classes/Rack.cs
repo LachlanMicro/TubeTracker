@@ -46,7 +46,7 @@ namespace TubeScanner.Classes
                     id += (col + 1).ToString("D2");
                     Tube tube = new Tube(id, tubeNumber++);
                     TubeList.Add(tube);
-                    Tube initialTube = new Tube(id, tubeNumber++);
+                    Tube initialTube = new Tube(id, tubeNumber);
                     InitialTubeList.Add(initialTube);
                 }
             }
