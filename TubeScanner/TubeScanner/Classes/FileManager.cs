@@ -9,12 +9,20 @@ using System.Windows.Forms;
 
 namespace TubeScanner.Classes
 {
-    class FileManager
-    { 
+    public class FileManager
+    {
+
+        private string[] _inputFile;
+
+        public string[] InputFile
+        {
+            get { return _inputFile; }
+            set { _inputFile = value; }
+        }
 
         public FileManager()
         {
-
+            string[] input = _inputFile;
         }
 
         public async Task<bool> LoadInputFile(Rack rack)
@@ -22,6 +30,7 @@ namespace TubeScanner.Classes
             if (File.Exists(rack.InputFilename))
             {
                 var lines = File.ReadAllLines(rack.InputFilename);
+                //InputFile = lines;
 
                 /* Read header- Plate ID */
                 bool hFound = false;
@@ -63,6 +72,9 @@ namespace TubeScanner.Classes
                             {
                                 rack.TubeList[index].Barcode = contents[1];
                                 rack.TubeList[index].Status = Status.READY_TO_LOAD;
+
+                                rack.InitialTubeList[index].Barcode = contents[1];
+                                rack.InitialTubeList[index].Status = Status.READY_TO_LOAD;
                             }
                         }
                     }

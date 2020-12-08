@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.IO;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,7 @@ namespace TubeScanner
         RackControl rackControl = null;
         public TScanner _tScanner;
         public OpticonScanner _bs;
+        public bool scanning = false;
 
         public Form1(Rack rack, TScanner tScanner, OpticonScanner bs)
         {
@@ -66,7 +68,8 @@ namespace TubeScanner
             if (_tScanner.dP.IsOpen)
             {
 
-                Byte[] tubeData = await _tScanner.DleCommands.scanAllTubes();
+                //Byte[] tubeData = await _tScanner.DleCommands.scanAllTubes();
+                Byte[] tubeData = null;
 
                 if (tubeData != null)
                 {
@@ -87,7 +90,7 @@ namespace TubeScanner
                             // Assign the value to the matrix 
                             bitMap[row, col] = column_array[row];
                         }
-                        Console.WriteLine(binary_column);
+                        //Console.WriteLine(binary_column);
                     }
 
                     // Update the tube status based on the bit map matrix
@@ -146,17 +149,36 @@ namespace TubeScanner
             if (_tScanner.dP.IsOpen)
             {
                 await _tScanner.DleCommands.runStatus(DleCommands.RunState.RUNNING);
+                scanning = true;
             }
 
-            /*
-            string barcode = String.Empty;
-
-            if (_bs.IsOpen)
+            while (scanning)
             {
-                barcode = await _bs.startScan();
-            }
+                string barcode = String.Empty;
 
-            lbl_Barcode.Text = barcode;*/
+                if (_bs.IsOpen)
+                {
+                    barcode = await _bs.startScan();
+                }
+
+                lbl_Barcode.Text = barcode;
+
+                var lines = File.ReadAllLines(_rack.InputFilename);
+
+                foreach (string line in lines)
+                {
+                    if (line.Contains(barcode))
+                    {
+                        string well = line.Split('\t')[0];
+                        rackControl.UpdateTubeStatusNoNumber(well, Status.SELECTED);
+                        //Console.WriteLine(well);
+                        // TODO: will need to add to a list of found barcodes / check against list to see if a barcode has already been used
+                    }
+                }
+                // TODO: If not found in file, print error
+
+                System.Threading.Thread.Sleep(1000);
+            }
         }
 
         private async void button2_Click(object sender, EventArgs e)
@@ -164,6 +186,7 @@ namespace TubeScanner
             if (_tScanner.dP.IsOpen)
             {
                 await _tScanner.DleCommands.runStatus(DleCommands.RunState.PAUSED);
+                scanning = false;
             }
         }
 
