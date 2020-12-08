@@ -222,7 +222,7 @@ namespace TubeScanner.Classes
         {
             rxStatusFrame = e.rxFrame;
 
-            Debug.WriteLine("   STATUS - " + ((CommandResponseTypeNumber)e.rxFrame.funcCode).ToString());
+            //Debug.WriteLine("   STATUS - " + ((CommandResponseTypeNumber)e.rxFrame.funcCode).ToString());
 
             if (rxStatusFrame.funcCode == (Byte)CommandResponseTypeNumber.STATUS_FOOTSWITCH)
             {
@@ -234,7 +234,7 @@ namespace TubeScanner.Classes
             }
             else if (rxStatusFrame.funcCode == (Byte)CommandResponseTypeNumber.STATUS_UPDATE)
             {
-                Debug.WriteLine("   STATUS - STATUS_UPDATE");
+                //Debug.WriteLine("   STATUS - STATUS_UPDATE");
 
                 if (OnFootSwitchEvent != null)
                 {

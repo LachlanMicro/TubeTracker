@@ -34,6 +34,8 @@ namespace TubeScanner.Classes
 
                 /* Read header- Plate ID */
                 bool hFound = false;
+
+                // ???? Why is this TubeList.Count, or a loop at all ?
                 for (int index = 0; index < rack.TubeList.Count; index++)
                 {
                     var header = lines[index].Split('\t');
@@ -68,7 +70,7 @@ namespace TubeScanner.Classes
 
                         for (int index = 0; index < rack.TubeList.Count; index++)
                         {
-                            if (rack.TubeList[index].ID.Equals(contents[0]))
+                            if (rack.TubeList[index].ID.Equals(contents[0]) && rack.TubeList[index].Barcode.Length < 1)
                             {
                                 rack.TubeList[index].Barcode = contents[1];
                                 rack.TubeList[index].Status = Status.READY_TO_LOAD;

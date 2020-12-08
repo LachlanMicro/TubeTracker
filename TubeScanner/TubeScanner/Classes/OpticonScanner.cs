@@ -41,7 +41,7 @@ namespace TubeScanner.Classes
 
 
         private bool _barcodeReceived = false;
-        String Barcode = String.Empty;
+        String Barcode = "";
         private bool _gotReply = false;
 
 
@@ -135,7 +135,7 @@ namespace TubeScanner.Classes
             byte[] command = { (Byte)ESC, (Byte)TRIGGER_READER, (Byte)CR };
 
             _barcodeReceived = false;
-            Barcode = String.Empty;
+            Barcode = "";
             await sendCommand(command, 10000);
 
             do
