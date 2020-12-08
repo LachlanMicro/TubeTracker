@@ -155,6 +155,7 @@ namespace TubeScanner
             while (scanning)
             {
                 string barcode = String.Empty;
+                bool found = false;
 
                 if (_bs.IsOpen)
                 {
@@ -163,19 +164,39 @@ namespace TubeScanner
 
                 lbl_Barcode.Text = barcode;
 
+                //await _bs.stopScan();
+
                 var lines = File.ReadAllLines(_rack.InputFilename);
 
                 foreach (string line in lines)
                 {
                     if (line.Contains(barcode))
                     {
-                        string well = line.Split('\t')[0];
-                        rackControl.UpdateTubeStatusNoNumber(well, Status.SELECTED);
-                        //Console.WriteLine(well);
-                        // TODO: will need to add to a list of found barcodes / check against list to see if a barcode has already been used
+                        // If barcode has not already been used
+                        if (!_rack.BarcodesScanned.Contains(barcode))
+                        {
+                            // If any well is already selected, cancel it
+                            for (int i = 0; i < _rack.TubeList.Count; i++)
+                            {
+                                if (_rack.TubeList[i].Status == Status.SELECTED)
+                                {
+                                    rackControl.UpdateTubeStatus(i, Status.READY_TO_LOAD);
+                                }
+                            }
+                            string well = line.Split('\t')[0];
+                            rackControl.UpdateTubeStatusNoNumber(well, Status.SELECTED);
+                            found = true;
+                            break;
+                            //Console.WriteLine(well);
+                            // TODO: will need to add to a list of found barcodes / check against list to see if a barcode has already been used
+                        }
                     }
                 }
-                // TODO: If not found in file, print error
+
+                if (!found)
+                {
+                    MessageBox.Show("Scanned barcode was not found in input file or has already been scanned");
+                }
 
                 System.Threading.Thread.Sleep(1000);
             }

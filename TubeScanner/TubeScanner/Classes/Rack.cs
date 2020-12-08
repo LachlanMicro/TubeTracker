@@ -11,9 +11,12 @@ namespace TubeScanner.Classes
         private int _rows = 0;
         private int _columns = 0;
         private string _plateID;
+        private string _inputFilename = string.Empty;
+
         public List<Tube> TubeList = new List<Tube>();
         public List<Tube> InitialTubeList = new List<Tube>();
-        private string _inputFilename = string.Empty;
+        public List<string> BarcodesScanned = new List<string>();
+        public List<string> WellsUsed = new List<string>();
 
         public int Rows { get { return _rows; } }
         public int Columns { get { return _columns; } }
