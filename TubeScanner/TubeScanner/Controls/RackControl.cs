@@ -150,7 +150,6 @@ namespace TubeScanner.Controls
 
         public void UpdateTubeStatusNoNumber(string ID, Status status)
         {
-            Console.WriteLine(ID);
             for (int tubeNumber = 0; tubeNumber < _rack.TubeList.Count; tubeNumber++)
             {
                 if (_rack.TubeList[tubeNumber].ID == ID)
@@ -193,12 +192,14 @@ namespace TubeScanner.Controls
                     OutputTubeList.Add(dummy);
                     _rack.BarcodesScanned.Add(TB.Barcode);
                     _rack.WellsUsed.Add(TB.ID);
+                    UpdateTubeStatus(int.Parse(TB.Text)-1, Status.LOADED);
                 }
                 else if (TB.Status == Status.READY_TO_LOAD)
                 {
                     TB.Status = Status.ERROR;
                     dummy.Status = Status.ERROR;
                     OutputTubeList.Add(dummy);
+                    UpdateTubeStatus(int.Parse(TB.Text)-1, Status.ERROR);
                     MessageBox.Show("Warning: Tube placement does not match input file.");
                 }
                 else if (TB.Status == Status.LOADED)
@@ -209,6 +210,7 @@ namespace TubeScanner.Controls
                     MessageBox.Show("Warning: Tube at " + TB.ID + " has been removed.");
                     _rack.BarcodesScanned.Remove(TB.Barcode);
                     _rack.WellsUsed.Remove(TB.ID);
+                    UpdateTubeStatus(int.Parse(TB.Text)-1, Status.REMOVED);
                 }
                 /*else if (TB.Status == Status.REMOVED)
                 {
@@ -221,6 +223,7 @@ namespace TubeScanner.Controls
                     TB.Status = Status.ERROR;
                     dummy.Status = Status.ERROR;
                     OutputTubeList.Add(dummy);
+                    UpdateTubeStatus(int.Parse(TB.Text)-1, Status.ERROR);
                     MessageBox.Show("Warning: Tube placement does not match input file.");
                 }
                 else if (TB.Status == Status.ERROR)
@@ -228,6 +231,7 @@ namespace TubeScanner.Controls
                     TB.Status = Status.NOT_USED;
                     dummy.Status = Status.REMOVED;
                     OutputTubeList.Add(dummy);
+                    UpdateTubeStatus(int.Parse(TB.Text)-1, Status.NOT_USED);
                     MessageBox.Show("Warning: Tube at " + TB.ID + " has been removed.");
                 }
 

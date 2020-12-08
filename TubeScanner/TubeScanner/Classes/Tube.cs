@@ -47,7 +47,7 @@ namespace TubeScanner.Classes
         {
             _id = ID;
             _number = number;
-            _barcode = string.Empty;
+            _barcode = "";
             Status = Status.NOT_USED;
         }
     }

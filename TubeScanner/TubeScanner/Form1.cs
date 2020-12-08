@@ -154,7 +154,7 @@ namespace TubeScanner
 
             while (scanning)
             {
-                string barcode = String.Empty;
+                string barcode = "";
                 bool found = false;
 
                 if (_bs.IsOpen)
@@ -188,7 +188,6 @@ namespace TubeScanner
                             found = true;
                             break;
                             //Console.WriteLine(well);
-                            // TODO: will need to add to a list of found barcodes / check against list to see if a barcode has already been used
                         }
                     }
                 }
