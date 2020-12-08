@@ -16,13 +16,14 @@ namespace TubeScanner
 
     public partial class Startup : Form
     {
-        private static System.Timers.Timer aTimer;
-
         Rack rack;
         public string plateID;
 
         private bool inputFileValid = false;
         private bool devicesValid = false;
+
+        TScanner _tScanner = new TScanner();
+        OpticonScanner _bs;
 
         public Startup()
         {
@@ -34,6 +35,15 @@ namespace TubeScanner
         private void Startup_Load(object sender, EventArgs e)
         {
             devicesValid = ConnectDevices();
+            readyToStart();
+        }
+
+        private async void btn_connect_Click(object sender, EventArgs e)
+        {
+            _tScanner.dP.Stop();
+            _bs.Stop();
+            devicesValid = ConnectDevices();
+            readyToStart();
         }
 
         private async void btnFileBrowse_Click(object sender, EventArgs e)
@@ -49,8 +59,6 @@ namespace TubeScanner
                     {
                         if (File.Exists(dialog.FileName))
                         {
-                            //lbl_file
-
                             rack = new Rack(8, 12);
                             rack.InputFilename = dialog.FileName;
 
@@ -71,7 +79,6 @@ namespace TubeScanner
                         }
                     }
                 }
-
             }
         }
 
@@ -83,12 +90,17 @@ namespace TubeScanner
              * IF FALSE, DISPLAY MESSAGE BOX STATING DISCONNECTION HAS OCCURED
              */
 
-
-
-
-
-            //Form1 form = new Form1(rack, _tScanner, _bs);
-            //form.ShowDialog();
+            if (_tScanner.dP.IsOpen && _bs.IsOpen)
+            {
+                Form1 form = new Form1(rack, _tScanner, _bs);
+                form.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Device/s disconnected!\n Reconnect Intrument and Barcode scanner and try again");
+                btn_runStart.Enabled = false;
+            }
+ 
         }
 
 
@@ -112,23 +124,15 @@ namespace TubeScanner
         //    MessageBox.Show("Device/s not connected! Try reconnecting.");
         //}
 
-
-        private async void btn_connect_Click(object sender, EventArgs e)
-        {
-            devicesValid = ConnectDevices();
-        }
-
-
         private bool ConnectDevices()
         { 
-            TScanner _tScanner = new TScanner();
-
             bool connected = true;
 
             try
             {
-                OpticonScanner _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
+                _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
                 lbl_BS.ForeColor = Color.Green;
+                _bs.Start();
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -149,7 +153,7 @@ namespace TubeScanner
                 connected = false;
             }
 
-            _tScanner.dP.Stop();
+            //_tScanner.dP.Stop();
             //_bs.Stop();
 
             return connected;
@@ -166,6 +170,5 @@ namespace TubeScanner
                 btn_runStart.Enabled = false;
             }
         }
-
     }
 }
