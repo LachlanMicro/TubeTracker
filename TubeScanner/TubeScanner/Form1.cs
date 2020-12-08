@@ -200,8 +200,8 @@ namespace TubeScanner
             {
                 /* Save output file */
                 string[] currDateTime = DateTime.Today.ToString().Split(' ');
-                FileManager outfile = new FileManager();
-                outfile.WriteOutputFile("../../IO Files/output log 2.txt", _rack.TubeList, _rack.PlateID, "aaaa", currDateTime[0]);
+                
+                FileManager.WriteOutputFile("../../IO Files/output log 2.txt", _rack.TubeList, _rack.PlateID, "aaaa", currDateTime[0]);
 
                 /* Clear tubes */
                 if (_tScanner.dP.IsOpen)

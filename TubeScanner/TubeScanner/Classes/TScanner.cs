@@ -28,6 +28,7 @@ namespace TubeScanner.Classes
             deviceConnectionMonitor.StartMonitor();
             deviceConnectionMonitor.DevicesConnectionStatus();
 
+
             dP = new DeviceComms("COM0");
             dP.OnNewData += serialPortNewDataReceivedAsync;
 

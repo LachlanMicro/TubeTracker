@@ -12,13 +12,10 @@ namespace TubeScanner.Classes
     class FileManager
     { 
 
-        public FileManager()
+        public static async Task<bool> LoadInputFile(Rack rack)
         {
+            bool valid = true;
 
-        }
-
-        public async Task<bool> LoadInputFile(Rack rack)
-        {
             if (File.Exists(rack.InputFilename))
             {
                 var lines = File.ReadAllLines(rack.InputFilename);
@@ -41,20 +38,16 @@ namespace TubeScanner.Classes
                     MessageBox.Show("Plate ID not found!");
                 }
 
-                // 2. Input file of old format
-                bool isPlateFound = true;
+                /* Tube data lines */
                 for (var lineNumber = 3; lineNumber < lines.Length; lineNumber++)
                 {
                     if (lines[lineNumber].Trim() == "End of File")
                         break;
 
-                    //string plateType = "";
-                    var contents = lines[lineNumber].Split('\t');
-
-                    char[] TPos = contents[0].ToCharArray();
+                    string[] contents = lines[lineNumber].Split('\t');
 
                     /* Check if position valid (format: A01) */
-                    if (Char.IsLetter(TPos[0]) && (Char.IsDigit(TPos[2])))
+                    if (InputValid(contents[0]))
                     {
                         for (int index = 0; index < rack.TubeList.Count; index++)
                         {
@@ -67,15 +60,37 @@ namespace TubeScanner.Classes
                     }
                     else
                     {
-                        MessageBox.Show("Line" + (lineNumber + 1) + ": Tube position invalid, use format [row],[0],[column] \n e.g. A01");
+                        //MessageBox.Show("Line" + (lineNumber + 1) + ": Tube position invalid, use format [row],[0],[column] \n e.g. A01");
+                        valid = false;
                     }
                 }
             }
+            return valid;
+        }
+
+        private static bool InputValid(string line)
+        {
+            int rackLength = 13;
+            List<char> rackLetters = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
+            char[] TPos = line.ToCharArray();
+
+            /* Position (e.g. A01) */
+            if (!rackLetters.Contains(TPos[0]))
+            {
+                return false;
+            }
+
+            int tubePosition = (Int32.Parse(TPos[1].ToString()) * 10) + Int32.Parse(TPos[2].ToString());
+            if (tubePosition <= 0 || tubePosition > rackLength)
+            {
+                return false;
+            }
+
             return true;
         }
 
 
-        public void WriteOutputFile(string filename, List<Tube> tList, string plateID, string userID, string date)
+        public static void WriteOutputFile(string filename, List<Tube> tList, string plateID, string userID, string date)
         {
             List<string> outputContent = new List<string>();
 
@@ -87,13 +102,12 @@ namespace TubeScanner.Classes
             for (int i = 0; i < tList.Count; i++)
             {
                 /* if tube has no barcode, do not add to output file */
-                if (tList[i].Barcode != "")
+            if (tList[i].Barcode != "")
                 {
                     outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode);
                     /* TODO add Error to each line */
                 }
             }
-
             File.WriteAllLines(filename, outputContent);
         }
 

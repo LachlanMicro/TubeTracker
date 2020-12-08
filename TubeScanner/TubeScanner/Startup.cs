@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using TubeScanner.Classes;
 
@@ -15,8 +16,13 @@ namespace TubeScanner
 
     public partial class Startup : Form
     {
+        private static System.Timers.Timer aTimer;
+
         Rack rack;
         public string plateID;
+
+        private bool inputFileValid = false;
+        private bool devicesValid = false;
 
         public Startup()
         {
@@ -27,7 +33,7 @@ namespace TubeScanner
 
         private void Startup_Load(object sender, EventArgs e)
         {
-            ConnectDevices();
+            devicesValid = ConnectDevices();
         }
 
         private async void btnFileBrowse_Click(object sender, EventArgs e)
@@ -43,15 +49,25 @@ namespace TubeScanner
                     {
                         if (File.Exists(dialog.FileName))
                         {
-                            // _testSequence.ImportInputFileName = dialog.FileName;
-                            //  txtImportInputFilename.Text = System.IO.Path.GetFileName(dialog.FileName);
-                            txtImportInputFilename.Text = dialog.FileName;
+                            //lbl_file
 
                             rack = new Rack(8, 12);
                             rack.InputFilename = dialog.FileName;
 
-                            FileManager inputFile = new FileManager();
-                            await inputFile.LoadInputFile(rack);
+                            if (await FileManager.LoadInputFile(rack))
+                            {
+                                lbl_file.Text = "FILE VALID";
+                                lbl_file.ForeColor = Color.Green;
+                                inputFileValid = true;
+
+                                readyToStart();
+                            }
+                            else
+                            {
+                                lbl_file.Text = "FILE INVALID";
+                                lbl_file.ForeColor = Color.Red;
+                                inputFileValid = false;
+                            }
                         }
                     }
                 }
@@ -59,35 +75,47 @@ namespace TubeScanner
             }
         }
 
-        private async void button2_ClickAsync(object sender, EventArgs e)
+      
+        private void btn_runStart_ClickAsync(object sender, EventArgs e)
         {
-            if (ConnectDevices())
-            {
-                TScanner _tScanner = new TScanner();
-                OpticonScanner _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
+            /* TEST IF DEVICES ARE STILL CONNECTED
+             * IF TRUE, SHOW TUBE RACK FORM
+             * IF FALSE, DISPLAY MESSAGE BOX STATING DISCONNECTION HAS OCCURED
+             */
 
-                _tScanner.autoConnect();
 
-                if (_tScanner.deviceConnectionMonitor._scannerConnected)
-                {
-                    _bs.Start();
-                }
 
-                Form1 form = new Form1(rack, _tScanner, _bs);
-                form.ShowDialog();
 
-                _tScanner.dP.Stop();
-                _bs.Stop();
-            }
-            else
-            {
-                MessageBox.Show("Device/s not connected! Try reconnecting.");
-            }
+
+            //Form1 form = new Form1(rack, _tScanner, _bs);
+            //form.ShowDialog();
         }
+
+
+
+        //if (ConnectDevices())
+        //{
+        //    TScanner _tScanner = new TScanner();
+        //    OpticonScanner _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
+
+        //    _tScanner.autoConnect();
+
+        //    if (_tScanner.deviceConnectionMonitor._scannerConnected)
+        //    {
+        //        _bs.Start();
+        //    }
+        //_tScanner.dP.Stop();
+        //_bs.Stop();
+        //}
+        //else
+        //{
+        //    MessageBox.Show("Device/s not connected! Try reconnecting.");
+        //}
+
 
         private async void btn_connect_Click(object sender, EventArgs e)
         {
-            ConnectDevices();
+            devicesValid = ConnectDevices();
         }
 
 
@@ -101,12 +129,10 @@ namespace TubeScanner
             {
                 OpticonScanner _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
                 lbl_BS.ForeColor = Color.Green;
-                lbl_BS.Text = "BARCODE ONLINE ON " + _bs.PortName;
             }
             catch (ArgumentOutOfRangeException)
             {
                 lbl_BS.ForeColor = Color.Red;
-                lbl_BS.Text = "BARCODE OFFLINE";
                 connected = false;
             }
            
@@ -116,12 +142,10 @@ namespace TubeScanner
             if (_tScanner.dP.IsOpen)
             {
                 lbl_TS.ForeColor = Color.Green;
-                lbl_TS.Text = "INSTRUMENT ONLINE ON " + _tScanner.dP.PortName;
             }
             else
             {
                 lbl_TS.ForeColor = Color.Red;
-                lbl_TS.Text = "INSTRUMENT OFFLINE";
                 connected = false;
             }
 
@@ -130,5 +154,18 @@ namespace TubeScanner
 
             return connected;
         }
+
+        private void readyToStart()
+        {
+            if (inputFileValid && devicesValid)
+            {
+                btn_runStart.Enabled = true;
+            }
+            else
+            {
+                btn_runStart.Enabled = false;
+            }
+        }
+
     }
 }
