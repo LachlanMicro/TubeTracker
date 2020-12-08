@@ -146,6 +146,14 @@ namespace TubeScanner.Classes
             return Barcode;
         }
 
+        public async Task stopScan()
+        {
+            byte[] command = { (Byte)ESC, (Byte)DETRIGGER_READER, (Byte)CR };
+
+            await sendCommand(command, 10000);
+
+            return;
+        }
 
         public async void Write(byte[] dataToWrite)
         {
