@@ -59,8 +59,6 @@ namespace TubeScanner
                                 lbl_file.Text = "FILE VALID";
                                 lbl_file.ForeColor = Color.Green;
                                 inputFileValid = true;
-
-                                readyToStart();
                             }
                             else
                             {
@@ -68,6 +66,8 @@ namespace TubeScanner
                                 lbl_file.ForeColor = Color.Red;
                                 inputFileValid = false;
                             }
+
+                            readyToStart();
                         }
                     }
                 }

@@ -74,7 +74,7 @@ namespace TubeScanner.Classes
                 }
 
                 /* Tube data lines */
-                for (int lineNumber = 3; lineNumber < usedLines.Count(); lineNumber++)
+                for (int lineNumber = 2; lineNumber < usedLines.Count(); lineNumber++)
                 {
                     if (usedLines[lineNumber].Trim() == "End of File")
                         break;
