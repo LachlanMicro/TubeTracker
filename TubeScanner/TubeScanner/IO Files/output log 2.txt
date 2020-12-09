@@ -1,9 +1,8 @@
-Plate ID	CSTRAMP20201130-02
+Plate ID	CDNAEXT20201130-05
 User ID aaaa
 Date 9/12/2020
 Position	Lab Number	Errors
-D09	613686669	Tube placed in wrong well but accepted
-A06		Tube placed in wrong well but accepted
-D04	1095680609	Tube placed in wrong well but accepted
-D04	1095680609	Tube removed
-A06		Tube removed
+E01	N/A	Tube placed in wrong well but accepted
+B01	69	Tube placed correctly
+B01	69	Tube removed
+F06	N/A	Tube placed in wrong well but accepted

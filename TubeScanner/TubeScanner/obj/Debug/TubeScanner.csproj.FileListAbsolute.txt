@@ -44,7 +44,6 @@ C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\
 C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CoreCompileInputs.cache
 C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.exe
 C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.pdb
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
 C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
 C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Controls.RackControl.resources
 C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Form1.resources
@@ -57,3 +56,4 @@ C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\
 C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.pdb
 C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.exe
 C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.pdb
+C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
