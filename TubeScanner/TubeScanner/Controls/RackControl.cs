@@ -196,14 +196,15 @@ namespace TubeScanner.Controls
             if (TB != null)
             {
                 dummy.ID = TB.ID;
-                dummy.Barcode = TB.Barcode;
+                dummy.Barcode = "N/A"; // Default N/A if no barcode has been scanned
+                //dummy.Barcode = TB.Barcode;
 
                 if (TB.Status == Status.SELECTED)
                 {
                     wasSelected = true;
                     TB.Status = Status.LOADED;
                     dummy.Status = Status.LOADED;
-                    OutputTubeList.Add(dummy);
+                    dummy.Barcode = TB.Barcode;
                     _rack.BarcodesScanned.Add(TB.Barcode);
                     _rack.WellsUsed.Add(TB.ID);
                     UpdateTubeStatus(int.Parse(TB.Text)-1, Status.LOADED);
@@ -212,7 +213,6 @@ namespace TubeScanner.Controls
                 {
                     TB.Status = Status.ERROR;
                     dummy.Status = Status.ERROR;
-                    OutputTubeList.Add(dummy);
                     UpdateTubeStatus(int.Parse(TB.Text)-1, Status.ERROR);
                     MessageBox.Show("Warning: Tube placement does not match input file.");
                 }
@@ -220,7 +220,7 @@ namespace TubeScanner.Controls
                 {
                     TB.Status = Status.REMOVED;
                     dummy.Status = Status.REMOVED;
-                    OutputTubeList.Add(dummy);
+                    dummy.Barcode = TB.Barcode;
                     MessageBox.Show("Warning: Tube at " + TB.ID + " has been removed.");
                     _rack.BarcodesScanned.Remove(TB.Barcode);
                     _rack.WellsUsed.Remove(TB.ID);
@@ -236,7 +236,6 @@ namespace TubeScanner.Controls
                 {
                     TB.Status = Status.ERROR;
                     dummy.Status = Status.ERROR;
-                    OutputTubeList.Add(dummy);
                     UpdateTubeStatus(int.Parse(TB.Text)-1, Status.ERROR);
                     MessageBox.Show("Warning: Tube placement does not match input file.");
                 }
@@ -253,7 +252,6 @@ namespace TubeScanner.Controls
                         UpdateTubeStatus(int.Parse(TB.Text) - 1, Status.READY_TO_LOAD);
                     }
                     dummy.Status = Status.REMOVED;
-                    OutputTubeList.Add(dummy);
                     MessageBox.Show("Warning: Tube at " + TB.ID + " has been removed.");
                 }
 
@@ -264,10 +262,14 @@ namespace TubeScanner.Controls
                         if (_rack.TubeList[i].Status == Status.SELECTED)
                         {
                             UpdateTubeStatus(i, Status.READY_TO_LOAD);
+                            dummy.Barcode = _rack.TubeList[i].Barcode;
+                            break;
                         }
                     }
                 }
-                
+
+                OutputTubeList.Add(dummy);
+
             }
 
             TB.Enabled = true;

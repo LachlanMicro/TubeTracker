@@ -35,17 +35,14 @@ namespace TubeScanner
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            //_rack = new Rack(8, 12); 
-
             rackControl = new RackControl(_rack);
             rackControl.Display(this, new Point(10, 75));
             rackControl.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Left);
 
             lbl_PlateID.Text = _rack.PlateID;
 
-            //_tScanner = new TScanner();
             _tScanner.DleCommands.OnFootSwitchEvent += FootSwitchEvent;
-            //_tScanner.autoConnect();
+
             if (_tScanner.dP.IsOpen)
             {
                 if (await _tScanner.DleCommands.sendNullCommand())
@@ -147,8 +144,10 @@ namespace TubeScanner
             }
         }
 
+        // Button to activate serial communication and barcode scanner
         private async void button1_Click(object sender, EventArgs e)
         {
+            // Update tube scanner state to running
             if (_tScanner.dP.IsOpen)
             {
                 await _tScanner.DleCommands.runStatus(DleCommands.RunState.RUNNING);
@@ -176,15 +175,9 @@ namespace TubeScanner
                     string[] splitLine = lines[line].Split('\t');
                     if (splitLine[1].Equals(barcode))
                     {
-                        Console.WriteLine(barcode);
-                        // If barcode has not already been used
+                        // If barcode has not already been used, update it to selected
                         if (!_rack.BarcodesScanned.Contains(barcode))
                         {
-                            if (_rack.BarcodesScanned.Count > 0)
-                            {
-                                Console.WriteLine(_rack.BarcodesScanned[0]);
-                            }
-                            
                             // If any well is already selected, cancel it
                             for (int i = 0; i < _rack.TubeList.Count; i++)
                             {
@@ -197,7 +190,6 @@ namespace TubeScanner
                             rackControl.UpdateTubeStatusNoNumber(wellNumber, Status.SELECTED);
                             found = true;
                             break;
-                            //Console.WriteLine(well);
                         }
                     }
                 }
@@ -212,16 +204,16 @@ namespace TubeScanner
             }
         }
 
+        // Create a timer with a 10 second interval.
         private void SetTimer()
         {
-            // Create a timer with a two second interval.
-            scanTimer = new System.Timers.Timer(10000);
-            // Hook up the Elapsed event for the timer. 
+            scanTimer = new System.Timers.Timer(10000); 
             scanTimer.Elapsed += OnTimedEvent;
             scanTimer.AutoReset = false;
             scanTimer.Enabled = true;
         }
 
+        // When 10 second timer has expired, set selected tube back to normal if it is still unloaded
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             int num = rackControl.GetTubeNum(wellNumber);
