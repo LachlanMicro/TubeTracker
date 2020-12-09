@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Diagnostics;
@@ -31,7 +28,6 @@ namespace TubeScanner.Classes
         public const int CONF_SIZE_HARDWARE_VERSION = 20;
     }
 
-
     public class DleCommands
     {
        
@@ -47,8 +43,6 @@ namespace TubeScanner.Classes
             public UInt16 tx_crc;
             public bool frameSend;             /* total number of data bytes in frame */
         }
-
-
 
         public enum BsdDeviceType
         {
@@ -118,7 +112,6 @@ namespace TubeScanner.Classes
             CMD_16BIT = 32000
         }
 
-
         enum FrameState
         {
             RX_IN_PROGRESS = 0x01,
@@ -130,7 +123,6 @@ namespace TubeScanner.Classes
             FRAME_TXD_ERR = 0x40,
             TX_ABORTED = 0x80,
         }
-
 
         private TxFrame txFrame = new TxFrame();
         private RxFrame rxFrame = new RxFrame();
@@ -147,8 +139,6 @@ namespace TubeScanner.Classes
 
         private bool _waitForFootSwitch = false;
        
-
-
         public event EventHandler<EventArgs> OnFootSwitchEvent;
 
         public bool IsBusy { get; set; } = false;
@@ -785,11 +775,7 @@ namespace TubeScanner.Classes
                                                             commandReply.errorCode = (int)ErrorCodes.NO_ERROR;
                                                         }
                                                         break;
-                                                   
-                                                    
-
                                                 }
-
 
                                                 if (commandReply.errorCode == (int)ErrorCodes.NO_ERROR)
                                                 {
@@ -854,7 +840,6 @@ namespace TubeScanner.Classes
 
             return commandReply;
         }
-
 
         public async Task<bool> sendNullCommand()
         {
@@ -959,9 +944,6 @@ namespace TubeScanner.Classes
             return commandReply.success;
         }
 
-       
-
-
         public async Task<ConfigData> getConfigData()
         {
             CommandReply commandReply;
@@ -1004,11 +986,6 @@ namespace TubeScanner.Classes
             return commandReply.success;
         }
 
-
-        
-
-        
-
         public async Task<ManufactureData> getManufacterData()
         {
             CommandReply commandReply;
@@ -1044,8 +1021,6 @@ namespace TubeScanner.Classes
             return commandReply.success;
         }
 
-
-
         public async Task<int> sendHomeCommand()
         {
             if (IsBusy)
@@ -1061,8 +1036,6 @@ namespace TubeScanner.Classes
             commandReply = await sendGreenspanFrame(funcCode, cmdData, cmdSize, 20);
 
             return commandReply.errorCode;
-        }
-
-        
+        } 
     }
 }

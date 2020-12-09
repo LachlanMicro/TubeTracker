@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.IO;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TubeScanner.Classes;
@@ -173,13 +168,14 @@ namespace TubeScanner
 
                 for (int line = 3; line < lines.Length; line++) 
                 {
+                    // Split file lines into well and barcode
                     string[] splitLine = lines[line].Split('\t');
                     if (splitLine[1].Equals(barcode))
                     {
-                        // If barcode has not already been used, update it to selected
+                        // If barcode has not already been used, update well status to selected
                         if (!_rack.BarcodesScanned.Contains(barcode))
                         {
-                            // If any well is already selected, cancel it
+                            // If any well is already selected, cancel it so only one is active
                             for (int i = 0; i < _rack.TubeList.Count; i++)
                             {
                                 if (_rack.TubeList[i].Status == Status.SELECTED)
@@ -189,6 +185,7 @@ namespace TubeScanner
                             }
                             wellNumber = splitLine[0];
                             int scannedTube = rackControl.GetTubeNum(wellNumber);
+                            // If the scanned barcode well is currently used, give an error message
                             if (_rack.TubeList[scannedTube].Status == Status.ERROR)
                             {
                                 MessageBox.Show("Error: There is currently a tube in the desired well. Please remove the tube and try again.");
@@ -208,6 +205,7 @@ namespace TubeScanner
                     MessageBox.Show("Scanned barcode was not found in input file or has already been scanned");
                 }
 
+                // Activate placement timer and 1 second delay after scanning barcode 
                 SetTimer();
                 System.Threading.Thread.Sleep(1000);
             }

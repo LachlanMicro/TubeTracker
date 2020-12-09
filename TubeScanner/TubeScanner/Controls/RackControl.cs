@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TubeScanner.Classes;
 
@@ -29,7 +24,6 @@ namespace TubeScanner.Controls
         {
             ReLoad();
         }
-
 
         private void ReLoad()
         {
@@ -142,6 +136,7 @@ namespace TubeScanner.Controls
             this.BringToFront();
         }
 
+        // Update the status of a tube at a specified index in the tube list
         public void UpdateTubeStatus(int tubeNumber, Status status)
         {            
             _rack.TubeList[tubeNumber].Status = status;
@@ -160,6 +155,7 @@ namespace TubeScanner.Controls
             }
         }
 
+        // Find the number of a tube in tube list from the well ID
         public int GetTubeNum(string ID)
         {
             int num = 0;
@@ -184,6 +180,7 @@ namespace TubeScanner.Controls
             ReLoad();
         }
 
+        // Update well status on click for testing purposes only
         private void button_Click(object sender, EventArgs e)
         {
             TubeButton TB = sender as TubeButton;
@@ -275,6 +272,7 @@ namespace TubeScanner.Controls
             TB.Enabled = true;
         }
 
+        // Show well info when it is double clicked
         private void button_DoubleClick(object sender, EventArgs e)
         {
             TubeButton TB = sender as TubeButton;

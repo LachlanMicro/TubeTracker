@@ -15,8 +15,6 @@ namespace TubeScanner.Classes
         SHOW_NUMBER
     }
 
-
-
     public class TubeButton : System.Windows.Forms.Button
     {
 
@@ -78,8 +76,6 @@ namespace TubeScanner.Classes
             FlatAppearance.BorderSize = 0;
             FlatStyle = FlatStyle.Flat;
         }
-
-     
 
         protected override void OnPaint(PaintEventArgs e)
         {

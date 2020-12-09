@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Forms;
 
 namespace TubeScanner.Classes
 {
     class FileManager
     { 
-
         /* Checks if loaded input file is valid */
         public static async Task<bool> LoadInputFile(Rack rack)
         {
@@ -128,33 +125,32 @@ namespace TubeScanner.Classes
             return true;
         }
 
+        // Write all tube placements and removals to the output file
         public static void WriteOutputFile(string filename, List<TubeButton> tList, string plateID, string userID, string date)
         {
             List<string> outputContent = new List<string>();
 
+            // Add the general file info
             outputContent.Add("Plate ID\t" + plateID);
             outputContent.Add("User ID " + userID);
             outputContent.Add("Date " + date);
             outputContent.Add("Position\tLab Number\tErrors");
 
+            // For each tube in the list of button presses, log the ID and barcode and a message based on the status at that time
             for (int i = 0; i < tList.Count; i++)
             {
-                /* if tube has no barcode, do not add to output file */
-                //if (tList[i].Barcode != "")
-                //{
-                    if (tList[i].Status == Status.ERROR)
-                    {
-                        outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode + "\t" + "Tube placed in wrong well but accepted");
-                    }
-                    if (tList[i].Status == Status.REMOVED)
-                    {
-                        outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode + "\t" + "Tube removed");
-                    }
-                    if (tList[i].Status == Status.LOADED)
-                    {
-                        outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode + "\t" + "Tube placed correctly");
-                    }
-                //}
+                if (tList[i].Status == Status.ERROR)
+                {
+                    outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode + "\t" + "Tube placed in wrong well but accepted");
+                }
+                if (tList[i].Status == Status.REMOVED)
+                {
+                    outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode + "\t" + "Tube removed");
+                }
+                if (tList[i].Status == Status.LOADED)
+                {
+                    outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode + "\t" + "Tube placed correctly");
+                }
             }
             File.WriteAllLines(filename, outputContent);
         }
