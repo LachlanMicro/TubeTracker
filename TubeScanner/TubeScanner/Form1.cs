@@ -208,7 +208,7 @@ namespace TubeScanner
         private void SetTimer()
         {
             // Create a timer with a two second interval.
-            scanTimer = new System.Timers.Timer(5000);
+            scanTimer = new System.Timers.Timer(10000);
             // Hook up the Elapsed event for the timer. 
             scanTimer.Elapsed += OnTimedEvent;
             scanTimer.AutoReset = false;
@@ -221,6 +221,7 @@ namespace TubeScanner
             if (_rack.TubeList[num].Status == Status.SELECTED)
             {
                 rackControl.UpdateTubeStatus(num, Status.READY_TO_LOAD);
+                MessageBox.Show("10 second window to place scanned tube has expired. Please rescan and try again.");
             }
         }
 
