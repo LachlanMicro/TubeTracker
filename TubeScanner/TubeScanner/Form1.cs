@@ -187,7 +187,15 @@ namespace TubeScanner
                                 }
                             }
                             wellNumber = splitLine[0];
-                            rackControl.UpdateTubeStatusNoNumber(wellNumber, Status.SELECTED);
+                            int scannedTube = rackControl.GetTubeNum(wellNumber);
+                            if (_rack.TubeList[scannedTube].Status == Status.ERROR)
+                            {
+                                MessageBox.Show("Error: There is currently a tube in the desired well. Please remove the tube and try again.");
+                            }
+                            else
+                            {
+                                rackControl.UpdateTubeStatus(scannedTube, Status.SELECTED);
+                            }
                             found = true;
                             break;
                         }
