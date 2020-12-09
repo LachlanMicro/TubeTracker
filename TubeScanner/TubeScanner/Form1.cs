@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TubeScanner.Classes;
 using TubeScanner.Controls;
+using System.Timers;
 
 namespace TubeScanner
 {
@@ -21,6 +22,8 @@ namespace TubeScanner
         public TScanner _tScanner;
         public OpticonScanner _bs;
         public bool scanning = false;
+        private static System.Timers.Timer scanTimer;
+        string wellNumber;
 
         public Form1(Rack rack, TScanner tScanner, OpticonScanner bs)
         {
@@ -183,8 +186,8 @@ namespace TubeScanner
                                     rackControl.UpdateTubeStatus(i, Status.READY_TO_LOAD);
                                 }
                             }
-                            string well = line.Split('\t')[0];
-                            rackControl.UpdateTubeStatusNoNumber(well, Status.SELECTED);
+                            wellNumber = line.Split('\t')[0];
+                            rackControl.UpdateTubeStatusNoNumber(wellNumber, Status.SELECTED);
                             found = true;
                             break;
                             //Console.WriteLine(well);
@@ -197,7 +200,27 @@ namespace TubeScanner
                     MessageBox.Show("Scanned barcode was not found in input file or has already been scanned");
                 }
 
+                SetTimer();
                 System.Threading.Thread.Sleep(1000);
+            }
+        }
+
+        private void SetTimer()
+        {
+            // Create a timer with a two second interval.
+            scanTimer = new System.Timers.Timer(5000);
+            // Hook up the Elapsed event for the timer. 
+            scanTimer.Elapsed += OnTimedEvent;
+            scanTimer.AutoReset = false;
+            scanTimer.Enabled = true;
+        }
+
+        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            int num = rackControl.GetTubeNum(wellNumber);
+            if (_rack.TubeList[num].Status == Status.SELECTED)
+            {
+                rackControl.UpdateTubeStatus(num, Status.READY_TO_LOAD);
             }
         }
 
@@ -237,6 +260,41 @@ namespace TubeScanner
         /* End run- save output file, clear display, return to startup */
         private async void btn_endRun_Click(object sender, EventArgs e)
         {
+            bool loadError = false;
+            bool placeError = false;
+            bool removeError = false;
+            for (int x = 0; x < _rack.TubeList.Count; x++)
+            {
+                if (_rack.TubeList[x].Status == Status.READY_TO_LOAD)
+                {
+                    if (!loadError)
+                    {
+                        MessageBox.Show("Warning: The rack contains unloaded wells, please ensure that you wish to continue.");
+                        loadError = true;
+                    }
+                }
+                if (_rack.TubeList[x].Status == Status.ERROR)
+                {
+                    if (!placeError)
+                    {
+                        MessageBox.Show("Warning: The rack contains misplaced tubes, please ensure that you wish to continue.");
+                        placeError = true;
+                    }
+                }
+                if (_rack.TubeList[x].Status == Status.REMOVED)
+                {
+                    if (!removeError)
+                    {
+                        MessageBox.Show("Warning: Tubes have been removed from the rack and not replaced, please ensure that you wish to continue.");
+                        removeError = true;
+                    }
+                }
+                if (loadError & placeError & removeError)
+                {
+                    break;
+                }
+            }
+
             DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Save Run?", "Ending Run", MessageBoxButtons.YesNoCancel);
             if (dialogResult == DialogResult.Yes)
             {
