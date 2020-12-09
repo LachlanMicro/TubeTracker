@@ -128,11 +128,6 @@ namespace TubeScanner.Classes
             return true;
         }
 
-        public static void EmptyInputFile()
-        {
-
-        }
-
         public static void WriteOutputFile(string filename, List<TubeButton> tList, string plateID, string userID, string date)
         {
             List<string> outputContent = new List<string>();

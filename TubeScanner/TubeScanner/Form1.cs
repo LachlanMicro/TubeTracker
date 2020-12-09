@@ -24,9 +24,11 @@ namespace TubeScanner
         public bool scanning = false;
         private static System.Timers.Timer scanTimer;
         string wellNumber;
+        Startup _startupForm;
 
-        public Form1(Rack rack, TScanner tScanner, OpticonScanner bs)
+        public Form1(Startup startupForm, Rack rack, TScanner tScanner, OpticonScanner bs)
         {
+            _startupForm = startupForm;
             _rack = rack;
             _tScanner = tScanner;
             _bs = bs;
@@ -333,11 +335,9 @@ namespace TubeScanner
                 }
             }
 
-            //for (int x = 0; x < _rack.TubeList.Count; x++)
-            //{
-            //_rack.TubeList[x].Status = Status.NOT_USED;
-            //}
-            //_rack.TubeList.Clear();
+            /* Clear the loaded input file */
+            // Startup startupScreen = new Startup();
+            _startupForm.EmptyInputFile();
 
             /* Close test window */
             this.Hide();
