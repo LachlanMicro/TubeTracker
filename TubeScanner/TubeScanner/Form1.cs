@@ -171,13 +171,20 @@ namespace TubeScanner
 
                 var lines = File.ReadAllLines(_rack.InputFilename);
 
-                foreach (string line in lines)
+                for (int line = 3; line < lines.Length; line++) 
                 {
-                    if (line.Contains(barcode))
+                    string[] splitLine = lines[line].Split('\t');
+                    if (splitLine[1].Equals(barcode))
                     {
+                        Console.WriteLine(barcode);
                         // If barcode has not already been used
                         if (!_rack.BarcodesScanned.Contains(barcode))
                         {
+                            if (_rack.BarcodesScanned.Count > 0)
+                            {
+                                Console.WriteLine(_rack.BarcodesScanned[0]);
+                            }
+                            
                             // If any well is already selected, cancel it
                             for (int i = 0; i < _rack.TubeList.Count; i++)
                             {
@@ -186,7 +193,7 @@ namespace TubeScanner
                                     rackControl.UpdateTubeStatus(i, Status.READY_TO_LOAD);
                                 }
                             }
-                            wellNumber = line.Split('\t')[0];
+                            wellNumber = splitLine[0];
                             rackControl.UpdateTubeStatusNoNumber(wellNumber, Status.SELECTED);
                             found = true;
                             break;
@@ -302,40 +309,42 @@ namespace TubeScanner
             {
                 /* Save output file */
                 string[] currDateTime = DateTime.Today.ToString().Split(' ');
-                FileManager outfile = new FileManager();
-                outfile.WriteOutputFile("../../IO Files/output log 2.txt", rackControl.OutputTubeList, _rack.PlateID, "aaaa", currDateTime[0]);
+                //FileManager outfile = new FileManager();
+                FileManager.WriteOutputFile("../../IO Files/output log 2.txt", rackControl.OutputTubeList, _rack.PlateID, "aaaa", currDateTime[0]);
 
-                quitToStartupAsync();
+                await quitToStartupAsync();
             }
             else if (dialogResult == DialogResult.No)
             {
-                quitToStartupAsync();
+                await quitToStartupAsync();
             }
 
         }
 
-                /* Clear tubes */
-                if (_tScanner.dP.IsOpen)
+        private async Task quitToStartupAsync()
+        {
+            /* Clear tubes */
+            if (_tScanner.dP.IsOpen)
+            {
+                await _tScanner.DleCommands.runStatus(DleCommands.RunState.STOPPED);
+                for (int x = 0; x < _rack.TubeList.Count; x++)
                 {
-                    await _tScanner.DleCommands.runStatus(DleCommands.RunState.STOPPED);
-                    for (int x = 0; x < _rack.TubeList.Count; x++)
-                    {
-                        rackControl.UpdateTubeStatus(x, Status.NOT_USED);
-                    }
+                    rackControl.UpdateTubeStatus(x, Status.NOT_USED);
                 }
-
-                //for (int x = 0; x < _rack.TubeList.Count; x++)
-                //{
-                //_rack.TubeList[x].Status = Status.NOT_USED;
-                //}
-                //_rack.TubeList.Clear();
-
-                /* Close test window */
-                this.Hide();
             }
 
+            //for (int x = 0; x < _rack.TubeList.Count; x++)
+            //{
+            //_rack.TubeList[x].Status = Status.NOT_USED;
+            //}
+            //_rack.TubeList.Clear();
+
+            /* Close test window */
+            this.Hide();
         }
 
-        
+
     }
+        
 }
+

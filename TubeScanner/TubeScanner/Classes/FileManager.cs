@@ -128,7 +128,7 @@ namespace TubeScanner.Classes
         }
 
 
-        public static void WriteOutputFile(string filename, List<Tube> tList, string plateID, string userID, string date)
+        public static void WriteOutputFile(string filename, List<TubeButton> tList, string plateID, string userID, string date)
         {
             List<string> outputContent = new List<string>();
 
