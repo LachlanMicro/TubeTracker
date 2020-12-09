@@ -258,6 +258,7 @@ namespace TubeScanner
             }
         }
 
+
         /* End run- save output file, clear display, return to startup */
         private async void btn_endRun_Click(object sender, EventArgs e)
         {
@@ -313,27 +314,28 @@ namespace TubeScanner
 
         }
 
-        private async Task quitToStartupAsync()
-        {
-            /* Clear tubes */
-            if (_tScanner.dP.IsOpen)
-            {
-                await _tScanner.DleCommands.runStatus(DleCommands.RunState.STOPPED);
-                for (int x = 0; x < _rack.TubeList.Count; x++)
+                /* Clear tubes */
+                if (_tScanner.dP.IsOpen)
                 {
-                    rackControl.UpdateTubeStatus(x, Status.NOT_USED);
+                    await _tScanner.DleCommands.runStatus(DleCommands.RunState.STOPPED);
+                    for (int x = 0; x < _rack.TubeList.Count; x++)
+                    {
+                        rackControl.UpdateTubeStatus(x, Status.NOT_USED);
+                    }
                 }
-            }
-            
-            //for (int x = 0; x < _rack.TubeList.Count; x++)
-            //{
-                //_rack.TubeList[x].Status = Status.NOT_USED;
-            //}
-            //_rack.TubeList.Clear();
 
-            /* Close test window */
-            this.Hide();
+                //for (int x = 0; x < _rack.TubeList.Count; x++)
+                //{
+                //_rack.TubeList[x].Status = Status.NOT_USED;
+                //}
+                //_rack.TubeList.Clear();
+
+                /* Close test window */
+                this.Hide();
+            }
+
         }
 
+        
     }
 }

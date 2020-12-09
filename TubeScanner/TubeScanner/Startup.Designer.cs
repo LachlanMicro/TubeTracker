@@ -28,61 +28,136 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Startup));
             this.btnFileBrowse = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.txtImportInputFilename = new System.Windows.Forms.Label();
-            this.lbl_inputFile = new System.Windows.Forms.Label();
+            this.btn_runStart = new System.Windows.Forms.Button();
+            this.btn_connect = new System.Windows.Forms.Button();
+            this.lbl_BS = new System.Windows.Forms.Label();
+            this.lbl_TS = new System.Windows.Forms.Label();
+            this.lbl_file = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lbl_title = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // btnFileBrowse
             // 
-            this.btnFileBrowse.Location = new System.Drawing.Point(323, 159);
+            this.btnFileBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFileBrowse.Location = new System.Drawing.Point(12, 299);
             this.btnFileBrowse.Name = "btnFileBrowse";
-            this.btnFileBrowse.Size = new System.Drawing.Size(96, 35);
+            this.btnFileBrowse.Size = new System.Drawing.Size(160, 52);
             this.btnFileBrowse.TabIndex = 0;
             this.btnFileBrowse.Text = "Load File";
             this.btnFileBrowse.UseVisualStyleBackColor = true;
             this.btnFileBrowse.Click += new System.EventHandler(this.btnFileBrowse_Click);
             // 
-            // button2
+            // btn_runStart
             // 
-            this.button2.Location = new System.Drawing.Point(323, 252);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(96, 35);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Start Run";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_ClickAsync);
+            this.btn_runStart.Enabled = false;
+            this.btn_runStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_runStart.Location = new System.Drawing.Point(12, 386);
+            this.btn_runStart.Name = "btn_runStart";
+            this.btn_runStart.Size = new System.Drawing.Size(160, 52);
+            this.btn_runStart.TabIndex = 1;
+            this.btn_runStart.Text = "Start Run";
+            this.btn_runStart.UseVisualStyleBackColor = true;
+            this.btn_runStart.Click += new System.EventHandler(this.btn_runStart_ClickAsync);
             // 
-            // txtImportInputFilename
+            // btn_connect
             // 
-            this.txtImportInputFilename.AutoSize = true;
-            this.txtImportInputFilename.Location = new System.Drawing.Point(145, 31);
-            this.txtImportInputFilename.Name = "txtImportInputFilename";
-            this.txtImportInputFilename.Size = new System.Drawing.Size(0, 13);
-            this.txtImportInputFilename.TabIndex = 2;
+            this.btn_connect.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_connect.Location = new System.Drawing.Point(12, 213);
+            this.btn_connect.Name = "btn_connect";
+            this.btn_connect.Size = new System.Drawing.Size(160, 52);
+            this.btn_connect.TabIndex = 4;
+            this.btn_connect.Text = "Connect";
+            this.btn_connect.UseVisualStyleBackColor = true;
+            this.btn_connect.Click += new System.EventHandler(this.btn_connect_Click);
             // 
-            // lbl_inputFile
+            // lbl_BS
             // 
-            this.lbl_inputFile.AutoSize = true;
-            this.lbl_inputFile.Location = new System.Drawing.Point(63, 31);
-            this.lbl_inputFile.Name = "lbl_inputFile";
-            this.lbl_inputFile.Size = new System.Drawing.Size(53, 13);
-            this.lbl_inputFile.TabIndex = 3;
-            this.lbl_inputFile.Text = "Input File:";
+            this.lbl_BS.AutoSize = true;
+            this.lbl_BS.Font = new System.Drawing.Font("Lucida Sans", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_BS.ForeColor = System.Drawing.Color.Red;
+            this.lbl_BS.Location = new System.Drawing.Point(560, 9);
+            this.lbl_BS.Name = "lbl_BS";
+            this.lbl_BS.Size = new System.Drawing.Size(90, 18);
+            this.lbl_BS.TabIndex = 5;
+            this.lbl_BS.Text = "BARCODE";
+            // 
+            // lbl_TS
+            // 
+            this.lbl_TS.AutoSize = true;
+            this.lbl_TS.Font = new System.Drawing.Font("Lucida Sans", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_TS.ForeColor = System.Drawing.Color.Red;
+            this.lbl_TS.Location = new System.Drawing.Point(666, 9);
+            this.lbl_TS.Name = "lbl_TS";
+            this.lbl_TS.Size = new System.Drawing.Size(122, 18);
+            this.lbl_TS.TabIndex = 6;
+            this.lbl_TS.Text = "INSTRUMENT";
+            // 
+            // lbl_file
+            // 
+            this.lbl_file.AutoSize = true;
+            this.lbl_file.Font = new System.Drawing.Font("Lucida Sans", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_file.ForeColor = System.Drawing.Color.Red;
+            this.lbl_file.Location = new System.Drawing.Point(421, 9);
+            this.lbl_file.Name = "lbl_file";
+            this.lbl_file.Size = new System.Drawing.Size(75, 18);
+            this.lbl_file.TabIndex = 7;
+            this.lbl_file.Text = "NO FILE";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(264, 86);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(408, 277);
+            this.pictureBox1.TabIndex = 8;
+            this.pictureBox1.TabStop = false;
+            // 
+            // lbl_title
+            // 
+            this.lbl_title.AutoSize = true;
+            this.lbl_title.Font = new System.Drawing.Font("Calibri", 32.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_title.Location = new System.Drawing.Point(53, -3);
+            this.lbl_title.Name = "lbl_title";
+            this.lbl_title.Size = new System.Drawing.Size(233, 53);
+            this.lbl_title.TabIndex = 9;
+            this.lbl_title.Text = "BSD Tracker";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.InitialImage")));
+            this.pictureBox2.Location = new System.Drawing.Point(2, 6);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(58, 42);
+            this.pictureBox2.TabIndex = 10;
+            this.pictureBox2.TabStop = false;
             // 
             // Startup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.lbl_inputFile);
-            this.Controls.Add(this.txtImportInputFilename);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.lbl_title);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.lbl_file);
+            this.Controls.Add(this.lbl_TS);
+            this.Controls.Add(this.lbl_BS);
+            this.Controls.Add(this.btn_connect);
+            this.Controls.Add(this.btn_runStart);
             this.Controls.Add(this.btnFileBrowse);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Startup";
-            this.Text = "Form2";
+            this.Text = "BSD Tracker";
             this.Load += new System.EventHandler(this.Startup_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -91,8 +166,13 @@
         #endregion
 
         private System.Windows.Forms.Button btnFileBrowse;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label txtImportInputFilename;
-        private System.Windows.Forms.Label lbl_inputFile;
+        private System.Windows.Forms.Button btn_runStart;
+        private System.Windows.Forms.Button btn_connect;
+        private System.Windows.Forms.Label lbl_BS;
+        private System.Windows.Forms.Label lbl_TS;
+        private System.Windows.Forms.Label lbl_file;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lbl_title;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
