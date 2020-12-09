@@ -76,13 +76,13 @@ namespace TubeScanner
 
                             if (await FileManager.LoadInputFile(rack))
                             {
-                                lbl_file.Text = "FILE VALID";
+                                lbl_file.Text = "VALID INPUT FILE";
                                 lbl_file.ForeColor = Color.Green;
                                 inputFileValid = true;
                             }
                             else
                             {
-                                lbl_file.Text = "FILE INVALID";
+                                lbl_file.Text = "INVALID INPUT FILE";
                                 lbl_file.ForeColor = Color.Red;
                                 inputFileValid = false;
                             }
@@ -133,20 +133,21 @@ namespace TubeScanner
         //}
 
         private bool ConnectDevices()
-        { 
+        {
             bool connected = true;
 
-
-                if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
-                {
-                    _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
-                    lbl_BS.ForeColor = Color.Green;
-                    _bs.Start();
-                }
-                else
-                {
-                    _bs = new OpticonScanner("COM0");
-                    lbl_BS.ForeColor = Color.Red;
+            if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
+            {
+                _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
+                lbl_BS.Text = "BARCODE SCANNER CONNECTED";
+                lbl_BS.ForeColor = Color.Green;
+                _bs.Start();
+            }
+            else
+            {
+                _bs = new OpticonScanner("COM0");
+                lbl_BS.Text = "BARCODE SCANNER NOT CONNECTED";
+                lbl_BS.ForeColor = Color.Red;
                 connected = false;
             }
                 
@@ -157,10 +158,12 @@ namespace TubeScanner
 
             if (_tScanner.dP.IsOpen)
             {
+                lbl_TS.Text = "TUBE TRACKER CONNECTED";
                 lbl_TS.ForeColor = Color.Green;
             }
             else
             {
+                lbl_TS.Text = "TUBE TRACKER NOT CONNECTED";
                 lbl_TS.ForeColor = Color.Red;
                 connected = false;
             }

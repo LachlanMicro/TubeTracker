@@ -78,36 +78,36 @@
             // 
             // lbl_BS
             // 
-            this.lbl_BS.AutoSize = true;
-            this.lbl_BS.Font = new System.Drawing.Font("Lucida Sans", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_BS.Font = new System.Drawing.Font("Lucida Sans", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_BS.ForeColor = System.Drawing.Color.Red;
-            this.lbl_BS.Location = new System.Drawing.Point(560, 9);
+            this.lbl_BS.Location = new System.Drawing.Point(466, 6);
             this.lbl_BS.Name = "lbl_BS";
-            this.lbl_BS.Size = new System.Drawing.Size(90, 18);
+            this.lbl_BS.Size = new System.Drawing.Size(173, 39);
             this.lbl_BS.TabIndex = 5;
-            this.lbl_BS.Text = "BARCODE";
+            this.lbl_BS.Text = "BARCODE SCANNER NOT CONNECTED";
+            this.lbl_BS.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbl_TS
             // 
-            this.lbl_TS.AutoSize = true;
-            this.lbl_TS.Font = new System.Drawing.Font("Lucida Sans", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_TS.Font = new System.Drawing.Font("Lucida Sans", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_TS.ForeColor = System.Drawing.Color.Red;
-            this.lbl_TS.Location = new System.Drawing.Point(666, 9);
+            this.lbl_TS.Location = new System.Drawing.Point(645, 6);
             this.lbl_TS.Name = "lbl_TS";
-            this.lbl_TS.Size = new System.Drawing.Size(122, 18);
+            this.lbl_TS.Size = new System.Drawing.Size(143, 36);
             this.lbl_TS.TabIndex = 6;
-            this.lbl_TS.Text = "INSTRUMENT";
+            this.lbl_TS.Text = "TUBE TRACKER NOT CONNECTED";
+            this.lbl_TS.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbl_file
             // 
-            this.lbl_file.AutoSize = true;
-            this.lbl_file.Font = new System.Drawing.Font("Lucida Sans", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_file.Font = new System.Drawing.Font("Lucida Sans", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_file.ForeColor = System.Drawing.Color.Red;
-            this.lbl_file.Location = new System.Drawing.Point(421, 9);
+            this.lbl_file.Location = new System.Drawing.Point(292, 16);
             this.lbl_file.Name = "lbl_file";
-            this.lbl_file.Size = new System.Drawing.Size(75, 18);
+            this.lbl_file.Size = new System.Drawing.Size(184, 18);
             this.lbl_file.TabIndex = 7;
-            this.lbl_file.Text = "NO FILE";
+            this.lbl_file.Text = "NO INPUT FILE";
+            this.lbl_file.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBox1
             // 
