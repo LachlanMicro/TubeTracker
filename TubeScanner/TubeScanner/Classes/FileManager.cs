@@ -11,6 +11,8 @@ namespace TubeScanner.Classes
 {
     class FileManager
     { 
+
+        /* Checks if loaded input file is valid */
         public static async Task<bool> LoadInputFile(Rack rack)
         {
             bool valid = true;
@@ -105,7 +107,6 @@ namespace TubeScanner.Classes
             return valid;
         }
 
-
         private static bool InputValid(string line)
         {
             int rackLength = 13;
@@ -127,6 +128,10 @@ namespace TubeScanner.Classes
             return true;
         }
 
+        public static void EmptyInputFile()
+        {
+
+        }
 
         public static void WriteOutputFile(string filename, List<TubeButton> tList, string plateID, string userID, string date)
         {

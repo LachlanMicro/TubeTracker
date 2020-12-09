@@ -137,21 +137,19 @@ namespace TubeScanner
             bool connected = true;
 
 
-                if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
-                {
-                    _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
-                    lbl_BS.ForeColor = Color.Green;
-                    _bs.Start();
-                }
-                else
-                {
-                    _bs = new OpticonScanner("COM0");
-                    lbl_BS.ForeColor = Color.Red;
+            if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
+            {
+                _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
+                lbl_BS.ForeColor = Color.Green;
+                _bs.Start();
+            }
+            else
+            {
+                _bs = new OpticonScanner("COM0");
+                lbl_BS.ForeColor = Color.Red;
                 connected = false;
             }
                 
-         
-           
              _tScanner.autoConnect();
             //await _tScanner.DleCommands.sendNullCommand();
 
