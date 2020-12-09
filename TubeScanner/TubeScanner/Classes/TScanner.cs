@@ -13,6 +13,8 @@ namespace TubeScanner.Classes
         public DeviceConnectionMonitor deviceConnectionMonitor;
         private DleCommands _dleCommands;
 
+        Startup _startup;
+
         public DleCommands DleCommands
         {
             get { return _dleCommands; }
@@ -21,15 +23,16 @@ namespace TubeScanner.Classes
 
         
 
-        public TScanner()
+        public TScanner(Startup startup)
         {
          
             deviceConnectionMonitor = new DeviceConnectionMonitor();
             deviceConnectionMonitor.StartMonitor();
             deviceConnectionMonitor.DevicesConnectionStatus();
 
+            _startup = startup;
 
-            dP = new DeviceComms("COM0");
+            dP = new DeviceComms(_startup, "COM0");
             dP.OnNewData += serialPortNewDataReceivedAsync;
 
             _dleCommands = new DleCommands();
