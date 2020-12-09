@@ -105,9 +105,8 @@
             this.lbl_file.ForeColor = System.Drawing.Color.Red;
             this.lbl_file.Location = new System.Drawing.Point(421, 9);
             this.lbl_file.Name = "lbl_file";
-            this.lbl_file.Size = new System.Drawing.Size(75, 18);
+            this.lbl_file.Size = new System.Drawing.Size(0, 18);
             this.lbl_file.TabIndex = 7;
-            this.lbl_file.Text = "NO FILE";
             // 
             // pictureBox1
             // 

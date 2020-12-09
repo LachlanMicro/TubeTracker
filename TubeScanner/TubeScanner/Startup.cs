@@ -37,6 +37,7 @@ namespace TubeScanner
             /* Check if devices connected */
             devicesValid = ConnectDevices();
             readyToStart();
+            EmptyInputFile();
         }
 
         private async void btn_connect_Click(object sender, EventArgs e)
@@ -93,14 +94,14 @@ namespace TubeScanner
                 }
             }
         }
-      
+
         private void btn_runStart_ClickAsync(object sender, EventArgs e)
         {
             /* TEST IF DEVICES ARE STILL CONNECTED */
             if (_tScanner.dP.IsOpen && _bs.IsOpen)
             {
             /*IF TRUE, SHOW TUBE RACK FORM */
-            Form1 form = new Form1(rack, _tScanner, _bs);
+            Form1 form = new Form1(this, rack, _tScanner, _bs);
                 form.ShowDialog();
             }
             else
@@ -112,25 +113,6 @@ namespace TubeScanner
             }
  
         }
-
-        //if (ConnectDevices())
-        //{
-        //    TScanner _tScanner = new TScanner();
-        //    OpticonScanner _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
-
-        //    _tScanner.autoConnect();
-
-        //    if (_tScanner.deviceConnectionMonitor._scannerConnected)
-        //    {
-        //        _bs.Start();
-        //    }
-        //_tScanner.dP.Stop();
-        //_bs.Stop();
-        //}
-        //else
-        //{
-        //    MessageBox.Show("Device/s not connected! Try reconnecting.");
-        //}
 
         private bool ConnectDevices()
         { 
@@ -180,5 +162,15 @@ namespace TubeScanner
                 btn_runStart.Enabled = false;
             }
         }
+
+        public void EmptyInputFile()
+        {
+            rack.InputFilename = "";
+            lbl_file.ForeColor = Color.Red;
+            lbl_file.Text = "NO FILE";
+            inputFileValid = false;
+            readyToStart();
+        }
+
     }
 }
