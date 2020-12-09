@@ -170,7 +170,7 @@ namespace TubeScanner
         {
             rack.InputFilename = "";
             lbl_file.ForeColor = Color.Red;
-            lbl_file.Text = "NO FILE";
+            lbl_file.Text = "NO INPUT FILE";
             inputFileValid = false;
             readyToStart();
         }
