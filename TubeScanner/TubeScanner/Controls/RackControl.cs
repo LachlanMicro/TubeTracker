@@ -160,6 +160,20 @@ namespace TubeScanner.Controls
             }
         }
 
+        public int GetTubeNum(string ID)
+        {
+            int num = 0;
+            for (int tubeNumber = 0; tubeNumber < _rack.TubeList.Count; tubeNumber++)
+            {
+                if (_rack.TubeList[tubeNumber].ID == ID)
+                {
+                    num = tubeNumber;
+                    break;
+                }
+            }
+            return num;
+        }
+
         public void UpdateTextContent(int tubeNumber, eShowText showText)
         {            
             tubeButtons[tubeNumber].ShowText = showText;
@@ -228,10 +242,18 @@ namespace TubeScanner.Controls
                 }
                 else if (TB.Status == Status.ERROR)
                 {
-                    TB.Status = Status.NOT_USED;
+                    if (_rack.InitialTubeList[int.Parse(TB.Text) - 1].Status == Status.NOT_USED)
+                    {
+                        TB.Status = Status.NOT_USED;
+                        UpdateTubeStatus(int.Parse(TB.Text) - 1, Status.NOT_USED);
+                    }
+                    else if (_rack.InitialTubeList[int.Parse(TB.Text) - 1].Status == Status.READY_TO_LOAD)
+                    {
+                        TB.Status = Status.READY_TO_LOAD;
+                        UpdateTubeStatus(int.Parse(TB.Text) - 1, Status.READY_TO_LOAD);
+                    }
                     dummy.Status = Status.REMOVED;
                     OutputTubeList.Add(dummy);
-                    UpdateTubeStatus(int.Parse(TB.Text)-1, Status.NOT_USED);
                     MessageBox.Show("Warning: Tube at " + TB.ID + " has been removed.");
                 }
 
