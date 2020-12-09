@@ -16,7 +16,6 @@ namespace TubeScanner
 {
     public partial class Form1 : Form
     {
-        private Form1 form;
         private Rack _rack = null;
         RackControl rackControl = null;
         public TScanner _tScanner;
@@ -343,8 +342,6 @@ namespace TubeScanner
             this.Hide();
         }
 
-
-    }
-        
+    }   
 }
 

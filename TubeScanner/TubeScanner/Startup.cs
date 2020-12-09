@@ -114,25 +114,6 @@ namespace TubeScanner
  
         }
 
-        //if (ConnectDevices())
-        //{
-        //    TScanner _tScanner = new TScanner();
-        //    OpticonScanner _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
-
-        //    _tScanner.autoConnect();
-
-        //    if (_tScanner.deviceConnectionMonitor._scannerConnected)
-        //    {
-        //        _bs.Start();
-        //    }
-        //_tScanner.dP.Stop();
-        //_bs.Stop();
-        //}
-        //else
-        //{
-        //    MessageBox.Show("Device/s not connected! Try reconnecting.");
-        //}
-
         private bool ConnectDevices()
         { 
             bool connected = true;
