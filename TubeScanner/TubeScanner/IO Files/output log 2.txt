@@ -1,6 +1,4 @@
 Plate ID	CDNAEXT20201130-05
 User ID aaaa
-Date 8/12/2020
+Date 9/12/2020
 Position	Lab Number	Errors
-B01	69	Tube placed correctly
-F01	19	Tube placed correctly
