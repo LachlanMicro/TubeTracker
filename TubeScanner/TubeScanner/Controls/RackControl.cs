@@ -197,7 +197,6 @@ namespace TubeScanner.Controls
             {
                 dummy.ID = TB.ID;
                 dummy.Barcode = "N/A"; // Default N/A if no barcode has been scanned
-                //dummy.Barcode = TB.Barcode;
 
                 if (TB.Status == Status.SELECTED)
                 {
@@ -226,12 +225,13 @@ namespace TubeScanner.Controls
                     _rack.WellsUsed.Remove(TB.ID);
                     UpdateTubeStatus(int.Parse(TB.Text)-1, Status.REMOVED);
                 }
-                /*else if (TB.Status == Status.REMOVED)
+                else if (TB.Status == Status.REMOVED)
                 {
-                    TB.Status = Status.LOADED;
-                    dummy.Status = Status.LOADED;
-                    OutputTubeList.Add(dummy);
-                }*/
+                    TB.Status = Status.ERROR;
+                    dummy.Status = Status.ERROR;
+                    UpdateTubeStatus(int.Parse(TB.Text) - 1, Status.ERROR);
+                    MessageBox.Show("Warning: Tube placement does not match input file.");
+                }
                 else if (TB.Status == Status.NOT_USED)
                 {
                     TB.Status = Status.ERROR;
