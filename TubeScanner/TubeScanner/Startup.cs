@@ -34,18 +34,29 @@ namespace TubeScanner
 
         private void Startup_Load(object sender, EventArgs e)
         {
+            /* Check if devices connected */
             devicesValid = ConnectDevices();
             readyToStart();
         }
 
         private async void btn_connect_Click(object sender, EventArgs e)
         {
-            _tScanner.dP.Stop();
-            _bs.Stop();
+            /* '.Stop()' allows the program to check the connections again */
+            if (_tScanner.dP.IsOpen)
+            {
+                _tScanner.dP.Stop();
+            }
+            if (_bs.IsOpen)
+            {
+                _bs.Stop();
+            }
+
+            /* Check if devices connected */
             devicesValid = ConnectDevices();
             readyToStart();
         }
 
+        /* FOR INPUT FILE */
         private async void btnFileBrowse_Click(object sender, EventArgs e)
         {
             using (System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog())
@@ -53,6 +64,7 @@ namespace TubeScanner
                 dialog.Filter = "Input Files (.txt;.csv;)|*.txt;*.csv;";
                 dialog.Multiselect = false;
 
+                /* Open file browsing window, .txt and .csv only */
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     if (!string.IsNullOrEmpty(dialog.FileName))
@@ -81,29 +93,25 @@ namespace TubeScanner
                 }
             }
         }
-
       
         private void btn_runStart_ClickAsync(object sender, EventArgs e)
         {
-            /* TEST IF DEVICES ARE STILL CONNECTED
-             * IF TRUE, SHOW TUBE RACK FORM
-             * IF FALSE, DISPLAY MESSAGE BOX STATING DISCONNECTION HAS OCCURED
-             */
-
+            /* TEST IF DEVICES ARE STILL CONNECTED */
             if (_tScanner.dP.IsOpen && _bs.IsOpen)
             {
-                Form1 form = new Form1(rack, _tScanner, _bs);
+            /*IF TRUE, SHOW TUBE RACK FORM */
+            Form1 form = new Form1(rack, _tScanner, _bs);
                 form.ShowDialog();
             }
             else
             {
-                MessageBox.Show("Device/s disconnected!\n Reconnect Intrument and Barcode scanner and try again");
-                btn_runStart.Enabled = false;
+                /*IF FALSE, DISPLAY MESSAGE BOX STATING DISCONNECTION HAS OCCURED*/
+               MessageBox.Show("Device/s disconnected!\n Reconnect Intrument and Barcode scanner and try again");
+                devicesValid = ConnectDevices();
+                readyToStart();
             }
  
         }
-
-
 
         //if (ConnectDevices())
         //{
@@ -128,17 +136,21 @@ namespace TubeScanner
         { 
             bool connected = true;
 
-            try
-            {
-                _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
-                lbl_BS.ForeColor = Color.Green;
-                _bs.Start();
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                lbl_BS.ForeColor = Color.Red;
+
+                if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
+                {
+                    _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
+                    lbl_BS.ForeColor = Color.Green;
+                    _bs.Start();
+                }
+                else
+                {
+                    _bs = new OpticonScanner("COM0");
+                    lbl_BS.ForeColor = Color.Red;
                 connected = false;
             }
+                
+         
            
              _tScanner.autoConnect();
             //await _tScanner.DleCommands.sendNullCommand();

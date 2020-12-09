@@ -1,6 +1,6 @@
 Plate ID	CSTRAMP20201130-02
 User ID aaaa
-Date 8/12/2020
+Date 9/12/2020
 Position	Lab Number	Errors
 A01	716872766
 A03	1095079439

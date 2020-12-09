@@ -11,7 +11,6 @@ namespace TubeScanner.Classes
 {
     class FileManager
     { 
-
         public static async Task<bool> LoadInputFile(Rack rack)
         {
             bool valid = true;
@@ -103,6 +102,7 @@ namespace TubeScanner.Classes
             return valid;
         }
 
+
         private static bool InputValid(string line)
         {
             int rackLength = 13;
@@ -137,7 +137,7 @@ namespace TubeScanner.Classes
             for (int i = 0; i < tList.Count; i++)
             {
                 /* if tube has no barcode, do not add to output file */
-            if (tList[i].Barcode != "")
+                if (tList[i].Barcode != "")
                 {
                     outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode);
                     /* TODO add Error to each line */
@@ -145,6 +145,5 @@ namespace TubeScanner.Classes
             }
             File.WriteAllLines(filename, outputContent);
         }
-
     }
 }
