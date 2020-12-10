@@ -16,7 +16,7 @@ namespace TubeScanner
         public TScanner _tScanner;
         public OpticonScanner _bs;
         public bool scanning = false;
-        private static System.Timers.Timer scanTimer;
+        private static System.Timers.Timer scanTimer = null;
         string wellNumber;
         Startup _startupForm;
 
@@ -206,6 +206,11 @@ namespace TubeScanner
                 }
 
                 // Activate placement timer and 1 second delay after scanning barcode 
+                if (scanTimer != null)
+                {
+                    scanTimer.Stop();
+                    scanTimer.Dispose();
+                }
                 SetTimer();
                 System.Threading.Thread.Sleep(1000);
             }
