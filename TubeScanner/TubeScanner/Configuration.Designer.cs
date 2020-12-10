@@ -72,27 +72,27 @@
             // 
             this.cb_interval.FormattingEnabled = true;
             this.cb_interval.Items.AddRange(new object[] {
-            "20",
-            "19",
-            "18",
-            "17",
-            "16",
-            "15",
-            "14",
-            "13",
-            "12",
-            "11",
             "10",
-            "9",
-            "8",
-            "7",
-            "6",
-            "5",
-            "4",
-            "3",
-            "2",
-            "1",
-            "0"});
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30"});
             this.cb_interval.Location = new System.Drawing.Point(195, 97);
             this.cb_interval.Name = "cb_interval";
             this.cb_interval.Size = new System.Drawing.Size(80, 21);

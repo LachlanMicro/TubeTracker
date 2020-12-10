@@ -36,7 +36,7 @@ namespace TubeScanner
         public void setDefaultSettings()
         {
             /* Select default value for interval combo box- middle of values (10) */
-            cb_interval.SelectedIndex = cb_interval.Items.Count / 2;
+            cb_interval.SelectedIndex = 0; //cb_interval.Items.Count / 2;
 
             interval = (Int32.Parse(cb_interval.SelectedItem.ToString()));
         }
