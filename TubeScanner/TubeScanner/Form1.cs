@@ -331,6 +331,7 @@ namespace TubeScanner
             if (_tScanner.dP.IsOpen)
             {
                 await _tScanner.DleCommands.runStatus(DleCommands.RunState.STOPPED);
+                scanning = false;
                 for (int x = 0; x < _rack.TubeList.Count; x++)
                 {
                     rackControl.UpdateTubeStatus(x, Status.NOT_USED);
