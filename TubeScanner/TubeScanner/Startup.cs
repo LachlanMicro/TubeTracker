@@ -133,7 +133,6 @@ namespace TubeScanner
         { 
             bool connected = true;
 
-            btn_connect.Enabled = false;
             lbl_loading.Text = "LOADING...";
 
             if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
@@ -165,7 +164,6 @@ namespace TubeScanner
             //_tScanner.dP.Stop();
             //_bs.Stop();
 
-            btn_connect.Enabled = true;
             lbl_loading.Text = "";
 
             return connected;
