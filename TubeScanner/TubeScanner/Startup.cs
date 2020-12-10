@@ -60,6 +60,8 @@ namespace TubeScanner
         /* FOR INPUT FILE */
         private async void btnFileBrowse_Click(object sender, EventArgs e)
         {
+            lbl_loading.Text = "LOADING...";
+
             using (System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog())
             {
                 dialog.Filter = "Input Files (.txt;.csv;)|*.txt;*.csv;";
@@ -93,12 +95,25 @@ namespace TubeScanner
                     }
                 }
             }
+            lbl_loading.Text = "";
         }
 
         private void btn_runStart_ClickAsync(object sender, EventArgs e)
         {
+            devicesValid = ConnectDevices();
+
             /* TEST IF DEVICES ARE STILL CONNECTED */
-            if (_tScanner.dP.IsOpen && _bs.IsOpen)
+            /* '.Stop()' allows the program to check the connections again */
+            if (_tScanner.dP.IsOpen)
+            {
+                _tScanner.dP.Stop();
+            }
+            if (_bs.IsOpen)
+            {
+                _bs.Stop();
+            }
+
+            if (devicesValid)
             {
             /*IF TRUE, SHOW TUBE RACK FORM */
             Form1 form = new Form1(this, rack, _tScanner, _bs);
@@ -118,6 +133,8 @@ namespace TubeScanner
         { 
             bool connected = true;
 
+            btn_connect.Enabled = false;
+            lbl_loading.Text = "LOADING...";
 
             if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
             {
@@ -147,6 +164,9 @@ namespace TubeScanner
 
             //_tScanner.dP.Stop();
             //_bs.Stop();
+
+            btn_connect.Enabled = true;
+            lbl_loading.Text = "";
 
             return connected;
         }
