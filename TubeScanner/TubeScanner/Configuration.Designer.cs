@@ -1,0 +1,126 @@
+﻿namespace TubeScanner
+{
+    partial class Configuration
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Configuration));
+            this.lbl_title1 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.lbl_title = new System.Windows.Forms.Label();
+            this.cb_interval = new System.Windows.Forms.ComboBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // lbl_title1
+            // 
+            this.lbl_title1.AutoSize = true;
+            this.lbl_title1.Font = new System.Drawing.Font("Lucida Sans", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_title1.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.lbl_title1.Location = new System.Drawing.Point(12, 91);
+            this.lbl_title1.Name = "lbl_title1";
+            this.lbl_title1.Size = new System.Drawing.Size(177, 27);
+            this.lbl_title1.TabIndex = 0;
+            this.lbl_title1.Text = "Scan Interval:";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.InitialImage")));
+            this.pictureBox2.Location = new System.Drawing.Point(2, 6);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(58, 42);
+            this.pictureBox2.TabIndex = 12;
+            this.pictureBox2.TabStop = false;
+            // 
+            // lbl_title
+            // 
+            this.lbl_title.AutoSize = true;
+            this.lbl_title.Font = new System.Drawing.Font("Calibri", 32.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_title.Location = new System.Drawing.Point(53, -2);
+            this.lbl_title.Name = "lbl_title";
+            this.lbl_title.Size = new System.Drawing.Size(233, 53);
+            this.lbl_title.TabIndex = 11;
+            this.lbl_title.Text = "BSD Tracker";
+            // 
+            // cb_interval
+            // 
+            this.cb_interval.FormattingEnabled = true;
+            this.cb_interval.Items.AddRange(new object[] {
+            "20",
+            "19",
+            "18",
+            "17",
+            "16",
+            "15",
+            "14",
+            "13",
+            "12",
+            "11",
+            "10",
+            "9",
+            "8",
+            "7",
+            "6",
+            "5",
+            "4",
+            "3",
+            "2",
+            "1",
+            "0"});
+            this.cb_interval.Location = new System.Drawing.Point(195, 97);
+            this.cb_interval.Name = "cb_interval";
+            this.cb_interval.Size = new System.Drawing.Size(80, 21);
+            this.cb_interval.TabIndex = 13;
+            this.cb_interval.SelectedIndexChanged += new System.EventHandler(this.cb_interval_SelectedIndexChanged);
+            // 
+            // Configuration
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.cb_interval);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.lbl_title);
+            this.Controls.Add(this.lbl_title1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "Configuration";
+            this.Text = "Configuration";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label lbl_title1;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label lbl_title;
+        private System.Windows.Forms.ComboBox cb_interval;
+    }
+}

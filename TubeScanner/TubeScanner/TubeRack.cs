@@ -14,7 +14,7 @@ using System.Timers;
 
 namespace TubeScanner
 {
-    public partial class Form1 : Form
+    public partial class TubeRack : Form
     {
         private Rack _rack = null;
         RackControl rackControl = null;
@@ -25,7 +25,7 @@ namespace TubeScanner
         string wellNumber;
         Startup _startupForm;
 
-        public Form1(Startup startupForm, Rack rack, TScanner tScanner, OpticonScanner bs)
+        public TubeRack(Startup startupForm, Rack rack, TScanner tScanner, OpticonScanner bs)
         {
             _startupForm = startupForm;
             _rack = rack;
@@ -215,9 +215,8 @@ namespace TubeScanner
 
         private void SetTimer()
         {
-            // Create a timer with a two second interval.
-            scanTimer = new System.Timers.Timer(10000);
-            // Hook up the Elapsed event for the timer. 
+            /* TODO add config for the interval */
+            scanTimer = new System.Timers.Timer(10000); 
             scanTimer.Elapsed += OnTimedEvent;
             scanTimer.AutoReset = false;
             scanTimer.Enabled = true;

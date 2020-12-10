@@ -39,6 +39,7 @@
             this.lbl_title = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lbl_loading = new System.Windows.Forms.Label();
+            this.btn_Config = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -147,11 +148,23 @@
             this.lbl_loading.Size = new System.Drawing.Size(0, 42);
             this.lbl_loading.TabIndex = 11;
             // 
+            // btn_Config
+            // 
+            this.btn_Config.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Config.Location = new System.Drawing.Point(628, 386);
+            this.btn_Config.Name = "btn_Config";
+            this.btn_Config.Size = new System.Drawing.Size(160, 52);
+            this.btn_Config.TabIndex = 12;
+            this.btn_Config.Text = "Configuration";
+            this.btn_Config.UseVisualStyleBackColor = true;
+            this.btn_Config.Click += new System.EventHandler(this.btn_Config_Click);
+            // 
             // Startup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btn_Config);
             this.Controls.Add(this.lbl_loading);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.lbl_title);
@@ -185,5 +198,6 @@
         private System.Windows.Forms.Label lbl_title;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label lbl_loading;
+        private System.Windows.Forms.Button btn_Config;
     }
 }

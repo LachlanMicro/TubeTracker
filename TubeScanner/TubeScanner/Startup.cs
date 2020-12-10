@@ -40,6 +40,7 @@ namespace TubeScanner
             EmptyInputFile();
         }
 
+        /* Connect button- user clicks to upate which devices are connected */
         private async void btn_connect_Click(object sender, EventArgs e)
         {
             /* '.Stop()' allows the program to check the connections again */
@@ -57,7 +58,7 @@ namespace TubeScanner
             readyToStart();
         }
 
-        /* FOR INPUT FILE */
+        /* File Load button- user clicks to open a file dialog to import an Input File, checks if valid */
         private async void btnFileBrowse_Click(object sender, EventArgs e)
         {
             lbl_loading.Text = "LOADING...";
@@ -98,6 +99,7 @@ namespace TubeScanner
             lbl_loading.Text = "";
         }
 
+        /* Start Run button- checks if devices are still connected, then open the tube rack screen */
         private void btn_runStart_ClickAsync(object sender, EventArgs e)
         {
             devicesValid = ConnectDevices();
@@ -116,7 +118,7 @@ namespace TubeScanner
             if (devicesValid)
             {
             /*IF TRUE, SHOW TUBE RACK FORM */
-            Form1 form = new Form1(this, rack, _tScanner, _bs);
+            TubeRack form = new TubeRack(this, rack, _tScanner, _bs);
                 form.ShowDialog();
             }
             else
@@ -129,8 +131,15 @@ namespace TubeScanner
  
         }
 
-        public bool ConnectDevices()
-        { 
+        private void btn_Config_Click(object sender, EventArgs e)
+        {
+            Configuration config = new Configuration();
+            config.ShowDialog();
+        }
+
+        /* Checks connection for the usb connected devices */
+        private bool ConnectDevices()
+        {
             bool connected = true;
 
             lbl_loading.Text = "LOADING...";
@@ -169,8 +178,7 @@ namespace TubeScanner
             return connected;
         }
 
-        /* TODO: tube scanner fails to open */
-
+        /* Enables/diables the Start Run button if able to scan */
         private void readyToStart()
         {
             if (inputFileValid && devicesValid)
@@ -183,6 +191,7 @@ namespace TubeScanner
             }
         }
 
+        /* Unloads the input file */
         public void EmptyInputFile()
         {
             rack.InputFilename = "";
@@ -192,5 +201,6 @@ namespace TubeScanner
             readyToStart();
         }
 
+        
     }
 }

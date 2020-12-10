@@ -1,7 +1,7 @@
 ﻿
 namespace TubeScanner
 {
-    partial class Form1
+    partial class TubeRack
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace TubeScanner
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TubeRack));
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -149,7 +149,7 @@ namespace TubeScanner
             this.btn_endRun.UseVisualStyleBackColor = true;
             this.btn_endRun.Click += new System.EventHandler(this.btn_endRun_Click);
             // 
-            // Form1
+            // TubeRack
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -166,9 +166,9 @@ namespace TubeScanner
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.Name = "TubeRack";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Tube Rack";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

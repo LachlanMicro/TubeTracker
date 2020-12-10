@@ -71,7 +71,7 @@ namespace TubeScanner.Classes
                 }
                 if (!hFound)
                 {
-                    MessageBox.Show("Plate ID not found!");
+                    System.Windows.MessageBox.Show("Plate ID not found!");
                 }
 
                 /* Tube data lines */
