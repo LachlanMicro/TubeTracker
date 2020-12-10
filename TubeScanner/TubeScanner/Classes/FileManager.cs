@@ -21,7 +21,7 @@ namespace TubeScanner.Classes
                 /* First, we want to check no lines are empty, duplicated or exceed the list length over 96 */
                 List<string> usedLines = new List<string>();
 
-                string[] splitLine;
+                //string[] splitLine;
 
                 for (int i = 0; i < inputLines.Length; i++)
                 {
@@ -29,22 +29,24 @@ namespace TubeScanner.Classes
                     if (inputLines[i] != "")
                     {
                         bool isUnique = true;
-                        splitLine = inputLines[i].Split('\t');
+                        //splitLine = inputLines[i].Split('\t');
 
                         /* check duplicates */
                         if (usedLines.Count() > 0)
                         {
-                            for (int u = 0; u < usedLines.Count(); u++)
+                            for (int j = 0; j < usedLines.Count(); j++)
                             {
-                                string[] splitUsed = usedLines[u].Split('\t');
-                                if (splitUsed[0] == splitLine[0] || splitUsed[1] == splitLine[1])
+                                //string[] splitUsed = usedLines[j].Split('\t');
+                                if (usedLines[j] == inputLines[i])
                                 {
                                     isUnique = false;
                                 }
                             }
                         }
                         if (isUnique)
+                        {
                             usedLines.Add(inputLines[i]);
+                        }
                     }
 
                     if (usedLines.Count() >= rack.TubeList.Count())
@@ -54,50 +56,78 @@ namespace TubeScanner.Classes
                 }
 
                 /* Read header- Plate ID */
-                bool hFound = false;
-                for (int index = 0; index < usedLines.Count(); index++)
-                {
-                    var header = usedLines[index].Split('\t');
+                var header = inputLines[0].Split('\t');
 
-                    if (header[0] == "Plate ID")
-                    {
-                        rack.PlateID = header[1];
-                        hFound = true;
-                        break;
-                    }
+                if (header[0] == "Plate ID" & header.Length == 2)
+                {
+                    rack.PlateID = header[1];
                 }
-                if (!hFound)
+                else
                 {
                     MessageBox.Show("Plate ID not found!");
+                    valid = false;
                 }
 
-                /* Tube data lines */
-                for (int lineNumber = 2; lineNumber < usedLines.Count(); lineNumber++)
+                /* Check subsequent 2 lines before rack info */
+                var line2 = inputLines[1];
+                var line3 = inputLines[2].Split('\t');
+
+                if (line2 == "")
                 {
-                    if (usedLines[lineNumber].Trim() == "End of File")
-                        break;
-
-                    string[] contents = usedLines[lineNumber].Split('\t');
-
-                    /* Check if position valid (format: A01) */
-                    if (InputValid(contents[0]))
+                    if (line3[0] != "Position" || line3.Length != 2)
                     {
-                        for (int index = 0; index < rack.TubeList.Count; index++)
-                        {
-                            if (rack.TubeList[index].ID.Equals(contents[0]) && rack.TubeList[index].Barcode.Length < 1)
-                            {
-                                rack.TubeList[index].Barcode = contents[1];
-                                rack.TubeList[index].Status = Status.READY_TO_LOAD;
-
-                                rack.InitialTubeList[index].Barcode = contents[1];
-                                rack.InitialTubeList[index].Status = Status.READY_TO_LOAD;
-                            }
-                        }
+                        valid = false;
                     }
                     else
                     {
-                        //MessageBox.Show("Line" + (lineNumber + 1) + ": Tube position invalid, use format [row],[0],[column] \n e.g. A01");
-                        valid = false;
+                        if (line3[1] != "Lab number")
+                        {
+                            valid = false;
+                        }
+                    }
+                }
+                else
+                {
+                    valid = false;
+                }
+
+                if (valid)
+                {
+                    /* Tube data lines */
+                    for (int lineNumber = 2; lineNumber < usedLines.Count(); lineNumber++)
+                    {
+                        if (usedLines[lineNumber].Trim() == "End of File")
+                            break;
+
+                        string[] contents = usedLines[lineNumber].Split('\t');
+
+                        if (contents.Length == 2)
+                        {
+                            /* Check if position valid (format: A01) */
+                            if (InputValid(contents[0]))
+                            {
+                                for (int index = 0; index < rack.TubeList.Count; index++)
+                                {
+                                    if (rack.TubeList[index].ID.Equals(contents[0]) && rack.TubeList[index].Barcode.Length < 1)
+                                    {
+                                        rack.TubeList[index].Barcode = contents[1];
+                                        rack.TubeList[index].Status = Status.READY_TO_LOAD;
+
+                                        rack.InitialTubeList[index].Barcode = contents[1];
+                                        rack.InitialTubeList[index].Status = Status.READY_TO_LOAD;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                //MessageBox.Show("Line" + (lineNumber + 1) + ": Tube position invalid, use format [row],[0],[column] \n e.g. A01");
+                                valid = false;
+                            }
+                        }
+                        else
+                        {
+                            valid = false;
+                        }
                     }
                 }
             }
@@ -106,18 +136,25 @@ namespace TubeScanner.Classes
 
         private static bool InputValid(string line)
         {
-            int rackLength = 13;
+            int rackLength = 12;
             List<char> rackLetters = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
             char[] TPos = line.ToCharArray();
 
-            /* Position (e.g. A01) */
-            if (!rackLetters.Contains(TPos[0]))
+            if (line != "" && TPos.Length == 3)
             {
-                return false;
-            }
+                /* Position (e.g. A01) */
+                if (!rackLetters.Contains(TPos[0]))
+                {
+                    return false;
+                }
 
-            int tubePosition = (Int32.Parse(TPos[1].ToString()) * 10) + Int32.Parse(TPos[2].ToString());
-            if (tubePosition <= 0 || tubePosition > rackLength)
+                int tubePosition = (Int32.Parse(TPos[1].ToString()) * 10) + Int32.Parse(TPos[2].ToString());
+                if (tubePosition <= 0 || tubePosition > rackLength)
+                {
+                    return false;
+                }
+            }
+            else
             {
                 return false;
             }
