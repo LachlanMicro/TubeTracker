@@ -215,8 +215,8 @@ namespace TubeScanner
 
         private void SetTimer()
         {
-            /* TODO add config for the interval */
-            scanTimer = new System.Timers.Timer(10000); 
+            /* Interval can be altered in the configuration */
+            scanTimer = new System.Timers.Timer(Configuration.interval); 
             scanTimer.Elapsed += OnTimedEvent;
             scanTimer.AutoReset = false;
             scanTimer.Enabled = true;

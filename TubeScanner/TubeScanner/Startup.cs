@@ -22,6 +22,8 @@ namespace TubeScanner
         private bool inputFileValid = false;
         private bool devicesValid = false;
 
+        Configuration config = new Configuration();
+
         TScanner _tScanner = new TScanner();
         OpticonScanner _bs;
 
@@ -38,6 +40,9 @@ namespace TubeScanner
             devicesValid = ConnectDevices();
             readyToStart();
             EmptyInputFile();
+
+            /* Select default value for interval combo box- middle of values (10) */
+            
         }
 
         /* Connect button- user clicks to upate which devices are connected */
@@ -133,8 +138,7 @@ namespace TubeScanner
 
         private void btn_Config_Click(object sender, EventArgs e)
         {
-            Configuration config = new Configuration();
-            config.ShowDialog();
+            config.Show();
         }
 
         /* Checks connection for the usb connected devices */
@@ -196,7 +200,7 @@ namespace TubeScanner
         {
             rack.InputFilename = "";
             lbl_file.ForeColor = Color.Red;
-            lbl_file.Text = "NO FILE";
+            lbl_file.Text = "NO INPUT FILE";
             inputFileValid = false;
             readyToStart();
         }

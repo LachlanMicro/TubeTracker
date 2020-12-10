@@ -33,6 +33,7 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lbl_title = new System.Windows.Forms.Label();
             this.cb_interval = new System.Windows.Forms.ComboBox();
+            this.btn_back = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -98,11 +99,23 @@
             this.cb_interval.TabIndex = 13;
             this.cb_interval.SelectedIndexChanged += new System.EventHandler(this.cb_interval_SelectedIndexChanged);
             // 
+            // btn_back
+            // 
+            this.btn_back.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_back.Location = new System.Drawing.Point(628, 386);
+            this.btn_back.Name = "btn_back";
+            this.btn_back.Size = new System.Drawing.Size(160, 52);
+            this.btn_back.TabIndex = 14;
+            this.btn_back.Text = "Back";
+            this.btn_back.UseVisualStyleBackColor = true;
+            this.btn_back.Click += new System.EventHandler(this.btn_back_Click);
+            // 
             // Configuration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btn_back);
             this.Controls.Add(this.cb_interval);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.lbl_title);
@@ -110,6 +123,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Configuration";
             this.Text = "Configuration";
+            this.Load += new System.EventHandler(this.Configuration_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -122,5 +136,6 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label lbl_title;
         private System.Windows.Forms.ComboBox cb_interval;
+        private System.Windows.Forms.Button btn_back;
     }
 }
