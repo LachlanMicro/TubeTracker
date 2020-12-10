@@ -115,7 +115,14 @@ namespace TubeScanner.Classes
         public void Stop()
         {
             _barcodeScannerPort.DataReceived -= _DevicePort_DataReceived;
-            _barcodeScannerPort.Close();
+            try
+            {
+                _barcodeScannerPort.Close();
+            }
+            catch (UnauthorizedAccessException)
+            {
+
+            }
             _running = false;
 
 

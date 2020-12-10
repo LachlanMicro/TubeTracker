@@ -1,0 +1,4 @@
+Plate ID	CSTRAMP20201130-02
+User ID aaaa
+Date 10/12/2020
+Position	Lab Number	Errors

@@ -97,6 +97,18 @@ namespace TubeScanner
 
         private void btn_runStart_ClickAsync(object sender, EventArgs e)
         {
+            if (_tScanner.dP.IsOpen)
+            {
+                _tScanner.dP.Stop();
+            }
+            if (_bs.IsOpen)
+            {
+                _bs.Stop();
+            }
+
+            devicesValid = ConnectDevices();
+            readyToStart();
+
             /* TEST IF DEVICES ARE STILL CONNECTED */
             if (_tScanner.dP.IsOpen && _bs.IsOpen)
             {
