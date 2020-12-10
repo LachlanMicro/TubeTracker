@@ -156,7 +156,7 @@
             this.btn_Config.Name = "btn_Config";
             this.btn_Config.Size = new System.Drawing.Size(160, 52);
             this.btn_Config.TabIndex = 12;
-            this.btn_Config.Text = "Configuration";
+            this.btn_Config.Text = "Config";
             this.btn_Config.UseVisualStyleBackColor = true;
             this.btn_Config.Click += new System.EventHandler(this.btn_Config_Click);
             // 
