@@ -35,7 +35,31 @@ namespace TubeScanner
             rackControl.Display(this, new Point(10, 75));
             rackControl.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Left);
 
-            lbl_PlateID.Text = _rack.PlateID;
+            button1.Enabled = false;
+
+            string rackBarcode = "";
+            bool correctBarcode = false;
+
+            while (! correctBarcode)
+            {
+                if (_bs.IsOpen)
+                {
+                    rackBarcode = await _bs.startScan();
+                }
+
+                if (rackBarcode == _rack.PlateID)
+                {
+                    lbl_PlateID.Text = rackBarcode;
+                    correctBarcode = true;
+                    button1.Enabled = true;
+
+                    MessageBox.Show("Barcode matches input file.");
+                }
+                else
+                {
+                    MessageBox.Show("Error: Rack barcode does not match input file. Please make sure the rack is correct and try again.");
+                }
+            }
 
             _tScanner.DleCommands.OnFootSwitchEvent += FootSwitchEvent;
 
@@ -55,7 +79,6 @@ namespace TubeScanner
             {
                 Text = "Scanner not found";
             }
-
         }
 
         // Function to scan all tube positions
