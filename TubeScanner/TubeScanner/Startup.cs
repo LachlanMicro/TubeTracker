@@ -13,6 +13,7 @@ using TubeScanner.Classes;
 
 namespace TubeScanner
 {
+
     public partial class Startup : Form
     {
         Rack rack;
@@ -21,14 +22,13 @@ namespace TubeScanner
         private bool inputFileValid = false;
         private bool devicesValid = false;
 
-        public TScanner _tScanner = new TScanner();
-        public OpticonScanner _bs;
-
-        //public static bool isConnected = false;
+        TScanner _tScanner = new TScanner();
+        OpticonScanner _bs;
 
         public Startup()
         {
             InitializeComponent();
+
             rack = new Rack(8, 12);
         }
 
@@ -121,13 +121,13 @@ namespace TubeScanner
 
             if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
             {
-                _bs = new OpticonScanner(this, _tScanner.deviceConnectionMonitor._scannerComPortsList[0], _tScanner.deviceConnectionMonitor);
+                _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
                 lbl_BS.ForeColor = Color.Green;
                 _bs.Start();
             }
             else
             {
-                _bs = new OpticonScanner(this, "COM0", _tScanner.deviceConnectionMonitor);
+                _bs = new OpticonScanner("COM0");
                 lbl_BS.ForeColor = Color.Red;
                 connected = false;
             }

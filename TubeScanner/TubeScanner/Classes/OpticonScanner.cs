@@ -45,7 +45,7 @@ namespace TubeScanner.Classes
         String Barcode = "";
         private bool _gotReply = false;
 
-        DeviceConnectionMonitor _deviceConnectionMonitor ;
+        DeviceConnectionMonitor deviceConnectionMonitor = new DeviceConnectionMonitor();
 
         public event EventHandler<SerialNewDataEventDataEventArgs> OnNewData;
 
@@ -70,11 +70,9 @@ namespace TubeScanner.Classes
             }
         }
 
-        public OpticonScanner(Startup startup, string portName, DeviceConnectionMonitor deviceConnectionMonitor)
-        {
-            _deviceConnectionMonitor = deviceConnectionMonitor;
 
-            _startup = startup;
+        public OpticonScanner(string portName)
+        {
             _portName = portName;
             _barcodeScannerPort = new SerialPort(portName, _baudRate, _parity, _dataBitWidth, _stopBits);
             _barcodeScannerPort.DtrEnable = true;
@@ -83,8 +81,6 @@ namespace TubeScanner.Classes
             _running = false;
 
             _barcodeScannerPort.Encoding = Encoding.UTF8;
-
-            DeviceConnectionMonitor.ScannerStatusChangedEvent += ScannerStatusChangedEvent;
         }
 
         private void ScannerStatusChangedEvent(object sender, ScannerEventArgs e)
