@@ -314,7 +314,8 @@ namespace TubeScanner
                 /* Save output file */
                 string[] currDateTime = DateTime.Today.ToString().Split(' ');
                 //FileManager outfile = new FileManager();
-                FileManager.WriteOutputFile("../../IO Files/output log 2.txt", rackControl.OutputTubeList, _rack.PlateID, "aaaa", currDateTime[0]);
+                string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
+                FileManager.WriteOutputFile(fileName, rackControl.OutputTubeList, _rack.PlateID, "aaaa", currDateTime[0]);
 
                 await quitToStartupAsync();
             }
@@ -331,7 +332,7 @@ namespace TubeScanner
             if (_tScanner.dP.IsOpen)
             {
                 await _tScanner.DleCommands.runStatus(DleCommands.RunState.STOPPED);
-                scanning = false;
+                //scanning = false;
                 for (int x = 0; x < _rack.TubeList.Count; x++)
                 {
                     rackControl.UpdateTubeStatus(x, Status.NOT_USED);

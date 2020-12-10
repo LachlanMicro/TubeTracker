@@ -1,0 +1,4 @@
+Plate ID	CDNAEXT20201130-05
+User ID aaaa
+Date 10/12/2020
+Position	Lab Number	Errors
