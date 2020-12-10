@@ -8,7 +8,6 @@ using static TubeScanner.Classes.VariableTypesClass;
 
 namespace TubeScanner.Classes
 {
-    
 
     public enum FrameState
     {
@@ -143,8 +142,6 @@ namespace TubeScanner.Classes
         private StopBits _stopBits = StopBits.One;
         private bool _running = false;
 
-        Startup _startup;
-
 
         private bool _gotReply = false;
 
@@ -183,9 +180,8 @@ namespace TubeScanner.Classes
                 _gotReply = value;
             }
         }
-        public DeviceComms(Startup startup, string portName)
+        public DeviceComms(string portName)
         {
-            _startup = startup;
             _portName = portName;
             _devicePort = new SerialPort(portName, _baudRate, _parity, _dataBitWidth, _stopBits);
             _devicePort.DtrEnable = true;
@@ -258,9 +254,7 @@ namespace TubeScanner.Classes
         {
             Console.WriteLine("*** SerialPortStatusChanged - " + e.SerialPortConnected);
 
-            /* TODO: see which device is connected and update UI accordingly */
-
-                if (e.SerialPortConnected)
+            if (e.SerialPortConnected)
             {
                 if (_running && !_devicePort.IsOpen)
                 {

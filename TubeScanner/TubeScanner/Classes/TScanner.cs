@@ -13,8 +13,6 @@ namespace TubeScanner.Classes
         public DeviceConnectionMonitor deviceConnectionMonitor;
         private DleCommands _dleCommands;
 
-        Startup _startup;
-
         public DleCommands DleCommands
         {
             get { return _dleCommands; }
@@ -23,16 +21,15 @@ namespace TubeScanner.Classes
 
         
 
-        public TScanner(Startup startup)
+        public TScanner()
         {
          
             deviceConnectionMonitor = new DeviceConnectionMonitor();
             deviceConnectionMonitor.StartMonitor();
             deviceConnectionMonitor.DevicesConnectionStatus();
 
-            _startup = startup;
 
-            dP = new DeviceComms(_startup, "COM0");
+            dP = new DeviceComms("COM0");
             dP.OnNewData += serialPortNewDataReceivedAsync;
 
             _dleCommands = new DleCommands();
@@ -63,10 +60,16 @@ namespace TubeScanner.Classes
 
             if (deviceConnectionMonitor._deviceConnected)
             {
-                string comPortAddress = deviceConnectionMonitor._deviceConnectionsList[0].Address;
-                dP.PortName = comPortAddress;
-                dP.Start();
-               
+                try
+                {
+                    string comPortAddress = deviceConnectionMonitor._deviceConnectionsList[0].Address;
+                    dP.PortName = comPortAddress;
+                    dP.Start();
+                }
+                catch (System.ArgumentOutOfRangeException)
+                {
+
+                }
             }
            
         

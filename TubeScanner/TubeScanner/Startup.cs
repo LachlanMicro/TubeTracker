@@ -21,7 +21,7 @@ namespace TubeScanner
         private bool inputFileValid = false;
         private bool devicesValid = false;
 
-        public TScanner _tScanner;
+        public TScanner _tScanner = new TScanner();
         public OpticonScanner _bs;
 
         //public static bool isConnected = false;
@@ -30,7 +30,6 @@ namespace TubeScanner
         {
             InitializeComponent();
             rack = new Rack(8, 12);
-            _tScanner = new TScanner(this);
         }
 
         private void Startup_Load(object sender, EventArgs e)
@@ -115,20 +114,20 @@ namespace TubeScanner
  
         }
 
-        private bool ConnectDevices()
+        public bool ConnectDevices()
         { 
             bool connected = true;
 
 
             if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
             {
-                _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0], _tScanner.deviceConnectionMonitor);
+                _bs = new OpticonScanner(this, _tScanner.deviceConnectionMonitor._scannerComPortsList[0], _tScanner.deviceConnectionMonitor);
                 lbl_BS.ForeColor = Color.Green;
                 _bs.Start();
             }
             else
             {
-                _bs = new OpticonScanner("COM0", _tScanner.deviceConnectionMonitor);
+                _bs = new OpticonScanner(this, "COM0", _tScanner.deviceConnectionMonitor);
                 lbl_BS.ForeColor = Color.Red;
                 connected = false;
             }
@@ -151,6 +150,8 @@ namespace TubeScanner
 
             return connected;
         }
+
+        /* TODO: tube scanner fails to open */
 
         private void readyToStart()
         {
