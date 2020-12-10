@@ -12,14 +12,13 @@ namespace TubeScanner
 {
     public partial class Configuration : Form
     {
-        public static int interval;
+        public static int interval = 10;
 
         public Configuration()
         {
             InitializeComponent();
            //setDefaultSettings();
         }
-
 
         /* Disables the close (X) button on window */
         private const int CP_NOCLOSE_BUTTON = 0x200;
