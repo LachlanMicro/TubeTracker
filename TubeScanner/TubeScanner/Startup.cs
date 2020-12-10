@@ -22,6 +22,8 @@ namespace TubeScanner
         private bool inputFileValid = false;
         private bool devicesValid = false;
 
+        Configuration config = new Configuration();
+
         TScanner _tScanner = new TScanner();
         OpticonScanner _bs;
 
@@ -38,8 +40,12 @@ namespace TubeScanner
             devicesValid = ConnectDevices();
             readyToStart();
             EmptyInputFile();
+
+            /* Select default value for interval combo box- middle of values (10) */
+            
         }
 
+        /* Connect button- user clicks to upate which devices are connected */
         private async void btn_connect_Click(object sender, EventArgs e)
         {
             /* '.Stop()' allows the program to check the connections again */
@@ -57,7 +63,7 @@ namespace TubeScanner
             readyToStart();
         }
 
-        /* FOR INPUT FILE */
+        /* File Load button- user clicks to open a file dialog to import an Input File, checks if valid */
         private async void btnFileBrowse_Click(object sender, EventArgs e)
         {
             using (System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog())
@@ -95,6 +101,7 @@ namespace TubeScanner
             }
         }
 
+        /* Start Run button- checks if devices are still connected, then open the tube rack screen */
         private void btn_runStart_ClickAsync(object sender, EventArgs e)
         {
             if (_tScanner.dP.IsOpen)
@@ -113,7 +120,7 @@ namespace TubeScanner
             if (_tScanner.dP.IsOpen && _bs.IsOpen)
             {
             /*IF TRUE, SHOW TUBE RACK FORM */
-            Form1 form = new Form1(this, rack, _tScanner, _bs);
+            TubeRack form = new TubeRack(this, rack, _tScanner, _bs);
                 form.ShowDialog();
             }
             else
@@ -126,6 +133,12 @@ namespace TubeScanner
  
         }
 
+        private void btn_Config_Click(object sender, EventArgs e)
+        {
+            config.Show();
+        }
+
+        /* Checks connection for the usb connected devices */
         private bool ConnectDevices()
         {
             bool connected = true;
@@ -166,6 +179,7 @@ namespace TubeScanner
             return connected;
         }
 
+        /* Enables/diables the Start Run button if able to scan */
         private void readyToStart()
         {
             if (inputFileValid && devicesValid)
@@ -178,6 +192,7 @@ namespace TubeScanner
             }
         }
 
+        /* Unloads the input file */
         public void EmptyInputFile()
         {
             rack.InputFilename = "";
@@ -187,5 +202,6 @@ namespace TubeScanner
             readyToStart();
         }
 
+        
     }
 }
