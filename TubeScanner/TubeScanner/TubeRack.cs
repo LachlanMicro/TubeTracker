@@ -67,17 +67,17 @@ namespace TubeScanner
             {
                 if (await _tScanner.DleCommands.sendNullCommand())
                 {
-                    Text = "Scanner connected on " + _tScanner.dP.PortName;
+                    lbl_Status.Text = "Scanner connected on " + _tScanner.dP.PortName;
                 }
                 else
                 {
-                    Text = "Failed to connect";
+                    lbl_Status.Text = "Failed to connect";
                 }
 
             }
             else
             {
-                Text = "Scanner not found";
+                lbl_Status.Text = "Scanner not found";
             }
         }
 
