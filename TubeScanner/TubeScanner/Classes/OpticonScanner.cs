@@ -32,14 +32,13 @@ namespace TubeScanner.Classes
         public const int BUFSIZE = 2048;
 
         public SerialPort _barcodeScannerPort;
-        public string _portName = null;
+        private string _portName = null;
         private int _baudRate = 9600;
         private int _dataBitWidth = 8;
         private Parity _parity = Parity.None;
         private StopBits _stopBits = StopBits.One;
         private bool _running = false;
 
-        Startup _startup;
 
         private bool _barcodeReceived = false;
         String Barcode = "";
@@ -83,26 +82,6 @@ namespace TubeScanner.Classes
             _barcodeScannerPort.Encoding = Encoding.UTF8;
         }
 
-        //private void ScannerStatusChangedEvent(object sender, ScannerEventArgs e)
-        //{
-        //    Console.WriteLine("*** ScannerStatusChangedEvent - " + e.ScannerConnected);
-
-        //    //_startup.ConnectDevices();
-
-        //    if (e.ScannerConnected)
-        //    {
-        //        if (_running && !_barcodeScannerPort.IsOpen)
-        //        {
-        //            Start();
-        //        }
-        //    }
-        //    else
-        //    {
-                
-        //     //   DeviceConnectionMonitor.ScannerStatusChangedEvent -= ScannerStatusChangedEvent;
-        //        _running = false;
-        //    }
-        //}
 
         public bool Start()
         {
@@ -136,15 +115,7 @@ namespace TubeScanner.Classes
         public void Stop()
         {
             _barcodeScannerPort.DataReceived -= _DevicePort_DataReceived;
-            try
-            {
-                _barcodeScannerPort.Close();
-            }
-            catch (UnauthorizedAccessException)
-            {
-
-            }
-            
+            _barcodeScannerPort.Close();
             _running = false;
 
 

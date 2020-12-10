@@ -60,16 +60,10 @@ namespace TubeScanner.Classes
 
             if (deviceConnectionMonitor._deviceConnected)
             {
-                try
-                {
-                    string comPortAddress = deviceConnectionMonitor._deviceConnectionsList[0].Address;
-                    dP.PortName = comPortAddress;
-                    dP.Start();
-                }
-                catch (System.ArgumentOutOfRangeException)
-                {
-
-                }
+                string comPortAddress = deviceConnectionMonitor._deviceConnectionsList[0].Address;
+                dP.PortName = comPortAddress;
+                dP.Start();
+               
             }
            
         

@@ -38,7 +38,6 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lbl_title = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.lbl_loading = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -139,21 +138,11 @@
             this.pictureBox2.TabIndex = 10;
             this.pictureBox2.TabStop = false;
             // 
-            // lbl_loading
-            // 
-            this.lbl_loading.AutoSize = true;
-            this.lbl_loading.Font = new System.Drawing.Font("Calibri", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_loading.Location = new System.Drawing.Point(394, 366);
-            this.lbl_loading.Name = "lbl_loading";
-            this.lbl_loading.Size = new System.Drawing.Size(0, 42);
-            this.lbl_loading.TabIndex = 11;
-            // 
             // Startup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.lbl_loading);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.lbl_title);
             this.Controls.Add(this.pictureBox1);
@@ -185,6 +174,5 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lbl_title;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Label lbl_loading;
     }
 }
