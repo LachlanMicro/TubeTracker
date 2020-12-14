@@ -38,7 +38,6 @@ namespace TubeScanner
         {
             /* Check if devices connected */
             devicesValid = ConnectDevices();
-            readyToStart();
             EmptyInputFile();
 
             /* Select default value for interval combo box- middle of values (10) */
@@ -104,17 +103,7 @@ namespace TubeScanner
         /* Start Run button- checks if devices are still connected, then open the tube rack screen */
         private void btn_runStart_ClickAsync(object sender, EventArgs e)
         {
-            if (_tScanner.dP.IsOpen)
-            {
-                _tScanner.dP.Stop();
-            }
-            if (_bs.IsOpen)
-            {
-                _bs.Stop();
-            }
-
-            devicesValid = ConnectDevices();
-            readyToStart();
+            
 
             /* TEST IF DEVICES ARE STILL CONNECTED */
             if (_tScanner.dP.IsOpen && _bs.IsOpen)

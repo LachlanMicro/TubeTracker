@@ -39,6 +39,7 @@ namespace TubeScanner
 
             string rackBarcode = "";
             bool correctBarcode = false;
+            lbl_Status.Text = "Scan rack barcode";
 
             while (! correctBarcode)
             {

@@ -167,7 +167,7 @@ namespace TubeScanner
             this.lbl_Status.AutoSize = true;
             this.lbl_Status.Font = new System.Drawing.Font("Lucida Sans", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Status.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.lbl_Status.Location = new System.Drawing.Point(117, 691);
+            this.lbl_Status.Location = new System.Drawing.Point(117, 689);
             this.lbl_Status.Name = "lbl_Status";
             this.lbl_Status.Size = new System.Drawing.Size(0, 27);
             this.lbl_Status.TabIndex = 14;
