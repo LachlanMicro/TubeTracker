@@ -240,6 +240,7 @@ namespace TubeScanner.Classes
 
             return _devicePort.IsOpen;
         }
+
         public void Stop()
         {
             _devicePort.DataReceived -= _DevicePort_DataReceived;

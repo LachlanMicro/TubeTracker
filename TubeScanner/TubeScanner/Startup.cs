@@ -38,6 +38,7 @@ namespace TubeScanner
         {
             /* Check if devices connected */
             devicesValid = ConnectDevices();
+            readyToStart();
             EmptyInputFile();
 
             /* Select default value for interval combo box- middle of values (10) */
@@ -103,19 +104,31 @@ namespace TubeScanner
         /* Start Run button- checks if devices are still connected, then open the tube rack screen */
         private void btn_runStart_ClickAsync(object sender, EventArgs e)
         {
-            
+
+            if (_tScanner.dP.IsOpen)
+            {
+                _tScanner.dP.Stop();
+            }
+            if (_bs.IsOpen)
+            {
+                _bs.Stop();
+            }
+
+            devicesValid = ConnectDevices();
+            readyToStart();
 
             /* TEST IF DEVICES ARE STILL CONNECTED */
             if (_tScanner.dP.IsOpen && _bs.IsOpen)
             {
-            /*IF TRUE, SHOW TUBE RACK FORM */
-            TubeRack form = new TubeRack(this, rack, _tScanner, _bs);
-                form.ShowDialog();
+                /*IF TRUE, SHOW TUBE RACK FORM */
+                TubeRack form = new TubeRack(this, rack, _tScanner, _bs);
+                    form.ShowDialog();
             }
             else
             {
+                _bs.Stop();
                 /*IF FALSE, DISPLAY MESSAGE BOX STATING DISCONNECTION HAS OCCURED*/
-               MessageBox.Show("Device/s disconnected!\n Reconnect Intrument and Barcode scanner and try again");
+                MessageBox.Show("Device/s disconnected!\nReconnect Instrument and Barcode scanner and try again");
                 devicesValid = ConnectDevices();
                 readyToStart();
             }
