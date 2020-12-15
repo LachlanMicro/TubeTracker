@@ -204,6 +204,18 @@ namespace TubeScanner
             readyToStart();
         }
 
+        public void barcodeNotConnected()
+        {
+            lbl_BS.Text = "BARCODE SCANNER NOT CONNECTED";
+            lbl_BS.ForeColor = Color.Red;
+            MessageBox.Show("Barcode scanner was disconnected. Your current run will need to be started from the beginning.");
+        }
 
+        public void tubeNotConnected()
+        {
+            lbl_TS.Text = "TUBE TRACKER NOT CONNECTED";
+            lbl_TS.ForeColor = Color.Red;
+            MessageBox.Show("Tube scanner was disconnected. Your current run will need to be started from the beginning.");
+        }
     }
 }

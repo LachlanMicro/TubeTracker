@@ -45,7 +45,20 @@ namespace TubeScanner
             {
                 if (_bs.IsOpen)
                 {
-                    rackBarcode = await _bs.startScan();
+                    try
+                    {
+                        rackBarcode = await _bs.startScan();
+                    }
+                    catch
+                    {
+                        await quitToStartupAsync();
+                        break;
+                    }
+                }
+                else
+                {
+                    await quitToStartupAsync();
+                    break;
                 }
 
                 if (rackBarcode == _rack.PlateID)
@@ -79,6 +92,7 @@ namespace TubeScanner
             else
             {
                 lbl_Status.Text = "Scanner not found";
+                await quitToStartupAsync();
             }
         }
 
@@ -87,7 +101,6 @@ namespace TubeScanner
         {
             if (_tScanner.dP.IsOpen)
             {
-
                 //Byte[] tubeData = await _tScanner.DleCommands.scanAllTubes();
                 Byte[] tubeData = null;
 
@@ -110,7 +123,6 @@ namespace TubeScanner
                             // Assign the value to the matrix 
                             bitMap[row, col] = column_array[row];
                         }
-                        //Console.WriteLine(binary_column);
                     }
 
                     // Update the tube status based on the bit map matrix
@@ -150,6 +162,10 @@ namespace TubeScanner
                     }
                 }
             }
+            else
+            {
+                await quitToStartupAsync();
+            }
         }
 
         /* Disables the close (X) button on window */
@@ -173,15 +189,32 @@ namespace TubeScanner
                 await _tScanner.DleCommands.runStatus(DleCommands.RunState.RUNNING);
                 scanning = true;
             }
+            else
+            {
+                await quitToStartupAsync();
+            }
 
             while (scanning)
             {
                 string barcode = "";
                 bool found = false;
 
+                if (!_tScanner.dP.IsOpen)
+                {
+                    await quitToStartupAsync();
+                }
+
                 if (_bs.IsOpen)
                 {
-                    barcode = await _bs.startScan();
+                    try
+                    {
+                        barcode = await _bs.startScan();
+                    }
+                    catch
+                    {
+                        await quitToStartupAsync();
+                        break;
+                    }
                 }
 
                 lbl_Barcode.Text = barcode;
@@ -294,7 +327,6 @@ namespace TubeScanner
             }
         }
 
-
         /* End run- save output file, clear display, return to startup */
         private async void btn_endRun_Click(object sender, EventArgs e)
         {
@@ -333,7 +365,7 @@ namespace TubeScanner
                 }
             }
 
-            DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Save Run?", "Ending Run", MessageBoxButtons.YesNoCancel);
+            DialogResult dialogResult = MessageBox.Show("Save Run?", "Ending Run", MessageBoxButtons.YesNoCancel);
             if (dialogResult == DialogResult.Yes)
             {
                 /* Save output file */
@@ -362,6 +394,22 @@ namespace TubeScanner
                 {
                     rackControl.UpdateTubeStatus(x, Status.NOT_USED);
                 }
+            }
+            else
+            {
+                await _tScanner.DleCommands.runStatus(DleCommands.RunState.STOPPED);
+                //scanning = false;
+                for (int x = 0; x < _rack.TubeList.Count; x++)
+                {
+                    rackControl.UpdateTubeStatus(x, Status.NOT_USED);
+                } 
+
+                _startupForm.tubeNotConnected();
+            }
+
+            if (!_bs.IsOpen)
+            {
+                _startupForm.barcodeNotConnected();
             }
 
             /* Clear the loaded input file */
