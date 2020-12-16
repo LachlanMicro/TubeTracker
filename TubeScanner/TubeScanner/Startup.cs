@@ -184,7 +184,7 @@ namespace TubeScanner
         /* Enables/diables the Start Run button if able to scan */
         private void readyToStart()
         {
-            if (inputFileValid && devicesValid)
+            if (inputFileValid && devicesValid && Program.currentUser != "")
             {
                 btn_runStart.Enabled = true;
             }
@@ -240,6 +240,7 @@ namespace TubeScanner
                     label1.Text = "Current user: " + Program.currentUser;
                 }
             }
+            readyToStart();
         }
 
         private void usersButton_Click(object sender, EventArgs e)
