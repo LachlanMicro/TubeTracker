@@ -8,6 +8,8 @@ namespace TubeScanner
 {
     static class Program
     {
+        public static string currentUser = "";
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

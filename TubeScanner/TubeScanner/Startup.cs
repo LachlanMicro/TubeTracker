@@ -217,5 +217,40 @@ namespace TubeScanner
             lbl_TS.ForeColor = Color.Red;
             MessageBox.Show("Tube scanner was disconnected. Your current run will need to be started from the beginning.");
         }
+
+        private void buttonLogin_Click(object sender, EventArgs e)
+        {
+            if (buttonLogin.Text == "Login")
+            {
+                Login form = new Login();
+                form.ShowDialog();
+                if (Program.currentUser != "")
+                {
+                    buttonLogin.Text = "Logout";
+                    label1.Text = "Current user: " + Program.currentUser;
+                }
+            }
+            else if (buttonLogin.Text == "Logout")
+            {
+                DialogResult dialogResult = MessageBox.Show("Are you sure you wish to log out?", "Logging out...", MessageBoxButtons.OKCancel);
+                if (dialogResult == DialogResult.OK)
+                {
+                    Program.currentUser = "";
+                    buttonLogin.Text = "Login";
+                    label1.Text = "Current user: " + Program.currentUser;
+                }
+            }
+        }
+
+        private void usersButton_Click(object sender, EventArgs e)
+        {
+            UsersPage form = new UsersPage();
+            form.ShowDialog();
+            label1.Text = "Current user: " + Program.currentUser;
+            if (Program.currentUser == "")
+            {
+                buttonLogin.Text = "Login";
+            }
+        }
     }
 }

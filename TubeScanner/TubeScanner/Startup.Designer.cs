@@ -36,10 +36,13 @@
             this.lbl_TS = new System.Windows.Forms.Label();
             this.lbl_file = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lbl_title = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lbl_loading = new System.Windows.Forms.Label();
             this.btn_Config = new System.Windows.Forms.Button();
+            this.buttonLogin = new System.Windows.Forms.Button();
+            this.usersButton = new System.Windows.Forms.Button();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.lbl_title = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -120,26 +123,6 @@
             this.pictureBox1.TabIndex = 8;
             this.pictureBox1.TabStop = false;
             // 
-            // lbl_title
-            // 
-            this.lbl_title.AutoSize = true;
-            this.lbl_title.Font = new System.Drawing.Font("Calibri", 32.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_title.Location = new System.Drawing.Point(53, -3);
-            this.lbl_title.Name = "lbl_title";
-            this.lbl_title.Size = new System.Drawing.Size(233, 53);
-            this.lbl_title.TabIndex = 9;
-            this.lbl_title.Text = "BSD Tracker";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.InitialImage")));
-            this.pictureBox2.Location = new System.Drawing.Point(2, 6);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(58, 42);
-            this.pictureBox2.TabIndex = 10;
-            this.pictureBox2.TabStop = false;
-            // 
             // lbl_loading
             // 
             this.lbl_loading.AutoSize = true;
@@ -160,13 +143,66 @@
             this.btn_Config.UseVisualStyleBackColor = true;
             this.btn_Config.Click += new System.EventHandler(this.btn_Config_Click);
             // 
+            // buttonLogin
+            // 
+            this.buttonLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonLogin.Location = new System.Drawing.Point(217, 386);
+            this.buttonLogin.Name = "buttonLogin";
+            this.buttonLogin.Size = new System.Drawing.Size(160, 52);
+            this.buttonLogin.TabIndex = 13;
+            this.buttonLogin.Text = "Login";
+            this.buttonLogin.UseVisualStyleBackColor = true;
+            this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
+            // 
+            // usersButton
+            // 
+            this.usersButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usersButton.Location = new System.Drawing.Point(427, 386);
+            this.usersButton.Name = "usersButton";
+            this.usersButton.Size = new System.Drawing.Size(160, 52);
+            this.usersButton.TabIndex = 14;
+            this.usersButton.Text = "View Users";
+            this.usersButton.UseVisualStyleBackColor = true;
+            this.usersButton.Click += new System.EventHandler(this.usersButton_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.InitialImage")));
+            this.pictureBox2.Location = new System.Drawing.Point(2, 6);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(58, 42);
+            this.pictureBox2.TabIndex = 10;
+            this.pictureBox2.TabStop = false;
+            // 
+            // lbl_title
+            // 
+            this.lbl_title.AutoSize = true;
+            this.lbl_title.Font = new System.Drawing.Font("Calibri", 32.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_title.Location = new System.Drawing.Point(53, -3);
+            this.lbl_title.Name = "lbl_title";
+            this.lbl_title.Size = new System.Drawing.Size(233, 53);
+            this.lbl_title.TabIndex = 9;
+            this.lbl_title.Text = "BSD Tracker";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 60);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(82, 16);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Current user:";
+            // 
             // Startup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.usersButton);
+            this.Controls.Add(this.buttonLogin);
             this.Controls.Add(this.btn_Config);
             this.Controls.Add(this.lbl_loading);
             this.Controls.Add(this.pictureBox2);
@@ -178,6 +214,8 @@
             this.Controls.Add(this.btn_connect);
             this.Controls.Add(this.btn_runStart);
             this.Controls.Add(this.btnFileBrowse);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Startup";
             this.Text = "BSD Tracker";
@@ -198,9 +236,12 @@
         private System.Windows.Forms.Label lbl_TS;
         private System.Windows.Forms.Label lbl_file;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label lbl_title;
-        private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label lbl_loading;
         private System.Windows.Forms.Button btn_Config;
+        private System.Windows.Forms.Button buttonLogin;
+        private System.Windows.Forms.Button usersButton;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label lbl_title;
+        private System.Windows.Forms.Label label1;
     }
 }
