@@ -19,8 +19,6 @@ namespace TubeScanner.Classes
             set { _dleCommands = value; }
         }
 
-        
-
         public TScanner()
         {
             deviceConnectionMonitor = new DeviceConnectionMonitor();

@@ -13,7 +13,7 @@ namespace TubeScanner.Controls
         private List<TubeButton> tubeButtons = new List<TubeButton>();
         public List<TubeButton> OutputTubeList = new List<TubeButton>();
 
-        private char[] _letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ,'I','J','K','L','M','N'};
+        private char[] _letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N' };
 
         public RackControl(Rack rack, TubeRack tubeRack)
         {
@@ -37,28 +37,21 @@ namespace TubeScanner.Controls
             Controls.Clear();
             tubeButtons.Clear();
 
-
             TableLayoutPanel panel = new TableLayoutPanel();
             panel.ColumnCount = _rack.Columns+1;
             panel.RowCount = _rack.Rows+1;
             panel.AutoSize = false;
-            
            
             panel.Width = width ;
             int panelSize = panel.Width / 13;
 
             panel.Height = panelSize * panel.RowCount +5;
             
-
             int btnSize = (int)panelSize - 8;
             int fontSize = btnSize / 2 -3;
-
             
             panel.Location = new Point(Border, Border);
             panel.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Left);
-
-            //     panel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
-
 
             for (int row = 0; row < panel.RowCount; row++)
             {
@@ -71,7 +64,6 @@ namespace TubeScanner.Controls
                 panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute));                
                 panel.ColumnStyles[col].Width = panelSize;                
             }
-            
 
             for (int row = 0; row < _rack.Rows; row++)
             {
@@ -83,7 +75,6 @@ namespace TubeScanner.Controls
                 label.AutoSize = false;
                 label.Width = panelSize;
                 label.Height = panelSize-2;
-             //   label.BorderStyle = BorderStyle.FixedSingle;
                 label.Location = new Point(0,0);
                 panel.Controls.Add(label,0,row+1);
             }
@@ -274,14 +265,13 @@ namespace TubeScanner.Controls
             TB.Enabled = true;
         }
 
-        // Show well info when it is double clicked
+        /* Show well info when it is double clicked */
         private void button_DoubleClick(object sender, EventArgs e)
         {
             TubeButton TB = sender as TubeButton;
 
             if (TB != null)
             {
-                //MessageBox.Show("Tube ID: " + TB.Name + '\n' + "Tube Number: " + TB.Text);
                 _tubeRack.tubeInfoDisplay(TB);
             }
         }

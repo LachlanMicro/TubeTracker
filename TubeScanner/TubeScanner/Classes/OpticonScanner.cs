@@ -82,6 +82,7 @@ namespace TubeScanner.Classes
             _barcodeScannerPort.Encoding = Encoding.UTF8;
         }
 
+        /* Start barcode scanner */
         public bool Start()
         {
             try
@@ -112,6 +113,7 @@ namespace TubeScanner.Classes
             return _barcodeScannerPort.IsOpen;
         }
 
+        /* Stop barcode scanner */
         public void Stop()
         {
             _barcodeScannerPort.DataReceived -= _DevicePort_DataReceived;

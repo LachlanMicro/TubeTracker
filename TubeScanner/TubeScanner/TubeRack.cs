@@ -79,29 +79,19 @@ namespace TubeScanner
 
             if (_tScanner.dP.IsOpen)
             {
-                if (await _tScanner.DleCommands.sendNullCommand())
-                {
-                    //lbl_Status.Text = "Scanner connected on " + _tScanner.dP.PortName;
-                }
-                else
-                {
-                    //lbl_Status.Text = "Failed to connect";
-                }
-
+                await _tScanner.DleCommands.sendNullCommand();
             }
             else
             {
-                //lbl_Status.Text = "Scanner not found";
                 await quitToStartupAsync();
             }
         }
 
-        // Function to scan all tube positions
+        /* Function to scan all tube positions */
         private async void FootSwitchEvent(object sender, EventArgs e)
         {
             if (_tScanner.dP.IsOpen)
             {
-                //Byte[] tubeData = await _tScanner.DleCommands.scanAllTubes();
                 Byte[] tubeData = null;
 
                 if (tubeData != null)
@@ -109,23 +99,23 @@ namespace TubeScanner
                     int bitNum = 0;
                     char[,] bitMap = new char[8, 12];
 
-                    // Loop through the 12 column byte values
+                    /* Loop through the 12 column byte values */
                     for (int col = 0; col < 12; col++)
                     {
-                        // Convert column byte from decimal to 8-bit binary string 
+                        /* Convert column byte from decimal to 8-bit binary string */
                         string binary_column = Convert.ToString(tubeData[col], 2).PadLeft(8, '0');
-                        // Convert string to a character array
+                        /* Convert string to a character array */
                         char[] column_array = binary_column.ToCharArray(0, 8);
 
-                        // Loop through each row bit within the array
+                        /* Loop through each row bit within the array */
                         for (int row = 0; row < 8; row++)
                         {
-                            // Assign the value to the matrix 
+                            /* Assign the value to the matrix */
                             bitMap[row, col] = column_array[row];
                         }
                     }
 
-                    // Update the tube status based on the bit map matrix
+                    /* Update the tube status based on the bit map matrix */
                     for (int row = 0; row < 8; row++)
                     {
                         for (int col = 0; col < 12; col++)
@@ -180,7 +170,7 @@ namespace TubeScanner
             }
         }
 
-        // Button to activate serial communication and barcode scanner
+        /* Button to activate serial communication and barcode scanner */
         private async void button1_Click(object sender, EventArgs e)
         {
             // Update tube scanner state to running
@@ -221,8 +211,6 @@ namespace TubeScanner
                 }
 
                 lbl_Barcode.Text = barcode;
-
-                //await _bs.stopScan();
 
                 var lines = File.ReadAllLines(_rack.InputFilename);
 
@@ -373,7 +361,7 @@ namespace TubeScanner
             {
                 /* Save output file */
                 string[] currDateTime = DateTime.Today.ToString().Split(' ');
-                //FileManager outfile = new FileManager();
+
                 string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
                 FileManager.WriteOutputFile(fileName, rackControl.OutputTubeList, _rack.PlateID, "aaaa", currDateTime[0]);
 
@@ -397,7 +385,6 @@ namespace TubeScanner
             if (_tScanner.dP.IsOpen)
             {
                 await _tScanner.DleCommands.runStatus(DleCommands.RunState.STOPPED);
-                //scanning = false;
                 for (int x = 0; x < _rack.TubeList.Count; x++)
                 {
                     rackControl.UpdateTubeStatus(x, Status.NOT_USED);
@@ -406,7 +393,6 @@ namespace TubeScanner
             else
             {
                 await _tScanner.DleCommands.runStatus(DleCommands.RunState.STOPPED);
-                //scanning = false;
                 for (int x = 0; x < _rack.TubeList.Count; x++)
                 {
                     rackControl.UpdateTubeStatus(x, Status.NOT_USED);
@@ -421,7 +407,6 @@ namespace TubeScanner
             }
 
             /* Clear the loaded input file */
-            // Startup startupScreen = new Startup();
             _startupForm.EmptyInputFile();
 
             /* Close test window */

@@ -9,7 +9,7 @@ namespace TubeScanner.Classes
 {
     class FileManager
     { 
-        /* Checks if loaded input file is valid */
+        /* Loads in valid input file */
         public static async Task<bool> LoadInputFile(Rack rack)
         {
             bool valid = true;
@@ -21,22 +21,18 @@ namespace TubeScanner.Classes
                 /* First, we want to check no lines are empty, duplicated or exceed the list length over 96 */
                 List<string> usedLines = new List<string>();
 
-                //string[] splitLine;
-
                 for (int i = 0; i < inputLines.Length; i++)
                 {
-                    /* Check empty */
+                    /* Check if empty */
                     if (inputLines[i] != "")
                     {
                         bool isUnique = true;
-                        //splitLine = inputLines[i].Split('\t');
 
                         /* check duplicates */
                         if (usedLines.Count() > 0)
                         {
                             for (int j = 0; j < usedLines.Count(); j++)
                             {
-                                //string[] splitUsed = usedLines[j].Split('\t');
                                 if (usedLines[j] == inputLines[i])
                                 {
                                     isUnique = false;
@@ -120,7 +116,7 @@ namespace TubeScanner.Classes
                             }
                             else
                             {
-                                //MessageBox.Show("Line" + (lineNumber + 1) + ": Tube position invalid, use format [row],[0],[column] \n e.g. A01");
+                                MessageBox.Show("Line" + (lineNumber + 1) + ": Tube position invalid, use format [row],[0],[column] \n e.g. A01");
                                 valid = false;
                             }
                         }
@@ -134,6 +130,7 @@ namespace TubeScanner.Classes
             return valid;
         }
 
+        /* Computation to check whether the input file is valid for use within program */
         private static bool InputValid(string line)
         {
             int rackLength = 12;

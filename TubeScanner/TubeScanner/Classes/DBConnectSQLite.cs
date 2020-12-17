@@ -18,7 +18,6 @@ namespace TubeScanner.Classes
         private string _fileName = "system.bsdb";
         private SQLiteConnection _connection;
 
-        //Constructor
         public DBConnectSQLite()
         {
 
@@ -115,7 +114,6 @@ namespace TubeScanner.Classes
                     //ExecuteScalar will return one value
                     return command.ExecuteScalar();
                 }
-
             }
             catch (SQLiteException)
             {

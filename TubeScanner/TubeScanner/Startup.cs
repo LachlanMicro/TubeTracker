@@ -76,7 +76,6 @@ namespace TubeScanner
                 /* Open file browsing window, .txt and .csv only */
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-
                     if (!string.IsNullOrEmpty(dialog.FileName))
                     {
                         if (File.Exists(dialog.FileName))
@@ -119,33 +118,35 @@ namespace TubeScanner
             devicesValid = ConnectDevices();
             readyToStart();
 
-            /* TEST IF DEVICES ARE STILL CONNECTED */
+            /* Test if devices are still connected */
             if (_tScanner.dP.IsOpen && _bs.IsOpen)
             {
-                /*IF TRUE, SHOW TUBE RACK FORM */
+                /*If true, go to Tube Rack screen */
                 TubeRack form = new TubeRack(this, rack, _tScanner, _bs);
                 form.ShowDialog();
             }
             else
             {
                 _bs.Stop();
-                /*IF FALSE, DISPLAY MESSAGE BOX STATING DISCONNECTION HAS OCCURED*/
+                /* if false, inform user of disconnection */
                 MessageBox.Show("Device/s disconnected!\nReconnect Instrument and Barcode scanner and try again");
                 devicesValid = ConnectDevices();
                 readyToStart();
             }
         }
 
+        /* Config button- opens configuration (settings) screen */
         private void btn_Config_Click(object sender, EventArgs e)
         {
             config.Show();
         }
 
-        /* Checks connection for the usb connected devices */
+        /* Checks whether USB connected devices are connected */
         private bool ConnectDevices()
         {
             bool connected = true;
 
+            /* Update label based on whether barcode scanner is connected or disconnected */
             if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
             {
                 _bs = new OpticonScanner(_tScanner.deviceConnectionMonitor._scannerComPortsList[0]);
@@ -155,15 +156,14 @@ namespace TubeScanner
             }
             else
             {
-                //_bs = new OpticonScanner("COM0");
                 lbl_BS.Text = "BARCODE SCANNER NOT CONNECTED";
                 lbl_BS.ForeColor = Color.Red;
                 connected = false;
             }
                 
              _tScanner.autoConnect();
-            //await _tScanner.DleCommands.sendNullCommand();
 
+            /* Update label based on whether tube scanner is connected or disconnected */
             if (_tScanner.dP.IsOpen)
             {
                 lbl_TS.Text = "TUBE TRACKER CONNECTED";
@@ -175,9 +175,6 @@ namespace TubeScanner
                 lbl_TS.ForeColor = Color.Red;
                 connected = false;
             }
-
-            //_tScanner.dP.Stop();
-            //_bs.Stop();
 
             return connected;
         }
@@ -195,7 +192,7 @@ namespace TubeScanner
             }
         }
 
-        /* Unloads the input file */
+        /* Unloads the input file from the program */
         public void EmptyInputFile()
         {
             rack.InputFilename = "";
@@ -219,18 +216,23 @@ namespace TubeScanner
             MessageBox.Show("Tube scanner was disconnected. Your current run will need to be started from the beginning.");
         }
 
+        /* Login/Logout button */
         private void buttonLogin_Click(object sender, EventArgs e)
         {
+            /* Login- opens login screen */
             if (buttonLogin.Text == "Login")
             {
                 Login form = new Login();
                 form.ShowDialog();
+
+                /* If user has logged in, make button a "Logout" button */
                 if (Program.currentUser != "")
                 {
                     buttonLogin.Text = "Logout";
                     label1.Text = "Current user: " + Program.currentUser;
                 }
             }
+            /* If button is a logout button, log user out */
             else if (buttonLogin.Text == "Logout")
             {
                 DialogResult dialogResult = MessageBox.Show("Are you sure you wish to log out?", "Logging out...", MessageBoxButtons.OKCancel);
@@ -244,6 +246,7 @@ namespace TubeScanner
             readyToStart();
         }
 
+        /* Users button- opens users page and set the current user */
         private void usersButton_Click(object sender, EventArgs e)
         {
             UsersPage form = new UsersPage();
