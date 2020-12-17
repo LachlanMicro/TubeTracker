@@ -9,16 +9,16 @@ namespace TubeScanner.Controls
     public partial class RackControl : UserControl
     {
         private Rack _rack = null;
-        //private TubeRack _tubeRack = null;
+        private TubeRack _tubeRack = null;
         private List<TubeButton> tubeButtons = new List<TubeButton>();
         public List<TubeButton> OutputTubeList = new List<TubeButton>();
 
         private char[] _letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ,'I','J','K','L','M','N'};
 
-        public RackControl(Rack rack)
+        public RackControl(Rack rack, TubeRack tubeRack)
         {
             _rack = rack;
-            //_tubeRack = tubeRack;
+            _tubeRack = tubeRack;
             InitializeComponent();
         }
 
@@ -281,8 +281,8 @@ namespace TubeScanner.Controls
 
             if (TB != null)
             {
-                MessageBox.Show("Tube ID: " + TB.Name + '\n' + "Tube Number: " + TB.Text);
-                //_tubeRack.tubeInfoDisplay(TB);
+                //MessageBox.Show("Tube ID: " + TB.Name + '\n' + "Tube Number: " + TB.Text);
+                _tubeRack.tubeInfoDisplay(TB);
             }
         }
         

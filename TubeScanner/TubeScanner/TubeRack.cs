@@ -386,6 +386,11 @@ namespace TubeScanner
 
         }
 
+        public void tubeInfoDisplay(TubeButton tb)
+        {
+            lbl_Status.Text = "Tube ID: " + tb.Name + '\n' + "Tube Number: " + tb.Text;
+        }
+
         private async Task quitToStartupAsync()
         {
             /* Clear tubes */
