@@ -127,7 +127,7 @@
             // 
             this.lbl_loading.AutoSize = true;
             this.lbl_loading.Font = new System.Drawing.Font("Calibri", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_loading.Location = new System.Drawing.Point(394, 366);
+            this.lbl_loading.Location = new System.Drawing.Point(678, 86);
             this.lbl_loading.Name = "lbl_loading";
             this.lbl_loading.Size = new System.Drawing.Size(0, 42);
             this.lbl_loading.TabIndex = 11;

@@ -67,7 +67,7 @@ namespace TubeScanner
                     correctBarcode = true;
                     button1.Enabled = true;
 
-                    MessageBox.Show("Barcode matches input file.");
+                    lbl_Status.Text = "Barcode matches input file.";
                 }
                 else
                 {
@@ -81,17 +81,17 @@ namespace TubeScanner
             {
                 if (await _tScanner.DleCommands.sendNullCommand())
                 {
-                    lbl_Status.Text = "Scanner connected on " + _tScanner.dP.PortName;
+                    //lbl_Status.Text = "Scanner connected on " + _tScanner.dP.PortName;
                 }
                 else
                 {
-                    lbl_Status.Text = "Failed to connect";
+                    //lbl_Status.Text = "Failed to connect";
                 }
 
             }
             else
             {
-                lbl_Status.Text = "Scanner not found";
+                //lbl_Status.Text = "Scanner not found";
                 await quitToStartupAsync();
             }
         }
@@ -199,6 +199,9 @@ namespace TubeScanner
                 string barcode = "";
                 bool found = false;
 
+                /* Update status msg */
+                lbl_Status.Text = "Ready for next scan";
+
                 if (!_tScanner.dP.IsOpen)
                 {
                     await quitToStartupAsync();
@@ -259,7 +262,7 @@ namespace TubeScanner
 
                 if (!found)
                 {
-                    MessageBox.Show("Scanned barcode was not found in input file or has already been scanned");
+                    lbl_Status.Text = "Scanned barcode was not found in input file or has already been scanned";
                 }
 
                 // Activate placement timer and 1 second delay after scanning barcode 
@@ -290,7 +293,7 @@ namespace TubeScanner
             if (_rack.TubeList[num].Status == Status.SELECTED)
             {
                 rackControl.UpdateTubeStatus(num, Status.READY_TO_LOAD);
-                MessageBox.Show("10 second window to place scanned tube has expired. Please rescan and try again.");
+                lbl_Status.Text = "10 second window to place scanned tube has expired. Please rescan and try again.";
             }
         }
 

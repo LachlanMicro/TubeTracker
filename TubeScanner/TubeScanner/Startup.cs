@@ -72,6 +72,7 @@ namespace TubeScanner
                 /* Open file browsing window, .txt and .csv only */
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
+
                     if (!string.IsNullOrEmpty(dialog.FileName))
                     {
                         if (File.Exists(dialog.FileName))
@@ -119,7 +120,7 @@ namespace TubeScanner
             {
                 /*IF TRUE, SHOW TUBE RACK FORM */
                 TubeRack form = new TubeRack(this, rack, _tScanner, _bs);
-                    form.ShowDialog();
+                form.ShowDialog();
             }
             else
             {

@@ -9,6 +9,7 @@ namespace TubeScanner.Controls
     public partial class RackControl : UserControl
     {
         private Rack _rack = null;
+        //private TubeRack _tubeRack = null;
         private List<TubeButton> tubeButtons = new List<TubeButton>();
         public List<TubeButton> OutputTubeList = new List<TubeButton>();
 
@@ -17,6 +18,7 @@ namespace TubeScanner.Controls
         public RackControl(Rack rack)
         {
             _rack = rack;
+            //_tubeRack = tubeRack;
             InitializeComponent();
         }
 
@@ -280,6 +282,7 @@ namespace TubeScanner.Controls
             if (TB != null)
             {
                 MessageBox.Show("Tube ID: " + TB.Name + '\n' + "Tube Number: " + TB.Text);
+                //_tubeRack.tubeInfoDisplay(TB);
             }
         }
         

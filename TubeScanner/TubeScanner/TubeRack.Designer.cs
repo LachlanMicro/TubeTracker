@@ -40,7 +40,6 @@ namespace TubeScanner
             this.lbl_PlateID = new System.Windows.Forms.Label();
             this.lbl_Barcode = new System.Windows.Forms.Label();
             this.btn_endRun = new System.Windows.Forms.Button();
-            this.lbl_StatusTitle = new System.Windows.Forms.Label();
             this.lbl_Status = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -143,31 +142,20 @@ namespace TubeScanner
             // 
             // btn_endRun
             // 
-            this.btn_endRun.Location = new System.Drawing.Point(825, 589);
+            this.btn_endRun.Location = new System.Drawing.Point(825, 681);
             this.btn_endRun.Name = "btn_endRun";
-            this.btn_endRun.Size = new System.Drawing.Size(134, 37);
+            this.btn_endRun.Size = new System.Drawing.Size(134, 41);
             this.btn_endRun.TabIndex = 12;
             this.btn_endRun.Text = "End Run";
             this.btn_endRun.UseVisualStyleBackColor = true;
             this.btn_endRun.Click += new System.EventHandler(this.btn_endRun_Click);
-            // 
-            // lbl_StatusTitle
-            // 
-            this.lbl_StatusTitle.AutoSize = true;
-            this.lbl_StatusTitle.Font = new System.Drawing.Font("Lucida Sans", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_StatusTitle.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.lbl_StatusTitle.Location = new System.Drawing.Point(18, 689);
-            this.lbl_StatusTitle.Name = "lbl_StatusTitle";
-            this.lbl_StatusTitle.Size = new System.Drawing.Size(93, 27);
-            this.lbl_StatusTitle.TabIndex = 13;
-            this.lbl_StatusTitle.Text = "Status:";
             // 
             // lbl_Status
             // 
             this.lbl_Status.AutoSize = true;
             this.lbl_Status.Font = new System.Drawing.Font("Lucida Sans", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Status.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.lbl_Status.Location = new System.Drawing.Point(117, 689);
+            this.lbl_Status.Location = new System.Drawing.Point(12, 689);
             this.lbl_Status.Name = "lbl_Status";
             this.lbl_Status.Size = new System.Drawing.Size(0, 27);
             this.lbl_Status.TabIndex = 14;
@@ -176,12 +164,9 @@ namespace TubeScanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(982, 734);
             this.Controls.Add(this.lbl_Status);
-            this.Controls.Add(this.lbl_StatusTitle);
             this.Controls.Add(this.btn_endRun);
             this.Controls.Add(this.lbl_Barcode);
             this.Controls.Add(this.lbl_PlateID);
@@ -192,7 +177,9 @@ namespace TubeScanner
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "TubeRack";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tube Rack";
@@ -214,7 +201,6 @@ namespace TubeScanner
         private System.Windows.Forms.Label bc;
         private System.Windows.Forms.Label lbl_PlateID;
         private System.Windows.Forms.Label lbl_Barcode;
-        private System.Windows.Forms.Label lbl_StatusTitle;
         private System.Windows.Forms.Label lbl_Status;
     }
 }
