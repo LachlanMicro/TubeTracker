@@ -31,7 +31,7 @@ namespace TubeScanner
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            rackControl = new RackControl(_rack);
+            rackControl = new RackControl(_rack, this);
             rackControl.Display(this, new Point(10, 75));
             rackControl.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Left);
 
