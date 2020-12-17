@@ -366,51 +366,62 @@ namespace TubeScanner
             bool placeError = false;
             bool removeError = false;
 
-            for (int x = 0; x < _rack.TubeList.Count; x++)
+            if (_tScanner.dP.IsOpen && _tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
             {
-                if (_rack.TubeList[x].Status == Status.READY_TO_LOAD)
+                for (int x = 0; x < _rack.TubeList.Count; x++)
                 {
-                    if (!loadError)
+                    if (_rack.TubeList[x].Status == Status.READY_TO_LOAD)
                     {
-                        MessageBox.Show("Warning: The rack contains unloaded wells, please ensure that you wish to continue.");
-                        loadError = true;
+                        if (!loadError)
+                        {
+                            MessageBox.Show("Warning: The rack contains unloaded wells, please ensure that you wish to continue.");
+                            loadError = true;
+                        }
+                    }
+                    if (_rack.TubeList[x].Status == Status.ERROR)
+                    {
+                        if (!placeError)
+                        {
+                            MessageBox.Show("Warning: The rack contains misplaced tubes, please ensure that you wish to continue.");
+                            placeError = true;
+                        }
+                    }
+                    if (_rack.TubeList[x].Status == Status.REMOVED)
+                    {
+                        if (!removeError)
+                        {
+                            MessageBox.Show("Warning: Tubes have been removed from the rack and not replaced, please ensure that you wish to continue.");
+                            removeError = true;
+                        }
+                    }
+                    if (loadError & placeError & removeError)
+                    {
+                        break;
                     }
                 }
-                if (_rack.TubeList[x].Status == Status.ERROR)
+
+                DialogResult dialogResult = MessageBox.Show("Save Run?", "Ending Run", MessageBoxButtons.YesNoCancel);
+                if (dialogResult == DialogResult.Yes)
                 {
-                    if (!placeError)
-                    {
-                        MessageBox.Show("Warning: The rack contains misplaced tubes, please ensure that you wish to continue.");
-                        placeError = true;
-                    }
+                    /* Save output file */
+                    string[] currDateTime = DateTime.Today.ToString().Split(' ');
+
+                    string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
+                    FileManager.WriteOutputFile(fileName, rackControl.OutputTubeList, _rack.PlateID, "aaaa", currDateTime[0]);
+
+                    await quitToStartupAsync();
                 }
-                if (_rack.TubeList[x].Status == Status.REMOVED)
+                else if (dialogResult == DialogResult.No)
                 {
-                    if (!removeError)
-                    {
-                        MessageBox.Show("Warning: Tubes have been removed from the rack and not replaced, please ensure that you wish to continue.");
-                        removeError = true;
-                    }
-                }
-                if (loadError & placeError & removeError)
-                {
-                    break;
+                    await quitToStartupAsync();
                 }
             }
-
-            DialogResult dialogResult = MessageBox.Show("Save Run?", "Ending Run", MessageBoxButtons.YesNoCancel);
-            if (dialogResult == DialogResult.Yes)
+            else
             {
-                /* Save output file */
-                string[] currDateTime = DateTime.Today.ToString().Split(' ');
-
-                string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
-                FileManager.WriteOutputFile(fileName, rackControl.OutputTubeList, _rack.PlateID, "aaaa", currDateTime[0]);
-
-                await quitToStartupAsync();
-            }
-            else if (dialogResult == DialogResult.No)
-            {
+                if (!(_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0))
+                {
+                    _bs.Stop();
+                }
                 await quitToStartupAsync();
             }
         }
