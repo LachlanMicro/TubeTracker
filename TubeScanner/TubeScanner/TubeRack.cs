@@ -87,7 +87,7 @@ namespace TubeScanner
                     correctBarcode = true;
                     button1.Enabled = true;
 
-                    lbl_Status.Text = "Barcode matches input file.";
+                    lbl_Status.Text = "Barcode matches input file, click scan to begin";
                 }
                 else
                 {
@@ -291,7 +291,7 @@ namespace TubeScanner
 
                 if (!found)
                 {
-                    lbl_Status.Text = "Scanned barcode was not found in input file or has already been scanned";
+                    MessageBox.Show("Scanned barcode was not found in input file or has already been scanned");
                 }
 
                 // Activate placement timer and 1 second delay after scanning barcode 
