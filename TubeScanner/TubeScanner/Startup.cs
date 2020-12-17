@@ -25,7 +25,7 @@ namespace TubeScanner
         Configuration config = new Configuration();
 
         TScanner _tScanner = new TScanner();
-        OpticonScanner _bs;
+        OpticonScanner _bs = null;
 
         public Startup()
         {
@@ -51,9 +51,13 @@ namespace TubeScanner
             {
                 _tScanner.dP.Stop();
             }
-            if (_bs.IsOpen)
+
+            if (_bs != null)
             {
-                _bs.Stop();
+                if (_bs.IsOpen)
+                {
+                    _bs.Stop();
+                }
             }
 
             /* Check if devices connected */
@@ -151,7 +155,7 @@ namespace TubeScanner
             }
             else
             {
-                _bs = new OpticonScanner("COM0");
+                //_bs = new OpticonScanner("COM0");
                 lbl_BS.Text = "BARCODE SCANNER NOT CONNECTED";
                 lbl_BS.ForeColor = Color.Red;
                 connected = false;
