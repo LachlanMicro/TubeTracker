@@ -19,8 +19,6 @@ namespace TubeScanner.Classes
             set { _dleCommands = value; }
         }
 
-        
-
         public TScanner()
         {
             deviceConnectionMonitor = new DeviceConnectionMonitor();
@@ -52,7 +50,6 @@ namespace TubeScanner.Classes
                 dP.Stop();
             }
 
-
             if (deviceConnectionMonitor._deviceConnected)
             {
                 string comPortAddress = deviceConnectionMonitor._deviceConnectionsList[0].Address;
@@ -61,7 +58,6 @@ namespace TubeScanner.Classes
                
             }
            
-        
             return dP.IsOpen;
         }
 
@@ -79,9 +75,5 @@ namespace TubeScanner.Classes
             byte[] data = new UTF8Encoding().GetBytes(command);
             dP.Write(data);
         }
-
-       
-
-
     }
 }
