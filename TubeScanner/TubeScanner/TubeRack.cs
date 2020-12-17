@@ -43,7 +43,7 @@ namespace TubeScanner
 
             while (! correctBarcode)
             {
-                if (_bs.IsOpen)
+                /*if (_bs.IsOpen)
                 {
                     try
                     {
@@ -57,6 +57,26 @@ namespace TubeScanner
                 }
                 else
                 {
+                    await quitToStartupAsync();
+                    break;
+                }*/
+
+                if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
+                {
+                    try
+                    {
+                        rackBarcode = await _bs.startScan();
+                    }
+                    catch
+                    {
+                        _bs.Stop();
+                        await quitToStartupAsync();
+                        break;
+                    }
+                }
+                else
+                {
+                    _bs.Stop();
                     await quitToStartupAsync();
                     break;
                 }
@@ -207,7 +227,27 @@ namespace TubeScanner
                     await quitToStartupAsync();
                 }
 
-                if (_bs.IsOpen)
+                if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
+                {
+                    try
+                    {
+                        barcode = await _bs.startScan();
+                    }
+                    catch
+                    {
+                        _bs.Stop();
+                        await quitToStartupAsync();
+                        break;
+                    }
+                }
+                else
+                {
+                    _bs.Stop();
+                    await quitToStartupAsync();
+                    break;
+                }
+
+                /*if (_bs.IsOpen)
                 {
                     try
                     {
@@ -218,7 +258,7 @@ namespace TubeScanner
                         await quitToStartupAsync();
                         break;
                     }
-                }
+                }*/
 
                 lbl_Barcode.Text = barcode;
 
@@ -336,6 +376,7 @@ namespace TubeScanner
             bool loadError = false;
             bool placeError = false;
             bool removeError = false;
+
             for (int x = 0; x < _rack.TubeList.Count; x++)
             {
                 if (_rack.TubeList[x].Status == Status.READY_TO_LOAD)
@@ -383,7 +424,6 @@ namespace TubeScanner
             {
                 await quitToStartupAsync();
             }
-
         }
 
         public void tubeInfoDisplay(TubeButton tb)
@@ -427,7 +467,5 @@ namespace TubeScanner
             /* Close test window */
             this.Hide();
         }
-
     }   
 }
-

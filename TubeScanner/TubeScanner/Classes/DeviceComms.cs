@@ -154,7 +154,6 @@ namespace TubeScanner.Classes
         RxFrame rxFrame = new RxFrame();
         public DleCommands _dleCommands;
 
-
         public event EventHandler<SerialNewDataEventDataEventArgs> OnNewData;
         public event EventHandler<DleFrameArgs> OnDleFrame;
         public event EventHandler<DleFrameArgs> OnReplyFrame;
@@ -168,7 +167,6 @@ namespace TubeScanner.Classes
             }
         }
 
-
         public bool GotReply
         {
             get
@@ -180,6 +178,7 @@ namespace TubeScanner.Classes
                 _gotReply = value;
             }
         }
+
         public DeviceComms(string portName)
         {
             _portName = portName;
@@ -190,9 +189,6 @@ namespace TubeScanner.Classes
             _running = false;
 
             _devicePort.Encoding = Encoding.UTF8;
-
-
-
         }
 
         public async Task resetRxFrame()
@@ -206,8 +202,6 @@ namespace TubeScanner.Classes
             rxFrame.rx_crc = 0;
             rxFrame.frameReceived = false;
         }
-
-
 
         public bool Start()
         {
@@ -226,6 +220,7 @@ namespace TubeScanner.Classes
                 {
                     _devicePort.DataReceived += _DevicePort_DataReceived;
                     DeviceConnectionMonitor.SerialPortStatusChangedEvent += SerialPortStatusChangedEvent;
+                    //DeviceConnectionMonitor.ScannerStatusChangedEvent += ScannerStatusChangedEvent;
 
                     _dleCommands = DleCommands.Instance;
 
@@ -247,9 +242,29 @@ namespace TubeScanner.Classes
             _devicePort.Close();
             _running = false;
             DeviceConnectionMonitor.SerialPortStatusChangedEvent -= SerialPortStatusChangedEvent;
+            //DeviceConnectionMonitor.ScannerStatusChangedEvent -= ScannerStatusChangedEvent;
 
             Console.WriteLine("*** Closing - " + _portName);
         }
+
+        /*private void ScannerStatusChangedEvent(object sender, ScannerEventArgs e)
+        {
+            Console.WriteLine("*** ScannerStatusChanged - " + e.ScannerConnected);
+
+            if (e.ScannerConnected)
+            {
+                if (_running && !_devicePort.IsOpen)
+                {
+                    Start();
+                }
+            }
+            else
+            {
+                _devicePort.DataReceived -= _DevicePort_DataReceived;
+                DeviceConnectionMonitor.ScannerStatusChangedEvent -= ScannerStatusChangedEvent;
+                _running = false;
+            }
+        }*/
 
         private void SerialPortStatusChangedEvent(object sender, SerialDeviceEventArgs e)
         {
