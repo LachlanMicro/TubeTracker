@@ -146,7 +146,7 @@
             // buttonLogin
             // 
             this.buttonLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonLogin.Location = new System.Drawing.Point(217, 386);
+            this.buttonLogin.Location = new System.Drawing.Point(264, 386);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(160, 52);
             this.buttonLogin.TabIndex = 13;
@@ -157,7 +157,7 @@
             // usersButton
             // 
             this.usersButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usersButton.Location = new System.Drawing.Point(427, 386);
+            this.usersButton.Location = new System.Drawing.Point(450, 386);
             this.usersButton.Name = "usersButton";
             this.usersButton.Size = new System.Drawing.Size(160, 52);
             this.usersButton.TabIndex = 14;
@@ -215,8 +215,8 @@
             this.Controls.Add(this.btn_runStart);
             this.Controls.Add(this.btnFileBrowse);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Startup";
             this.Text = "BSD Tracker";
             this.Load += new System.EventHandler(this.Startup_Load);

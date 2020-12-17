@@ -40,8 +40,6 @@ namespace TubeScanner
             devicesValid = ConnectDevices();
             readyToStart();
             EmptyInputFile();
-
-            /* Select default value for interval combo box- middle of values (10) */
             
         }
 
@@ -104,7 +102,6 @@ namespace TubeScanner
         /* Start Run button- checks if devices are still connected, then open the tube rack screen */
         private void btn_runStart_ClickAsync(object sender, EventArgs e)
         {
-
             if (_tScanner.dP.IsOpen)
             {
                 _tScanner.dP.Stop();
@@ -132,7 +129,6 @@ namespace TubeScanner
                 devicesValid = ConnectDevices();
                 readyToStart();
             }
- 
         }
 
         private void btn_Config_Click(object sender, EventArgs e)

@@ -23,11 +23,9 @@ namespace TubeScanner.Classes
 
         public TScanner()
         {
-         
             deviceConnectionMonitor = new DeviceConnectionMonitor();
             deviceConnectionMonitor.StartMonitor();
             deviceConnectionMonitor.DevicesConnectionStatus();
-
 
             dP = new DeviceComms("COM0");
             dP.OnNewData += serialPortNewDataReceivedAsync;
@@ -45,9 +43,6 @@ namespace TubeScanner.Classes
             {
                 return;
             }
-                    
-
-
         }
 
         public bool autoConnect()

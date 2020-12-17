@@ -81,3 +81,12 @@ C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\b
 C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\System.Data.SQLite.dll
 C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\System.Data.SQLite.xml
 C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CopyComplete
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\x86\sqlite3.dll
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\x64\sqlite3.dll
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\System.Data.SQLite.dll
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\System.Data.SQLite.xml
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.AddUser.resources
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.EditUser.resources
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Login.resources
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.UsersPage.resources
+C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CopyComplete
