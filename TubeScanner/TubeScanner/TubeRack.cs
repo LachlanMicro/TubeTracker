@@ -254,6 +254,15 @@ namespace TubeScanner
 
                 var lines = File.ReadAllLines(_rack.InputFilename);
 
+                // If any well is already selected, cancel it so only one is active
+                for (int i = 0; i < _rack.TubeList.Count; i++)
+                {
+                    if (_rack.TubeList[i].Status == Status.SELECTED)
+                    {
+                        rackControl.UpdateTubeStatus(i, Status.READY_TO_LOAD);
+                    }
+                }
+
                 for (int line = 3; line < lines.Length; line++) 
                 {
                     // Split file lines into well and barcode
@@ -263,14 +272,6 @@ namespace TubeScanner
                         // If barcode has not already been used, update well status to selected
                         if (!_rack.BarcodesScanned.Contains(barcode))
                         {
-                            // If any well is already selected, cancel it so only one is active
-                            for (int i = 0; i < _rack.TubeList.Count; i++)
-                            {
-                                if (_rack.TubeList[i].Status == Status.SELECTED)
-                                {
-                                    rackControl.UpdateTubeStatus(i, Status.READY_TO_LOAD);
-                                }
-                            }
                             wellNumber = splitLine[0];
                             int scannedTube = rackControl.GetTubeNum(wellNumber);
                             // If the scanned barcode well is currently used, give an error message
@@ -321,7 +322,7 @@ namespace TubeScanner
             if (_rack.TubeList[num].Status == Status.SELECTED)
             {
                 rackControl.UpdateTubeStatus(num, Status.READY_TO_LOAD);
-                lbl_Status.Text = "10 second window to place scanned tube has expired. Please rescan and try again.";
+                MessageBox.Show("10 second window to place scanned tube has expired. Please rescan and try again.");
             }
         }
 
