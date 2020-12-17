@@ -79,7 +79,6 @@ namespace TubeScanner.Classes
             try
             {
                 _barcodeScannerPort.Open();
-                Console.WriteLine(_barcodeScannerPort.IsOpen);
             }
             catch (Exception ex)
             {
