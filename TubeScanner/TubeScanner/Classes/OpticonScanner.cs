@@ -8,16 +8,13 @@ using static TubeScanner.Classes.VariableTypesClass;
 
 namespace TubeScanner.Classes
 {
-
     public class OpticonScanner
     {
-
         private const char ESC = '\x1B';
         private const char CR = '\r';
         private const char NL = '\n';
         private const string Terminator = "\r\n";
         private const string TerminatorLeadingSpace = " \r\n";
-
 
         private const char SOUND_GOOD_BEEP = 'B';
         private const char SOUND_ERROR_BEEP = 'E';
@@ -39,12 +36,9 @@ namespace TubeScanner.Classes
         private StopBits _stopBits = StopBits.One;
         private bool _running = false;
 
-
         private bool _barcodeReceived = false;
         String Barcode = "";
         private bool _gotReply = false;
-
-        DeviceConnectionMonitor deviceConnectionMonitor = new DeviceConnectionMonitor();
 
         public event EventHandler<SerialNewDataEventDataEventArgs> OnNewData;
 
@@ -55,7 +49,6 @@ namespace TubeScanner.Classes
                 return _barcodeScannerPort.IsOpen;
             }
         }
-
 
         public bool GotReply
         {
@@ -68,7 +61,6 @@ namespace TubeScanner.Classes
                 _gotReply = value;
             }
         }
-
 
         public OpticonScanner(string portName)
         {
@@ -99,7 +91,7 @@ namespace TubeScanner.Classes
                 if (_running)
                 {
                     _barcodeScannerPort.DataReceived += _DevicePort_DataReceived;
-
+                    DeviceConnectionMonitor.ScannerStatusChangedEvent += ScannerStatusChangedEvent;
 
                     Console.WriteLine("*** Opening - " + _portName);
                 }
@@ -107,7 +99,6 @@ namespace TubeScanner.Classes
                 {
                     Console.WriteLine("*** Failed to open - " + _portName);
                 }
-
             }
 
             return _barcodeScannerPort.IsOpen;
@@ -120,15 +111,35 @@ namespace TubeScanner.Classes
             try
             {
                 _barcodeScannerPort.Close();
+                Console.WriteLine(_barcodeScannerPort.IsOpen);
             }
             catch (UnauthorizedAccessException)
             {
 
             }
             _running = false;
-
+            DeviceConnectionMonitor.ScannerStatusChangedEvent -= ScannerStatusChangedEvent;
 
             Console.WriteLine("*** Closing - " + _portName);
+        }
+
+        private void ScannerStatusChangedEvent(object sender, ScannerEventArgs e)
+        {
+            Console.WriteLine("*** ScannerStatusChanged - " + e.ScannerConnected);
+
+            if (e.ScannerConnected)
+            {
+                if (_running && !_barcodeScannerPort.IsOpen)
+                {
+                    Start();
+                }
+            }
+            else
+            {
+                _barcodeScannerPort.DataReceived -= _DevicePort_DataReceived;
+                DeviceConnectionMonitor.ScannerStatusChangedEvent -= ScannerStatusChangedEvent;
+                _running = false;
+            }
         }
 
         public async Task<String> startScan()
@@ -180,7 +191,6 @@ namespace TubeScanner.Classes
             }
         }
 
-
         public async Task<bool> sendCommand(byte[] command, int ms_timeout)
         {
             bool success = false;
@@ -220,7 +230,6 @@ namespace TubeScanner.Classes
             }
         }
 
-
         private void _DevicePort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
@@ -259,5 +268,3 @@ namespace TubeScanner.Classes
         }
     }
 }
-
-

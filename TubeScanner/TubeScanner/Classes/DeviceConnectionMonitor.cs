@@ -19,7 +19,6 @@ namespace TubeScanner.Classes
         public string comPortManufacturer { get; set; }
     }
 
-
     public class DeviceConnectionMonitor
     {
         public  List<string> _DeviceConnectionMonitorStringList = new List<string>();
@@ -36,14 +35,12 @@ namespace TubeScanner.Classes
         public static event EventHandler<SerialDeviceEventArgs> SerialPortStatusChangedEvent;
         public static event EventHandler<ScannerEventArgs> ScannerStatusChangedEvent;
         
-
         private  ManagementEventWatcher watcher = null;
 
         private  DeviceConnectionMonitorModel deviceConnectionMonitorSettings = new DeviceConnectionMonitorModel();
       
         public DeviceConnectionMonitor()
         {
-           
             deviceConnectionMonitorSettings.barScannerName = "Opticon USB Code Reader";
             deviceConnectionMonitorSettings.comPortName = "COM";
             deviceConnectionMonitorSettings.comPortDescription = "USB Serial Port";
@@ -120,7 +117,6 @@ namespace TubeScanner.Classes
             return list;
         }
 
-
         public void DevicesConnectionStatus()
         {
             bool isCameraConnected = false;
@@ -136,7 +132,6 @@ namespace TubeScanner.Classes
             try
             {
                 ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PnPEntity");
-
                 
                 foreach (ManagementObject queryObj in searcher.Get())
                 {
@@ -155,7 +150,6 @@ namespace TubeScanner.Classes
                         string comPortAdd = comPort.Remove(0, comPort.IndexOf("(COM"));
                         comPortAdd = comPortAdd.Trim(charsToTrim);
 
-
                         foreach (string comPortAddress in System.IO.Ports.SerialPort.GetPortNames())
                         {
                             if (comPortAdd.Equals(comPortAddress))
@@ -173,11 +167,9 @@ namespace TubeScanner.Classes
                     }
                 }
 
-
                 ScannerEventArgs argsS = new ScannerEventArgs();
                 argsS.ScannerConnected = isBarcodeScannerConnected;
                 OnScannertStatusChangeEvent(argsS);
-
 
                 foreach (ManagementObject queryObj in searcher.Get())
                 {
@@ -227,7 +219,6 @@ namespace TubeScanner.Classes
             }
         }
 
-
         private void OnSerialPortStatusChangeEvent(SerialDeviceEventArgs e)
         {
             if (SerialPortStatusChangedEvent != null)
@@ -242,11 +233,8 @@ namespace TubeScanner.Classes
             {
                 ScannerStatusChangedEvent.Invoke(null, e);
             }
-        }
-
-       
+        } 
     }
-
 
     public class SerialDeviceEventArgs : EventArgs
     {
@@ -259,6 +247,4 @@ namespace TubeScanner.Classes
         public bool ScannerConnected { get; set; }
 
     }
-
-   
 }

@@ -59,7 +59,6 @@ C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\
 C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.TubeRack.resources
 C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Configuration.resources
 C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.TubeRack.resources
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
 C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.AddUser.resources
 C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Configuration.resources
 C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Controls.RackControl.resources
