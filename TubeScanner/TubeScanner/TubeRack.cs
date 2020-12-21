@@ -87,7 +87,7 @@ namespace TubeScanner
                     correctBarcode = true;
                     button1.Enabled = true;
 
-                    lbl_Status.Text = "Barcode matches input file.";
+                    lbl_Status.Text = "Barcode matches input file, click scan to begin";
                 }
                 else
                 {
@@ -254,6 +254,15 @@ namespace TubeScanner
 
                 var lines = File.ReadAllLines(_rack.InputFilename);
 
+                // If any well is already selected, cancel it so only one is active
+                for (int i = 0; i < _rack.TubeList.Count; i++)
+                {
+                    if (_rack.TubeList[i].Status == Status.SELECTED)
+                    {
+                        rackControl.UpdateTubeStatus(i, Status.READY_TO_LOAD);
+                    }
+                }
+
                 for (int line = 3; line < lines.Length; line++) 
                 {
                     // Split file lines into well and barcode
@@ -263,14 +272,6 @@ namespace TubeScanner
                         // If barcode has not already been used, update well status to selected
                         if (!_rack.BarcodesScanned.Contains(barcode))
                         {
-                            // If any well is already selected, cancel it so only one is active
-                            for (int i = 0; i < _rack.TubeList.Count; i++)
-                            {
-                                if (_rack.TubeList[i].Status == Status.SELECTED)
-                                {
-                                    rackControl.UpdateTubeStatus(i, Status.READY_TO_LOAD);
-                                }
-                            }
                             wellNumber = splitLine[0];
                             int scannedTube = rackControl.GetTubeNum(wellNumber);
                             // If the scanned barcode well is currently used, give an error message
@@ -290,7 +291,7 @@ namespace TubeScanner
 
                 if (!found)
                 {
-                    lbl_Status.Text = "Scanned barcode was not found in input file or has already been scanned";
+                    MessageBox.Show("Scanned barcode was not found in input file or has already been scanned");
                 }
 
                 // Activate placement timer and 1 second delay after scanning barcode 
@@ -322,7 +323,7 @@ namespace TubeScanner
             if (_rack.TubeList[num].Status == Status.SELECTED)
             {
                 rackControl.UpdateTubeStatus(num, Status.READY_TO_LOAD);
-                lbl_Status.Text = "10 second window to place scanned tube has expired. Please rescan and try again.";
+                MessageBox.Show("10 second window to place scanned tube has expired. Please rescan and try again.");
             }
         }
 
@@ -366,51 +367,62 @@ namespace TubeScanner
             bool placeError = false;
             bool removeError = false;
 
-            for (int x = 0; x < _rack.TubeList.Count; x++)
+            if (_tScanner.dP.IsOpen && _tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
             {
-                if (_rack.TubeList[x].Status == Status.READY_TO_LOAD)
+                for (int x = 0; x < _rack.TubeList.Count; x++)
                 {
-                    if (!loadError)
+                    if (_rack.TubeList[x].Status == Status.READY_TO_LOAD)
                     {
-                        MessageBox.Show("Warning: The rack contains unloaded wells, please ensure that you wish to continue.");
-                        loadError = true;
+                        if (!loadError)
+                        {
+                            MessageBox.Show("Warning: The rack contains unloaded wells, please ensure that you wish to continue.");
+                            loadError = true;
+                        }
+                    }
+                    if (_rack.TubeList[x].Status == Status.ERROR)
+                    {
+                        if (!placeError)
+                        {
+                            MessageBox.Show("Warning: The rack contains misplaced tubes, please ensure that you wish to continue.");
+                            placeError = true;
+                        }
+                    }
+                    if (_rack.TubeList[x].Status == Status.REMOVED)
+                    {
+                        if (!removeError)
+                        {
+                            MessageBox.Show("Warning: Tubes have been removed from the rack and not replaced, please ensure that you wish to continue.");
+                            removeError = true;
+                        }
+                    }
+                    if (loadError & placeError & removeError)
+                    {
+                        break;
                     }
                 }
-                if (_rack.TubeList[x].Status == Status.ERROR)
+
+                DialogResult dialogResult = MessageBox.Show("Save Run?", "Ending Run", MessageBoxButtons.YesNoCancel);
+                if (dialogResult == DialogResult.Yes)
                 {
-                    if (!placeError)
-                    {
-                        MessageBox.Show("Warning: The rack contains misplaced tubes, please ensure that you wish to continue.");
-                        placeError = true;
-                    }
+                    /* Save output file */
+                    string[] currDateTime = DateTime.Today.ToString().Split(' ');
+
+                    string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
+                    FileManager.WriteOutputFile(fileName, rackControl.OutputTubeList, _rack.PlateID, "aaaa", currDateTime[0]);
+
+                    await quitToStartupAsync();
                 }
-                if (_rack.TubeList[x].Status == Status.REMOVED)
+                else if (dialogResult == DialogResult.No)
                 {
-                    if (!removeError)
-                    {
-                        MessageBox.Show("Warning: Tubes have been removed from the rack and not replaced, please ensure that you wish to continue.");
-                        removeError = true;
-                    }
-                }
-                if (loadError & placeError & removeError)
-                {
-                    break;
+                    await quitToStartupAsync();
                 }
             }
-
-            DialogResult dialogResult = MessageBox.Show("Save Run?", "Ending Run", MessageBoxButtons.YesNoCancel);
-            if (dialogResult == DialogResult.Yes)
+            else
             {
-                /* Save output file */
-                string[] currDateTime = DateTime.Today.ToString().Split(' ');
-
-                string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
-                FileManager.WriteOutputFile(fileName, rackControl.OutputTubeList, _rack.PlateID, "aaaa", currDateTime[0]);
-
-                await quitToStartupAsync();
-            }
-            else if (dialogResult == DialogResult.No)
-            {
+                if (!(_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0))
+                {
+                    _bs.Stop();
+                }
                 await quitToStartupAsync();
             }
         }

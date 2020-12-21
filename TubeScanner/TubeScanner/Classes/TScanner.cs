@@ -50,7 +50,7 @@ namespace TubeScanner.Classes
                 dP.Stop();
             }
 
-            if (deviceConnectionMonitor._deviceConnected)
+            if (deviceConnectionMonitor._deviceConnected && deviceConnectionMonitor._deviceConnectionsList.Count > 0)
             {
                 string comPortAddress = deviceConnectionMonitor._deviceConnectionsList[0].Address;
                 dP.PortName = comPortAddress;

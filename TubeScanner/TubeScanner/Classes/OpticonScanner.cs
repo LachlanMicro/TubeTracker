@@ -111,7 +111,6 @@ namespace TubeScanner.Classes
             try
             {
                 _barcodeScannerPort.Close();
-                Console.WriteLine(_barcodeScannerPort.IsOpen);
             }
             catch (UnauthorizedAccessException)
             {
