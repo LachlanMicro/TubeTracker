@@ -305,17 +305,18 @@ namespace TubeScanner
             }
         }
 
-        // Create a timer with a 10 second interval.
+        /* Create a timer with a 10 second interval */
         private void SetTimer()
         {
             /* Interval can be altered in the configuration */
             scanTimer = new System.Timers.Timer(Configuration.interval*1000); 
+
             scanTimer.Elapsed += OnTimedEvent;
             scanTimer.AutoReset = false;
             scanTimer.Enabled = true;
         }
 
-        // When 10 second timer has expired, set selected tube back to normal if it is still unloaded
+        /* When 10 second timer has expired, set selected tube back to normal if it is still unloaded */
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             int num = rackControl.GetTubeNum(wellNumber);
@@ -431,6 +432,7 @@ namespace TubeScanner
             lbl_Status.Text = "Tube ID: " + tb.Name + '\n' + "Tube Number: " + tb.Text;
         }
 
+        /* Called when user ends run */
         private async Task quitToStartupAsync()
         {
             /* Clear tubes */
