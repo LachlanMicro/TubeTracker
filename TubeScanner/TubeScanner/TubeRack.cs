@@ -41,26 +41,9 @@ namespace TubeScanner
             bool correctBarcode = false;
             lbl_Status.Text = "Scan rack barcode";
 
+            /* Do not proceed until first scan matches rack barcode in input file */
             while (! correctBarcode)
             {
-                /*if (_bs.IsOpen)
-                {
-                    try
-                    {
-                        rackBarcode = await _bs.startScan();
-                    }
-                    catch
-                    {
-                        await quitToStartupAsync();
-                        break;
-                    }
-                }
-                else
-                {
-                    await quitToStartupAsync();
-                    break;
-                }*/
-
                 if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
                 {
                     try
@@ -81,6 +64,7 @@ namespace TubeScanner
                     break;
                 }
 
+                /* If the barcodes match, enable scan button to begin run */
                 if (rackBarcode == _rack.PlateID)
                 {
                     lbl_PlateID.Text = rackBarcode;
@@ -237,19 +221,6 @@ namespace TubeScanner
                     break;
                 }
 
-                /*if (_bs.IsOpen)
-                {
-                    try
-                    {
-                        barcode = await _bs.startScan();
-                    }
-                    catch
-                    {
-                        await quitToStartupAsync();
-                        break;
-                    }
-                }*/
-
                 lbl_Barcode.Text = barcode;
 
                 var lines = File.ReadAllLines(_rack.InputFilename);
@@ -294,7 +265,7 @@ namespace TubeScanner
                     MessageBox.Show("Scanned barcode was not found in input file or has already been scanned");
                 }
 
-                // Activate placement timer and 1 second delay after scanning barcode 
+                /* Activate placement timer and 1 second delay after scanning barcode */
                 if (scanTimer != null)
                 {
                     scanTimer.Stop();
@@ -316,7 +287,7 @@ namespace TubeScanner
             scanTimer.Enabled = true;
         }
 
-        /* When 10 second timer has expired, set selected tube back to normal if it is still unloaded */
+        /* When 10-30 second timer has expired, set selected tube back to normal if it is still unloaded */
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             int num = rackControl.GetTubeNum(wellNumber);
@@ -336,6 +307,7 @@ namespace TubeScanner
             }
         }
 
+        /* Hides all the tube labels */
         private void button3_Click(object sender, EventArgs e)
         {
             for (int x = 0; x < _rack.TubeList.Count; x++)
@@ -344,6 +316,7 @@ namespace TubeScanner
             }
         }
 
+        /* Shows tube labels in A-H 1-12 format */
         private void button4_Click(object sender, EventArgs e)
         {
             for (int x = 0; x < _rack.TubeList.Count; x++)
@@ -352,6 +325,7 @@ namespace TubeScanner
             }
         }
 
+        /* Shows tube numbers in 1-96 format */
         private void button5_Click(object sender, EventArgs e)
         {
             for (int x = 0; x < _rack.TubeList.Count; x++)
@@ -402,6 +376,7 @@ namespace TubeScanner
                 }
 
                 DialogResult dialogResult = MessageBox.Show("Save Run?", "Ending Run", MessageBoxButtons.YesNoCancel);
+
                 if (dialogResult == DialogResult.Yes)
                 {
                     /* Save output file */

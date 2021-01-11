@@ -34,8 +34,7 @@ namespace TubeScanner.Classes
 
         private void serialPortNewDataReceivedAsync(object sender, SerialNewDataEventDataEventArgs e)
         {
-
-            string str = System.Text.Encoding.UTF8.GetString(e.Data);
+            string str = Encoding.UTF8.GetString(e.Data);
             Console.WriteLine("*** data = " + str);
             if (str == null)
             {
@@ -55,7 +54,6 @@ namespace TubeScanner.Classes
                 string comPortAddress = deviceConnectionMonitor._deviceConnectionsList[0].Address;
                 dP.PortName = comPortAddress;
                 dP.Start();
-               
             }
            
             return dP.IsOpen;
@@ -67,7 +65,6 @@ namespace TubeScanner.Classes
             {
                 dP.Stop();
             }
-
         }
 
         public void sendCommand(string command)
