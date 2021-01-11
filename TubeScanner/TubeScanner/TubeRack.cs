@@ -322,7 +322,7 @@ namespace TubeScanner
             if (_rack.TubeList[num].Status == Status.SELECTED)
             {
                 rackControl.UpdateTubeStatus(num, Status.READY_TO_LOAD);
-                MessageBox.Show("10 second window to place scanned tube has expired. Please rescan and try again.");
+                MessageBox.Show(String.Format("{0} second window to place scanned tube has expired. Please rescan and try again.", Configuration.interval));
             }
         }
 
