@@ -1,0 +1,12 @@
+Plate ID	NU00344985
+
+Position	Lab number
+A01	20
+B01	69
+C01	21
+D01	22
+E01	23
+F01	24
+G01	43
+H01	44
+A02	45
