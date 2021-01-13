@@ -229,7 +229,8 @@ namespace TubeScanner
                 if (Program.currentUser != "")
                 {
                     buttonLogin.Text = "Logout";
-                    label1.Text = "Current user: " + Program.currentUser;
+                    lbl_user.Text = "Current user: " + Program.currentUser;
+                    lbl_user.ForeColor = Color.Green;
                 }
             }
             /* If button is a logout button, log user out */
@@ -240,7 +241,8 @@ namespace TubeScanner
                 {
                     Program.currentUser = "";
                     buttonLogin.Text = "Login";
-                    label1.Text = "Current user: " + Program.currentUser;
+                    lbl_user.Text = "Current user: " + Program.currentUser;
+                    lbl_user.ForeColor = Color.Red;
                 }
             }
             readyToStart();
@@ -251,7 +253,7 @@ namespace TubeScanner
         {
             UsersPage form = new UsersPage();
             form.ShowDialog();
-            label1.Text = "Current user: " + Program.currentUser;
+            lbl_user.Text = "Current user: " + Program.currentUser;
             if (Program.currentUser == "")
             {
                 buttonLogin.Text = "Login";
