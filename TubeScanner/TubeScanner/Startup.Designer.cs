@@ -42,7 +42,7 @@
             this.usersButton = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lbl_title = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lbl_user = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -185,22 +185,23 @@
             this.lbl_title.TabIndex = 9;
             this.lbl_title.Text = "BSD Tracker";
             // 
-            // label1
+            // lbl_user
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 60);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 16);
-            this.label1.TabIndex = 15;
-            this.label1.Text = "Current user:";
+            this.lbl_user.AutoSize = true;
+            this.lbl_user.Font = new System.Drawing.Font("Lucida Sans", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_user.ForeColor = System.Drawing.Color.Red;
+            this.lbl_user.Location = new System.Drawing.Point(-1, 62);
+            this.lbl_user.Name = "lbl_user";
+            this.lbl_user.Size = new System.Drawing.Size(217, 18);
+            this.lbl_user.TabIndex = 15;
+            this.lbl_user.Text = "CURRENT USER: No User";
             // 
             // Startup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lbl_user);
             this.Controls.Add(this.usersButton);
             this.Controls.Add(this.buttonLogin);
             this.Controls.Add(this.btn_Config);
@@ -242,6 +243,6 @@
         private System.Windows.Forms.Button usersButton;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label lbl_title;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbl_user;
     }
 }
