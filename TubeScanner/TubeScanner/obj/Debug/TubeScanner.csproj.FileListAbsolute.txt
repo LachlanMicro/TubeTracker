@@ -1,92 +1,22 @@
-D:\BSD\TubeScanner\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe.config
-D:\BSD\TubeScanner\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe
-D:\BSD\TubeScanner\TubeScanner\TubeScanner\bin\Debug\TubeScanner.pdb
-D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
-D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Controls.RackControl.resources
-D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Form1.resources
-D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Properties.Resources.resources
-D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.GenerateResource.cache
-D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CoreCompileInputs.cache
-D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.exe
-D:\BSD\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.pdb
-Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Controls.RackControl.resources
-Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Form1.resources
-Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Properties.Resources.resources
-Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Startup.resources
-Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.GenerateResource.cache
-Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CoreCompileInputs.cache
-Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe.config
-Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe
-Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\bin\Debug\TubeScanner.pdb
-Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.exe
-Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.pdb
-Z:\STAFF\Lachlan Stewart\TubeScanner\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
-C:\Users\Student\Documents\TubeScanner_Lachlan\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
-C:\Users\Student\Documents\TubeScanner_Lachlan\TubeScanner\obj\Debug\TubeScanner.Controls.RackControl.resources
-C:\Users\Student\Documents\TubeScanner_Lachlan\TubeScanner\obj\Debug\TubeScanner.Form1.resources
-C:\Users\Student\Documents\TubeScanner_Lachlan\TubeScanner\obj\Debug\TubeScanner.Properties.Resources.resources
-C:\Users\Student\Documents\TubeScanner_Lachlan\TubeScanner\obj\Debug\TubeScanner.Startup.resources
-C:\Users\Student\Documents\TubeScanner_Lachlan\TubeScanner\obj\Debug\TubeScanner.csproj.GenerateResource.cache
-C:\Users\Student\Documents\TubeScanner_Lachlan\TubeScanner\obj\Debug\TubeScanner.csproj.CoreCompileInputs.cache
-C:\Users\Student\Documents\TubeScanner_Lachlan\TubeScanner\obj\Debug\TubeScanner.exe
-C:\Users\Student\Documents\TubeScanner_Lachlan\TubeScanner\obj\Debug\TubeScanner.pdb
-C:\Users\Student\Documents\TubeScanner_Lachlan\TubeScanner\bin\Debug\TubeScanner.exe.config
-C:\Users\Student\Documents\TubeScanner_Lachlan\TubeScanner\bin\Debug\TubeScanner.exe
-C:\Users\Student\Documents\TubeScanner_Lachlan\TubeScanner\bin\Debug\TubeScanner.pdb
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe.config
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.pdb
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Controls.RackControl.resources
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Properties.Resources.resources
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Startup.resources
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.GenerateResource.cache
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CoreCompileInputs.cache
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.exe
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.pdb
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Controls.RackControl.resources
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Properties.Resources.resources
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Startup.resources
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.GenerateResource.cache
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CoreCompileInputs.cache
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe.config
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.pdb
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.exe
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.pdb
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Configuration.resources
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.TubeRack.resources
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Configuration.resources
-C:\Users\Student\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.TubeRack.resources
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.AddUser.resources
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Configuration.resources
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Controls.RackControl.resources
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.EditUser.resources
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Login.resources
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.TubeRack.resources
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Properties.Resources.resources
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Startup.resources
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.UsersPage.resources
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.GenerateResource.cache
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CoreCompileInputs.cache
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.exe
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.pdb
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\x86\sqlite3.dll
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\x64\sqlite3.dll
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe.config
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\TubeScanner.pdb
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\System.Data.SQLite.dll
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\System.Data.SQLite.xml
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CopyComplete
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\x86\sqlite3.dll
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\x64\sqlite3.dll
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\System.Data.SQLite.dll
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\bin\Debug\System.Data.SQLite.xml
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.AddUser.resources
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.EditUser.resources
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Login.resources
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.UsersPage.resources
-C:\Users\Lachlan\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CopyComplete
-C:\Users\Student\OneDrive\Documents\GitHub\TubeTracker\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\bin\Debug\System.Data.SQLite.dll
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\bin\Debug\System.Data.SQLite.xml
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.AddUser.resources
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Configuration.resources
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Controls.RackControl.resources
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.EditUser.resources
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Login.resources
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.TubeRack.resources
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Properties.Resources.resources
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.Startup.resources
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.UsersPage.resources
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.GenerateResource.cache
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CoreCompileInputs.cache
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.exe
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.pdb
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\bin\Debug\x86\sqlite3.dll
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\bin\Debug\x64\sqlite3.dll
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe.config
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\bin\Debug\TubeScanner.exe
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\bin\Debug\TubeScanner.pdb
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csprojAssemblyReference.cache
+Z:\COMMON\Conor O'Reilly\TubeScanner\TubeScanner\obj\Debug\TubeScanner.csproj.CopyComplete

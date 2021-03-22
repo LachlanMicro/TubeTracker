@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using TubeScanner.Classes;
 using TubeScanner.Controls;
 using System.Timers;
+using System.Diagnostics;
 
 namespace TubeScanner
 {
@@ -19,6 +20,8 @@ namespace TubeScanner
         private static System.Timers.Timer scanTimer = null;
         string wellNumber;
         Startup _startupForm;
+
+        private static int scannedTube;
 
         public TubeRack(Startup startupForm, Rack rack, TScanner tScanner, OpticonScanner bs)
         {
@@ -36,6 +39,8 @@ namespace TubeScanner
             rackControl.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Left);
 
             button1.Enabled = false;
+
+            await _tScanner.DleCommands.runStatus(DleCommands.RunState.RUNNING);
 
             string rackBarcode = "";
             bool correctBarcode = false;
@@ -81,7 +86,7 @@ namespace TubeScanner
 
             _tScanner.DleCommands.OnFootSwitchEvent += FootSwitchEvent;
 
-            if (_tScanner.dP.IsOpen)
+            if (_tScanner.dP.IsOpen || Configuration.simulationMode)
             {
                 await _tScanner.DleCommands.sendNullCommand();
             }
@@ -94,9 +99,22 @@ namespace TubeScanner
         /* Function to scan all tube positions */
         private async void FootSwitchEvent(object sender, EventArgs e)
         {
-            if (_tScanner.dP.IsOpen)
+            if (_tScanner.dP.IsOpen || Configuration.simulationMode)
             {
                 Byte[] tubeData = null;
+
+                if (!Configuration.simulationMode)
+                {
+                    tubeData = await _tScanner.DleCommands.scanAllTubes();
+                }
+                else
+                {
+                    tubeData = new Byte[12];
+
+                    //tubeData[0] = 0x00000001;
+                    tubeData[0] = Convert.ToByte(scannedTube);
+                    Console.WriteLine("Tube Number: " + tubeData[0]);
+                }
 
                 if (tubeData != null)
                 {
@@ -129,11 +147,15 @@ namespace TubeScanner
                                 if (_rack.InitialTubeList[bitNum].Status == Status.READY_TO_LOAD)
                                 {
                                     rackControl.UpdateTubeStatus(bitNum, Status.LOADED);
+
+                                    /* turn on LED solid at position where tube is detected */
+                                    await _tScanner.DleCommands.selectLED((UInt16)(row + 1), (UInt16)(col + 1), DleCommands.LedColour.LED_GREEN, DleCommands.LedState.LED_STATE_SOLID);
                                 }
                                 else if (_rack.InitialTubeList[bitNum].Status == Status.NOT_USED)
                                 {
                                     rackControl.UpdateTubeStatus(bitNum, Status.ERROR);
                                 }
+
                             }
 
                             if (bitMap[row, col] == '0')
@@ -178,9 +200,8 @@ namespace TubeScanner
         private async void button1_Click(object sender, EventArgs e)
         {
             // Update tube scanner state to running
-            if (_tScanner.dP.IsOpen)
+            if (_tScanner.dP.IsOpen || Configuration.simulationMode)
             {
-                await _tScanner.DleCommands.runStatus(DleCommands.RunState.RUNNING);
                 scanning = true;
             }
             else
@@ -196,7 +217,7 @@ namespace TubeScanner
                 /* Update status msg */
                 lbl_Status.Text = "Ready for next scan";
 
-                if (!_tScanner.dP.IsOpen)
+                if (!_tScanner.dP.IsOpen && !Configuration.simulationMode)
                 {
                     await quitToStartupAsync();
                 }
@@ -244,7 +265,8 @@ namespace TubeScanner
                         if (!_rack.BarcodesScanned.Contains(barcode))
                         {
                             wellNumber = splitLine[0];
-                            int scannedTube = rackControl.GetTubeNum(wellNumber);
+                            scannedTube = rackControl.GetTubeNum(wellNumber);
+
                             // If the scanned barcode well is currently used, give an error message
                             if (_rack.TubeList[scannedTube].Status == Status.ERROR)
                             {
@@ -264,6 +286,28 @@ namespace TubeScanner
                 {
                     MessageBox.Show("Scanned barcode was not found in input file or has already been scanned");
                 }
+
+                /* Flash LEDs to scanned well position */
+                int row = rackControl.GetTubeNum(wellNumber) / 12;
+                int col = rackControl.GetTubeNum(wellNumber) % 12;
+                await _tScanner.DleCommands.selectLED((UInt16)(row + 1), (UInt16)(col + 1), DleCommands.LedColour.LED_GREEN, DleCommands.LedState.LED_STATE_FLASHING);
+
+                //FootSwitchEvent(this, null);
+
+                // await _tScanner.DleCommands.selectLED(3, 4, DleCommands.LedColour.LED_GREEN, DleCommands.LedState.LED_STATE_FLASHING);
+
+                //for (int x = 0; x <= 8; x++)
+                //{
+                //    for (int y = 0; y <= 8; y++)
+                //    {
+
+
+                //        await _tScanner.DleCommands.selectLED((UInt16)(x), (UInt16)(y), DleCommands.LedColour.LED_GREEN, DleCommands.LedState.LED_STATE_FLASHING);
+
+                //        Debug.WriteLine("x=" + x + ", y=" + y);
+                //        await Task.Delay(500);
+                //    }
+                //}
 
                 /* Activate placement timer and 1 second delay after scanning barcode */
                 if (scanTimer != null)
@@ -300,7 +344,7 @@ namespace TubeScanner
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            if (_tScanner.dP.IsOpen)
+            if (_tScanner.dP.IsOpen || Configuration.simulationMode)
             {
                 await _tScanner.DleCommands.runStatus(DleCommands.RunState.PAUSED);
                 scanning = false;
@@ -411,7 +455,7 @@ namespace TubeScanner
         private async Task quitToStartupAsync()
         {
             /* Clear tubes */
-            if (_tScanner.dP.IsOpen)
+            if (_tScanner.dP.IsOpen || Configuration.simulationMode)
             {
                 await _tScanner.DleCommands.runStatus(DleCommands.RunState.STOPPED);
                 for (int x = 0; x < _rack.TubeList.Count; x++)

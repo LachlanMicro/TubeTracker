@@ -265,6 +265,8 @@ namespace TubeScanner.Controls
             TB.Enabled = true;
         }
 
+
+
         /* Show well info when it is double clicked */
         private void button_DoubleClick(object sender, EventArgs e)
         {

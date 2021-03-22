@@ -14,6 +14,8 @@ namespace TubeScanner
     {
         public static int interval = 10;
 
+        public static bool simulationMode = false;
+
         public Configuration()
         {
             InitializeComponent();
@@ -55,6 +57,11 @@ namespace TubeScanner
         private void Configuration_Load(object sender, EventArgs e)
         {
             setDefaultSettings();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            simulationMode = checkBox1.Checked;
         }
     }
 }

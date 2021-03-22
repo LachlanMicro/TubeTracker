@@ -43,6 +43,7 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lbl_title = new System.Windows.Forms.Label();
             this.lbl_user = new System.Windows.Forms.Label();
+            this.button_test_LED = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -196,11 +197,22 @@
             this.lbl_user.TabIndex = 15;
             this.lbl_user.Text = "CURRENT USER: No User";
             // 
+            // button_test_LED
+            // 
+            this.button_test_LED.Location = new System.Drawing.Point(12, 86);
+            this.button_test_LED.Name = "button_test_LED";
+            this.button_test_LED.Size = new System.Drawing.Size(75, 23);
+            this.button_test_LED.TabIndex = 16;
+            this.button_test_LED.Text = "Test LED";
+            this.button_test_LED.UseVisualStyleBackColor = true;
+            this.button_test_LED.Click += new System.EventHandler(this.button_test_LED_Click);
+            // 
             // Startup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button_test_LED);
             this.Controls.Add(this.lbl_user);
             this.Controls.Add(this.usersButton);
             this.Controls.Add(this.buttonLogin);
@@ -244,5 +256,6 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label lbl_title;
         private System.Windows.Forms.Label lbl_user;
+        private System.Windows.Forms.Button button_test_LED;
     }
 }

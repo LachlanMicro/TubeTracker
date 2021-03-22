@@ -20,12 +20,14 @@ namespace TubeScanner
         public string plateID;
 
         private bool inputFileValid = false;
-        private bool devicesValid = false;
+        public bool devicesValid = false;
 
         Configuration config = new Configuration();
 
         TScanner _tScanner = new TScanner();
         OpticonScanner _bs = null;
+
+        private bool LEDon = false;
 
         public Startup()
         {
@@ -119,7 +121,7 @@ namespace TubeScanner
             readyToStart();
 
             /* Test if devices are still connected */
-            if (_tScanner.dP.IsOpen && _bs.IsOpen)
+            if ((_tScanner.dP.IsOpen || Configuration.simulationMode) && _bs.IsOpen)
             {
                 /*If true, go to Tube Rack screen */
                 TubeRack form = new TubeRack(this, rack, _tScanner, _bs);
@@ -141,8 +143,9 @@ namespace TubeScanner
             config.Show();
         }
 
+        /* TODO: Send command to check connection */
         /* Checks whether USB connected devices are connected */
-        private bool ConnectDevices()
+        public bool ConnectDevices()
         {
             bool connected = true;
 
@@ -154,6 +157,12 @@ namespace TubeScanner
                 lbl_BS.ForeColor = Color.Green;
                 _bs.Start();
             }
+            else if (Configuration.simulationMode)
+            {
+                lbl_TS.Text = "TUBE TRACKER SIMULATION";
+                lbl_TS.ForeColor = Color.Green;
+
+            }
             else
             {
                 lbl_BS.Text = "BARCODE SCANNER NOT CONNECTED";
@@ -164,9 +173,14 @@ namespace TubeScanner
              _tScanner.autoConnect();
 
             /* Update label based on whether tube scanner is connected or disconnected */
-            if (_tScanner.dP.IsOpen)
+            if (_tScanner.dP.IsOpen) 
             {
                 lbl_TS.Text = "TUBE TRACKER CONNECTED";
+                lbl_TS.ForeColor = Color.Green;
+            }
+            else if (Configuration.simulationMode)
+            {
+                lbl_TS.Text = "TUBE TRACKER SIMULATION";
                 lbl_TS.ForeColor = Color.Green;
             }
             else
@@ -180,7 +194,7 @@ namespace TubeScanner
         }
 
         /* Enables/diables the Start Run button if able to scan */
-        private void readyToStart()
+        public void readyToStart()
         {
             if (inputFileValid && devicesValid && Program.currentUser != "")
             {
@@ -258,6 +272,56 @@ namespace TubeScanner
             {
                 buttonLogin.Text = "Login";
             }
+        }
+
+        private async void button_test_LED_Click(object sender, EventArgs e)
+        {
+            if (!LEDon)
+            {
+                await _tScanner.DleCommands.selectLED(1, 1, DleCommands.LedColour.LED_GREEN, DleCommands.LedState.LED_STATE_FLASHING);
+                Console.WriteLine("ON");
+            }
+            else
+            {
+                await _tScanner.DleCommands.selectLED(1, 1, DleCommands.LedColour.LED_OFF, DleCommands.LedState.LED_STATE_OFF);
+                Console.WriteLine("OFF");
+            }
+
+            LEDon = !LEDon;
+
+            Byte[] tubeData = null;
+            tubeData = await _tScanner.DleCommands.scanAllTubes();
+
+            int row = 0;
+
+            for (int col = 0; col < tubeData.Length; col++)
+            {
+                Console.WriteLine(tubeData[col]);
+
+                
+
+               
+
+                //int col = 0;
+
+                //if (by != 0)
+                //{
+                //    if (by == 1)
+                //    {
+                //        col = 0;
+                //    }
+                //    else
+                //    {
+                //        col = by / 4;
+                //    }
+                //}
+                //else 
+                //{
+                   
+                //}
+            }
+            Console.WriteLine("");
+
         }
     }
 }

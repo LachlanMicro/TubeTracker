@@ -34,6 +34,8 @@
             this.lbl_title = new System.Windows.Forms.Label();
             this.cb_interval = new System.Windows.Forms.ComboBox();
             this.btn_back = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -110,19 +112,42 @@
             this.btn_back.UseVisualStyleBackColor = true;
             this.btn_back.Click += new System.EventHandler(this.btn_back_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Lucida Sans", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.label1.Location = new System.Drawing.Point(12, 149);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(344, 27);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Simulation Mode (Scanner):";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(362, 160);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(15, 14);
+            this.checkBox1.TabIndex = 16;
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // Configuration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btn_back);
             this.Controls.Add(this.cb_interval);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.lbl_title);
             this.Controls.Add(this.lbl_title1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Configuration";
             this.Text = "Configuration";
             this.Load += new System.EventHandler(this.Configuration_Load);
@@ -139,5 +164,7 @@
         private System.Windows.Forms.Label lbl_title;
         private System.Windows.Forms.ComboBox cb_interval;
         private System.Windows.Forms.Button btn_back;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

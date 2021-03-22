@@ -1,4 +1,4 @@
-Plate ID	NU00344985
+Plate ID	BSD0007
 
 Position	Lab number
 A01	20

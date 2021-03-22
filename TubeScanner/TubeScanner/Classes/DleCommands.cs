@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Diagnostics;
 using static TubeScanner.Classes.VariableTypesClass;
+using System.Timers;
+using System.Drawing;
 
 namespace TubeScanner.Classes
 {
@@ -80,9 +82,9 @@ namespace TubeScanner.Classes
 
         public enum RunState
         {
-            RUNNING,
-            PAUSED,
             STOPPED,
+            PAUSED,
+            RUNNING,
         }
 
         enum CommandResponseTypeNumber
@@ -141,6 +143,9 @@ namespace TubeScanner.Classes
        
         public event EventHandler<EventArgs> OnFootSwitchEvent;
 
+        Timer simulationTimer;
+        private bool timerRunning = false;
+
         public bool IsBusy { get; set; } = false;
 
         public static DleCommands Instance
@@ -167,7 +172,10 @@ namespace TubeScanner.Classes
 
         public DleCommands()
         {
-
+            simulationTimer = new Timer(3000);
+            simulationTimer.Stop();
+            simulationTimer.AutoReset = true;
+            simulationTimer.Elapsed += OnTimedEvent;
 
         }
 
@@ -208,7 +216,7 @@ namespace TubeScanner.Classes
             rxReplyFrame = e.rxFrame;
         }
 
-        private void StatusFrameReceived(object sender, StatusFrameArgs e)
+        private async void StatusFrameReceived(object sender, StatusFrameArgs e)
         {
             rxStatusFrame = e.rxFrame;
 
@@ -226,10 +234,25 @@ namespace TubeScanner.Classes
             {
                 //Debug.WriteLine("   STATUS - STATUS_UPDATE");
 
+                /* Tube data test */
+                //Byte[] tubeData = null;
+                //tubeData = await scanAllTubes();
+
+                //for (int col = 0; col < tubeData.Length; col++)
+                //{
+                //    Console.WriteLine(tubeData[col]);
+                //}
+
+                //FootSwitchEvent(this, null);
+
                 if (OnFootSwitchEvent != null)
                 {
                     OnFootSwitchEvent.Invoke(this, EventArgs.Empty);
                 }
+
+
+
+
             }
 
 
@@ -297,16 +320,18 @@ namespace TubeScanner.Classes
 
         private async Task<UInt16> updateCcittCrc(UInt16 crcPtr, Byte data)
         {
+            
             UInt16 crc = crcPtr;
+            
+                data ^= (Byte)(crc & 0xff);
+                data ^= (Byte)(data << 4);
+                crc = (Byte)(crc >> 8);
+                crc ^= (UInt16)(data << 8);
+                crc ^= (UInt16)(data << 0x03);
+                crc ^= (UInt16)(data >> 4);
 
-            data ^= (Byte)(crc & 0xff);
-            data ^= (Byte)(data << 4);
-            crc = (Byte)(crc >> 8);
-            crc ^= (UInt16)(data << 8);
-            crc ^= (UInt16)(data << 0x03);
-            crc ^= (UInt16)(data >> 4);
+                return crc;
 
-            return crc;
         }
 
         //---------------------------------------------------------------------------
@@ -316,12 +341,20 @@ namespace TubeScanner.Classes
             UInt16 i = 0;
             UInt16 crc = initCrc;
 
-            for (i = 0; i < length; i++)
-            {
-                crc = await updateCcittCrc(crc, data[i]);
-            }
 
-            return (crc);
+                for (i = 0; i < length; i++)
+                {
+                    crc = await updateCcittCrc(crc, data[i]);
+                }
+
+                return (crc);
+            
+
+        }
+
+        internal void selectLED(int v1, int v2, Color blue, object lED_STATE_SOLID)
+        {
+            throw new NotImplementedException();
         }
 
         /*
@@ -597,26 +630,28 @@ namespace TubeScanner.Classes
         private async Task<bool> waitForReply2Frame(Byte funcCode, UInt16 timeOut)
         {
             bool success = false;
+            
 
-            UInt16 ms_timeout = (UInt16)(timeOut * 1000);
+                UInt16 ms_timeout = (UInt16)(timeOut * 1000);
 
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            while ((watch.ElapsedMilliseconds < ms_timeout) && (success == false))
-            {
-                if (rxReplyFrame.frameReceived)
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+                while ((watch.ElapsedMilliseconds < ms_timeout) && (success == false))
                 {
-                    if (rxReplyFrame.frameType == (Byte)GsFrameContent.COMMAND_REPLY_2 && rxReplyFrame.funcCode == funcCode)
+                    if (rxReplyFrame.frameReceived)
                     {
-                        // Debug.WriteLine("*   REPLY_2a - " + ((CommandResponseTypeNumber)funcCode).ToString());
-                        success = true;
-                        break;
+                        if (rxReplyFrame.frameType == (Byte)GsFrameContent.COMMAND_REPLY_2 && rxReplyFrame.funcCode == funcCode)
+                        {
+                            // Debug.WriteLine("*   REPLY_2a - " + ((CommandResponseTypeNumber)funcCode).ToString());
+                            success = true;
+                            break;
+                        }
                     }
+                    await Task.Delay(10);
                 }
-                await Task.Delay(10);
-            }
-            watch.Stop();
+                watch.Stop();
 
-            return success;
+                return success;
+
         }
 
 
@@ -626,250 +661,279 @@ namespace TubeScanner.Classes
 
             CommandReply commandReply = new CommandReply();
             commandReply.errorCode = (int)ErrorCodes.FAILED_COMMUNICATIONS;
-            
-            try
-            {
-                if (_devicePort.IsOpen)
+
+
+                try
                 {
-
-                    Byte retries = 0;
-                    UInt16 ms_timeout = (UInt16)(timeOut * 1000);
-                    bool success = false;
-                    bool errorDetected = false;
-
-                    do
+                    if (_devicePort.IsOpen || Configuration.simulationMode)
                     {
-                        await resetRxFrame();
-                        await resetTxFrame();
-                        await resetRxReplyFrame();
-                        await resetRxStatusFrame();
 
-                        await _port.resetRxFrame();
+                        Byte retries = 0;
+                        UInt16 ms_timeout = (UInt16)(timeOut * 1000);
+                        bool success = false;
+                        bool errorDetected = false;
 
-                        txFrame.frameType = (Byte)GsFrameContent.COMMAND_FRAME;
-                        txFrame.buf[0] = funcCode;
-
-                        Array.Copy(cmdData, 0, txFrame.buf, 1, numData);
-
-                        Debug.WriteLine("DLE - " + ((CommandResponseTypeNumber)funcCode).ToString());
-
-
-                        txFrame.numData = (UInt16)(numData + 1);
-                        WriteByte(Constants.DLE);
                         do
                         {
-                            await frameTransmitterDLE();
-                        }
-                        while (txFrame.status != (Byte)FrameState.FRAME_TXD_OK);
+                            await resetRxFrame();
+                            await resetTxFrame();
+                            await resetRxReplyFrame();
+                            await resetRxStatusFrame();
 
-                        await Task.Delay(10);
+                            await _port.resetRxFrame();
 
-                        if (_devicePort.IsOpen)
-                        {
-                            errorDetected = false;
-                            var watch = System.Diagnostics.Stopwatch.StartNew();
-                            while ((watch.ElapsedMilliseconds < ms_timeout) && (success == false))
+                            txFrame.frameType = (Byte)GsFrameContent.COMMAND_FRAME;
+                            txFrame.buf[0] = funcCode;
+
+                            Array.Copy(cmdData, 0, txFrame.buf, 1, numData);
+
+                            Debug.WriteLine("DLE - " + ((CommandResponseTypeNumber)funcCode).ToString());
+
+
+                            txFrame.numData = (UInt16)(numData + 1);
+                            WriteByte(Constants.DLE);
+                            do
                             {
+                                await frameTransmitterDLE();
+                            }
+                            while (txFrame.status != (Byte)FrameState.FRAME_TXD_OK);
 
-                                if (rxFrame.frameReceived)
+                            await Task.Delay(10);
+
+                            if (_devicePort.IsOpen || Configuration.simulationMode)
+                            {
+                                errorDetected = false;
+                                var watch = System.Diagnostics.Stopwatch.StartNew();
+                                while ((watch.ElapsedMilliseconds < ms_timeout) && (success == false))
                                 {
-                                    if (rxFrame.frameType == (Byte)GsFrameContent.ERROR_RESPONSE)
-                                    {
-                                        commandReply.errorCode = BitConverter.ToUInt16(rxFrame.buf, 1);
-                                        success = false;
-                                        errorDetected = true;
 
-                                        Debug.WriteLine("###### errorCode = " + commandReply.errorCode);
-
-                                        commandReply.errorCode = (int)ErrorCodes.FAILED_COMMUNICATIONS;
-                                        continue;
-                                    }
-                                    else if (rxFrame.frameType == (Byte)GsFrameContent.COMMAND_RESPONCE && rxFrame.funcCode == funcCode)
+                                    if (rxFrame.frameReceived)
                                     {
-                                        if (rxFrame.rxCount >= 5)
+                                        if (rxFrame.frameType == (Byte)GsFrameContent.ERROR_RESPONSE)
                                         {
-                                            if (rxFrame.buf[2] == (Byte)CommandResponseTypeNumber.ACK_CMD)
-                                            {
-                                                Debug.WriteLine("*   ACK - " + ((CommandResponseTypeNumber)funcCode).ToString());
-                                                commandReply.errorCode = (int)ErrorCodes.NO_ERROR;
-                                                success = true;
-                                                commandReply.success = success;
-                                                commandReply.funcCode = rxFrame.funcCode;
-                                            }
-                                            else if (rxFrame.buf[2] == (Byte)CommandResponseTypeNumber.CMD_NOK)
-                                            {
-                                                Debug.WriteLine("*   NOK - " + ((CommandResponseTypeNumber)funcCode).ToString());
-                                                success = false;
-                                               // commandReply.success = success;
-                                              //  commandReply.funcCode = rxFrame.funcCode;
-                                                if (rxFrame.rxCount == 7)
-                                                {
-                                                    //   commandReply.errorCode = BitConverter.ToUInt16(rxFrame.buf, 3);
-                                                    UInt16 reason = BitConverter.ToUInt16(rxFrame.buf, 3);
-                                                 if (reason == (UInt16)ErrorCode.DEVICE_BUSY)
-                                                    {
-                                                        Debug.WriteLine("*   Reason - " + reason);
-                                                        await Task.Delay(timeOut * 1000 );
-                                                    }
+                                            commandReply.errorCode = BitConverter.ToUInt16(rxFrame.buf, 1);
+                                            success = false;
+                                            errorDetected = true;
 
+                                            Debug.WriteLine("###### errorCode = " + commandReply.errorCode);
+
+                                            commandReply.errorCode = (int)ErrorCodes.FAILED_COMMUNICATIONS;
+                                            continue;
+                                        }
+                                        else if (rxFrame.frameType == (Byte)GsFrameContent.COMMAND_RESPONCE && rxFrame.funcCode == funcCode)
+                                        {
+                                            if (rxFrame.rxCount >= 5)
+                                            {
+                                                if (rxFrame.buf[2] == (Byte)CommandResponseTypeNumber.ACK_CMD)
+                                                {
+                                                    Debug.WriteLine("*   ACK - " + ((CommandResponseTypeNumber)funcCode).ToString());
+                                                    commandReply.errorCode = (int)ErrorCodes.NO_ERROR;
+                                                    success = true;
+                                                    commandReply.success = success;
+                                                    commandReply.funcCode = rxFrame.funcCode;
+                                                }
+                                                else if (rxFrame.buf[2] == (Byte)CommandResponseTypeNumber.CMD_NOK)
+                                                {
+                                                    Debug.WriteLine("*   NOK - " + ((CommandResponseTypeNumber)funcCode).ToString());
+                                                    success = false;
+                                                    // commandReply.success = success;
+                                                    //  commandReply.funcCode = rxFrame.funcCode;
+                                                    if (rxFrame.rxCount == 7)
+                                                    {
+                                                        //   commandReply.errorCode = BitConverter.ToUInt16(rxFrame.buf, 3);
+                                                        UInt16 reason = BitConverter.ToUInt16(rxFrame.buf, 3);
+                                                        if (reason == (UInt16)ErrorCode.DEVICE_BUSY)
+                                                        {
+                                                            Debug.WriteLine("*   Reason - " + reason);
+                                                            await Task.Delay(timeOut * 1000);
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        Debug.WriteLine("ERROR FRAME_SIZE - " + rxFrame.rxCount.ToString());
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    Debug.WriteLine("ERROR FRAME_SIZE - " + rxFrame.rxCount.ToString());
+                                                    Debug.WriteLine("*   RESPONCE - " + ((CommandResponseTypeNumber)funcCode).ToString());
+                                                    success = true;
+                                                    commandReply.errorCode = (int)ErrorCodes.NO_ERROR;
+                                                    commandReply.success = success;
+                                                    commandReply.funcCode = rxFrame.funcCode;
+                                                    if (rxFrame.rxCount >= 6)
+                                                    {
+                                                        Array.Copy(rxFrame.buf, 2, commandReply.data, 0, rxFrame.rxCount - 4);
+                                                        commandReply.numbytes = (UInt16)(rxFrame.rxCount - 4);
+                                                    }
+                                                    else
+                                                    {
+                                                        Debug.WriteLine("ERROR FRAME_SIZE - " + rxFrame.rxCount.ToString());
+                                                    }
                                                 }
                                             }
                                             else
                                             {
-                                                Debug.WriteLine("*   RESPONCE - " + ((CommandResponseTypeNumber)funcCode).ToString());
-                                                success = true;
-                                                commandReply.errorCode = (int)ErrorCodes.NO_ERROR;
-                                                commandReply.success = success;
-                                                commandReply.funcCode = rxFrame.funcCode;
-                                                if (rxFrame.rxCount >= 6)
+                                                Debug.WriteLine("ERROR FRAME_SIZE - " + rxFrame.rxCount.ToString());
+                                            }
+                                            break;
+                                        }
+                                        else if (rxFrame.frameType == (Byte)GsFrameContent.DATA_FRAME && rxFrame.funcCode == funcCode)
+                                        {
+
+                                            Debug.WriteLine("*   DATA_FRAME - " + ((CommandResponseTypeNumber)funcCode).ToString());
+                                            success = true;
+                                            commandReply.errorCode = (int)ErrorCodes.NO_ERROR;
+                                            commandReply.success = success;
+                                            commandReply.funcCode = rxFrame.funcCode;
+                                            if (rxFrame.rxCount >= 4)
+                                            {
+                                                Array.Copy(rxFrame.buf, 2, commandReply.data, 0, rxFrame.rxCount - 4);
+                                                commandReply.numbytes = (UInt16)(rxFrame.rxCount - 4);
+                                            }
+                                        }
+                                        else if (rxFrame.frameType == (Byte)GsFrameContent.COMMAND_REPLY_1 && rxFrame.funcCode == funcCode)
+                                        {
+
+                                            // Debug.WriteLine("*   REPLY_1 - " + ((CommandResponseTypeNumber)funcCode).ToString());
+                                            if (await waitForReply2Frame(funcCode, 10))
+                                            {
+                                                Debug.WriteLine("*   REPLY - " + ((CommandResponseTypeNumber)funcCode).ToString());
+
+                                                if (rxReplyFrame.rxCount >= 4)
                                                 {
-                                                    Array.Copy(rxFrame.buf, 2, commandReply.data, 0, rxFrame.rxCount - 4);
-                                                    commandReply.numbytes = (UInt16)(rxFrame.rxCount - 4);
+                                                    UInt16 code = BitConverter.ToUInt16(rxReplyFrame.buf, 2);
+                                                    switch (rxFrame.funcCode)
+                                                    {
+                                                        case (Byte)CommandResponseTypeNumber.HOME:
+                                                            if (code == 31 || code == 7)
+                                                            {
+                                                                commandReply.errorCode = (int)ErrorCodes.NO_ERROR;
+                                                            }
+                                                            break;
+                                                    }
+
+                                                    if (commandReply.errorCode == (int)ErrorCodes.NO_ERROR)
+                                                    {
+                                                        success = true;
+                                                        commandReply.success = success;
+                                                        commandReply.funcCode = rxReplyFrame.funcCode;
+
+                                                        Array.Copy(rxReplyFrame.buf, 2, commandReply.data, 0, rxReplyFrame.rxCount - 4);
+                                                        commandReply.numbytes = (UInt16)(rxReplyFrame.rxCount - 4);
+                                                    }
+                                                    else
+                                                    {
+                                                        Debug.WriteLine("ERROR   Code - " + code);
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    Debug.WriteLine("ERROR FRAME_SIZE - " + rxFrame.rxCount.ToString());
+                                                    Debug.WriteLine("ERROR 5 - " + rxReplyFrame.rxCount.ToString());
                                                 }
+                                                await resetRxReplyFrame();
+                                                break;
                                             }
                                         }
                                         else
                                         {
-                                            Debug.WriteLine("ERROR FRAME_SIZE - " + rxFrame.rxCount.ToString());
-                                        }
-                                        break;
-                                    }
-                                    else if (rxFrame.frameType == (Byte)GsFrameContent.DATA_FRAME && rxFrame.funcCode == funcCode)
-                                    {
+                                            Debug.WriteLine("ERROR BAD FRAME");
+                                            await resetRxFrame();
 
-                                        Debug.WriteLine("*   DATA_FRAME - " + ((CommandResponseTypeNumber)funcCode).ToString());
-                                        success = true;
-                                        commandReply.errorCode = (int)ErrorCodes.NO_ERROR;
-                                        commandReply.success = success;
-                                        commandReply.funcCode = rxFrame.funcCode;
-                                        if (rxFrame.rxCount >= 4)
-                                        {
-                                            Array.Copy(rxFrame.buf, 2, commandReply.data, 0, rxFrame.rxCount - 4);
-                                            commandReply.numbytes = (UInt16)(rxFrame.rxCount - 4);
-                                        }
-                                    }
-                                    else if (rxFrame.frameType == (Byte)GsFrameContent.COMMAND_REPLY_1 && rxFrame.funcCode == funcCode)
-                                    {
-
-                                        // Debug.WriteLine("*   REPLY_1 - " + ((CommandResponseTypeNumber)funcCode).ToString());
-                                        if (await waitForReply2Frame(funcCode, 10))
-                                        {
-                                            Debug.WriteLine("*   REPLY - " + ((CommandResponseTypeNumber)funcCode).ToString());
-
-                                            if (rxReplyFrame.rxCount >= 4)
-                                            {
-                                                UInt16 code = BitConverter.ToUInt16(rxReplyFrame.buf, 2);
-                                                switch (rxFrame.funcCode)
-                                                {
-                                                    case (Byte)CommandResponseTypeNumber.HOME:
-                                                        if (code == 31 || code == 7)
-                                                        {
-                                                            commandReply.errorCode = (int)ErrorCodes.NO_ERROR;
-                                                        }
-                                                        break;
-                                                }
-
-                                                if (commandReply.errorCode == (int)ErrorCodes.NO_ERROR)
-                                                {
-                                                    success = true;
-                                                    commandReply.success = success;
-                                                    commandReply.funcCode = rxReplyFrame.funcCode;
-
-                                                    Array.Copy(rxReplyFrame.buf, 2, commandReply.data, 0, rxReplyFrame.rxCount - 4);
-                                                    commandReply.numbytes = (UInt16)(rxReplyFrame.rxCount - 4);
-                                                }
-                                                else
-                                                {
-                                                    Debug.WriteLine("ERROR   Code - " + code);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                Debug.WriteLine("ERROR 5 - " + rxReplyFrame.rxCount.ToString());
-                                            }
-                                            await resetRxReplyFrame();
-                                            break;
                                         }
                                     }
                                     else
                                     {
-                                        Debug.WriteLine("ERROR BAD FRAME");
-                                        await resetRxFrame();
-                                      
+                                        await Task.Delay(10);
                                     }
                                 }
-                                else
-                                {
-                                    await Task.Delay(10);
-                                }
                             }
+                        } while (++retries <= 3 && (success == false) && (commandReply.errorCode == (int)ErrorCodes.FAILED_COMMUNICATIONS));
+
+                        if (success == false || retries > 2)
+                        {
+                            Debug.WriteLine("Timed out, success = " + retries + " " + success);
                         }
-                    } while (++retries <= 3 && (success == false) && (commandReply.errorCode == (int)ErrorCodes.FAILED_COMMUNICATIONS));
 
-                    if (success == false || retries > 2)
-                    {
-                        Debug.WriteLine("Timed out, success = " + retries + " " + success);
                     }
-
+                    else
+                    {
+                        Debug.WriteLine("*** Port was closed");
+                        commandReply.errorCode = (int)ErrorCodes.PORT_CLOSED;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    Debug.WriteLine("*** Port was closed");
-                    commandReply.errorCode = (int)ErrorCodes.PORT_CLOSED;
+
+                    IsBusy = false;
                 }
-            }
-            catch(Exception e)
-            {
-                
-                IsBusy = false;
-            }
-            finally
-            {                
-                IsBusy = false;
-            }
+                finally
+                {
+                    IsBusy = false;
+                }
 
-            IsBusy = false;
+                IsBusy = false;
 
-            return commandReply;
+                return commandReply;
+            
+
         }
 
         public async Task<bool> sendNullCommand()
         {
             CommandReply commandReply;
 
-            Byte funcCode = (Byte)CommandResponseTypeNumber.NULL_COMMAND;
-            Byte[] cmdData = new byte[6];
-            UInt16 cmdSize = 0;
+            if (!Configuration.simulationMode)
+            {
+                Byte funcCode = (Byte)CommandResponseTypeNumber.NULL_COMMAND;
+                Byte[] cmdData = new byte[6];
+                UInt16 cmdSize = 0;
 
-            commandReply = await sendGreenspanFrame(funcCode, cmdData, cmdSize, 1);
+                commandReply = await sendGreenspanFrame(funcCode, cmdData, cmdSize, 1);
 
-            return commandReply.success;
+                return commandReply.success;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         public async Task<Byte[]> scanAllTubes()
         {
-            CommandReply commandReply;
-            Byte[] tubeData = { };
+            Byte[] tubeData = {0};
 
-            Byte funcCode = (Byte)CommandResponseTypeNumber.SCAN_ALL;
-            Byte[] cmdData = new byte[12];
-            UInt16 cmdSize = 0;
-
-            commandReply = await sendGreenspanFrame(funcCode, cmdData, cmdSize, 5);
-            if (commandReply.success)
+            if (!Configuration.simulationMode)
             {
-                Byte[] data = new Byte[commandReply.numbytes];
-                Array.Copy(commandReply.data, 0, data, 0, commandReply.numbytes);
+                CommandReply commandReply;
+                
 
-                tubeData = data;
+                Byte funcCode = (Byte)CommandResponseTypeNumber.SCAN_ALL;
+                Byte[] cmdData = new byte[12];
+                UInt16 cmdSize = 0;
+
+                commandReply = await sendGreenspanFrame(funcCode, cmdData, cmdSize, 5);
+                if (commandReply.success)
+                {
+                    Byte[] data = new Byte[commandReply.numbytes];
+                    Array.Copy(commandReply.data, 0, data, 0, commandReply.numbytes);
+
+                    tubeData = data;
+                }
+            }
+            else
+            {
+                tubeData = new byte[12];
+
+                
+
+                //Random rnd = new Random();
+                //for(int x = 0; x < 12; x++)
+                //{
+                //    tubeData[x] = (Byte)rnd.Next(0,255); 
+
+                //}
+
             }
 
             return tubeData;
@@ -877,6 +941,7 @@ namespace TubeScanner.Classes
 
         public async Task<bool> selectLED(UInt16 row, UInt16 column, LedColour colour, LedState state)
         {
+            
             CommandReply commandReply;
             Byte funcCode = (Byte)CommandResponseTypeNumber.SET_LED;
 
@@ -898,17 +963,38 @@ namespace TubeScanner.Classes
 
         public async Task<bool> runStatus(RunState status)
         {
-            CommandReply commandReply;
-            Byte funcCode = (Byte)CommandResponseTypeNumber.RUN_STATUS;
+            if (!Configuration.simulationMode)
+            {
+                CommandReply commandReply;
+                Byte funcCode = (Byte)CommandResponseTypeNumber.RUN_STATUS;
 
-            Byte[] cmdData = new byte[2];
-            cmdData[0] = (Byte)status;
+                Byte[] cmdData = new byte[2];
+                cmdData[0] = (Byte)status;
 
-            UInt16 cmdSize = (UInt16)cmdData.Length;
+                UInt16 cmdSize = (UInt16)cmdData.Length;
 
-            commandReply = await sendGreenspanFrame(funcCode, cmdData, cmdSize, 1);
+                commandReply = await sendGreenspanFrame(funcCode, cmdData, cmdSize, 1);
 
-            return commandReply.success;
+
+                return commandReply.success;
+            }
+            else
+            {
+
+                if(status == RunState.RUNNING)
+                {
+                    simulationTimer.Enabled = true;
+                    timerRunning = true;
+                }
+                else
+                {
+                    simulationTimer.Enabled = false;
+                    timerRunning = false;
+                }
+
+
+                return true;
+            }
         }
 
         public async Task<DiagnosticData> getDiagnosticData()
@@ -1023,6 +1109,9 @@ namespace TubeScanner.Classes
 
         public async Task<int> sendHomeCommand()
         {
+            
+
+
             if (IsBusy)
             { return 1; }
 
@@ -1036,6 +1125,28 @@ namespace TubeScanner.Classes
             commandReply = await sendGreenspanFrame(funcCode, cmdData, cmdSize, 20);
 
             return commandReply.errorCode;
-        } 
+       
+        
+        
+        
+        }
+
+        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+
+            simulationTimer.Enabled = false;
+            if (OnFootSwitchEvent != null)
+            {
+                OnFootSwitchEvent.Invoke(this, EventArgs.Empty);
+
+
+            }
+
+            if (timerRunning)
+            {
+                simulationTimer.Enabled = true;
+            }
+        }
+
     }
 }

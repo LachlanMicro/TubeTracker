@@ -1,0 +1,4 @@
+Plate ID	BSD0007
+User ID aaaa
+Date 17/03/2021
+Position	Lab Number	Errors
