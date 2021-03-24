@@ -5,6 +5,7 @@ using System.Diagnostics;
 using static TubeScanner.Classes.VariableTypesClass;
 using System.Timers;
 using System.Drawing;
+using TubeScanner.Controls;
 
 namespace TubeScanner.Classes
 {
@@ -240,8 +241,10 @@ namespace TubeScanner.Classes
 
                 //for (int col = 0; col < tubeData.Length; col++)
                 //{
-                //    Console.WriteLine(tubeData[col]);
+                //   Console.WriteLine(tubeData[col]);
                 //}
+
+
 
                 //FootSwitchEvent(this, null);
 
@@ -249,9 +252,6 @@ namespace TubeScanner.Classes
                 {
                     OnFootSwitchEvent.Invoke(this, EventArgs.Empty);
                 }
-
-
-
 
             }
 

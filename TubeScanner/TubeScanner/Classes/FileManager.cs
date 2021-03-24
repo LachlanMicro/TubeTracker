@@ -160,30 +160,30 @@ namespace TubeScanner.Classes
         }
 
         // Write all tube placements and removals to the output file
-        public static void WriteOutputFile(string filename, List<TubeButton> tList, string plateID, string userID, string date)
+        public static void WriteOutputFile(string filename, List<Tube> tList, string plateID, string date)
         {
             List<string> outputContent = new List<string>();
 
-            // Add the general file info
-            outputContent.Add("Plate ID\t" + plateID);
-            outputContent.Add("User ID " + userID);
-            outputContent.Add("Date " + date);
-            outputContent.Add("Position\tLab Number\tErrors");
+            /* Add file header */
+            outputContent.Add("BSD Tracker," + Program.currentUser + "," + plateID);
 
-            // For each tube in the list of button presses, log the ID and barcode and a message based on the status at that time
+            /* Add a heading for the tube results */
+            outputContent.Add("Grid Ref,Sample Barcode,Fill Order,Comment");
+
+            /* For each tube on tube rack, log the ID, barcode, fill order and a message based on the status at that time */
             for (int i = 0; i < tList.Count; i++)
             {
                 if (tList[i].Status == Status.ERROR)
                 {
-                    outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode + "\t" + "Tube placed in wrong well but accepted");
+                    outputContent.Add(tList[i].ID + "," + tList[i].Barcode + "," + tList[i].FillOrder + "," + "Tube placed incorrectly");
                 }
                 if (tList[i].Status == Status.REMOVED)
                 {
-                    outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode + "\t" + "Tube removed");
+                    outputContent.Add(tList[i].ID + "," + tList[i].Barcode + "," + tList[i].FillOrder + "," + "Tube removed");
                 }
                 if (tList[i].Status == Status.LOADED)
                 {
-                    outputContent.Add(tList[i].ID + "\t" + tList[i].Barcode + "\t" + "Tube placed correctly");
+                    outputContent.Add(tList[i].ID + "," + tList[i].Barcode + "," + tList[i].FillOrder + "," + "Tube placed correctly");
                 }
             }
             File.WriteAllLines(filename, outputContent);

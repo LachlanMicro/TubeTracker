@@ -11,7 +11,7 @@ namespace TubeScanner.Controls
         private Rack _rack = null;
         private TubeRack _tubeRack = null;
         private List<TubeButton> tubeButtons = new List<TubeButton>();
-        public List<TubeButton> OutputTubeList = new List<TubeButton>();
+        public List<Tube> OutputTubeList = new List<Tube>();
 
         private char[] _letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N' };
 
@@ -188,6 +188,8 @@ namespace TubeScanner.Controls
                 dummy.ID = TB.ID;
                 dummy.Barcode = "N/A"; // Default N/A if no barcode has been scanned
 
+                Console.WriteLine("TEXT: " + TB.Text);
+
                 if (TB.Status == Status.SELECTED)
                 {
                     wasSelected = true;
@@ -258,14 +260,105 @@ namespace TubeScanner.Controls
                     }
                 }
 
-                OutputTubeList.Add(dummy);
+                //OutputTubeList.Add(dummy);
 
             }
 
             TB.Enabled = true;
         }
 
+        public void checkWellPos(Tube detectedTube, int bitnum)
+        {
+            Tube TB = detectedTube;
+            
+            Tube dummy = new Tube("0", 0);
 
+            Console.WriteLine("TEXT: " + bitnum);
+
+            bool wasSelected = false;
+
+            if (TB != null)
+            {
+                dummy.ID = TB.ID;
+                dummy.Barcode = "N/A"; // Default N/A if no barcode has been scanned
+
+                Console.WriteLine("STATUS: " + TB.Status);
+
+                if (TB.Status == Status.SELECTED)
+                {
+                    wasSelected = true;
+                    TB.Status = Status.LOADED;
+                    dummy.Status = Status.LOADED;
+                    dummy.Barcode = TB.Barcode;
+                    _rack.BarcodesScanned.Add(TB.Barcode);
+                    _rack.WellsUsed.Add(TB.ID);
+                    UpdateTubeStatus(bitnum, Status.LOADED);
+                }
+                else if (TB.Status == Status.READY_TO_LOAD)
+                {
+                    TB.Status = Status.ERROR;
+                    dummy.Status = Status.ERROR;
+                    UpdateTubeStatus(bitnum, Status.ERROR);
+                    MessageBox.Show("Warning: Tube placement does not match input file.");
+                }
+                else if (TB.Status == Status.LOADED)
+                {
+                    TB.Status = Status.REMOVED;
+                    dummy.Status = Status.REMOVED;
+                    dummy.Barcode = TB.Barcode;
+                    MessageBox.Show("Warning: Tube at " + TB.ID + " has been removed.");
+                    _rack.BarcodesScanned.Remove(TB.Barcode);
+                    _rack.WellsUsed.Remove(TB.ID);
+                    UpdateTubeStatus(bitnum, Status.REMOVED);
+                }
+                else if (TB.Status == Status.REMOVED)
+                {
+                    TB.Status = Status.ERROR;
+                    dummy.Status = Status.ERROR;
+                    UpdateTubeStatus(bitnum, Status.ERROR);
+                    MessageBox.Show("Warning: Tube placement does not match input file.");
+                }
+                else if (TB.Status == Status.NOT_USED)
+                {
+                    TB.Status = Status.ERROR;
+                    dummy.Status = Status.ERROR;
+                    UpdateTubeStatus(bitnum, Status.ERROR);
+                    MessageBox.Show("Warning: Tube placement does not match input file.");
+                }
+                else if (TB.Status == Status.ERROR)
+                {
+                    if (_rack.InitialTubeList[bitnum].Status == Status.NOT_USED)
+                    {
+                        TB.Status = Status.NOT_USED;
+                        UpdateTubeStatus(bitnum, Status.NOT_USED);
+                    }
+                    else if (_rack.InitialTubeList[bitnum].Status == Status.READY_TO_LOAD)
+                    {
+                        TB.Status = Status.READY_TO_LOAD;
+                        UpdateTubeStatus(bitnum, Status.READY_TO_LOAD);
+                    }
+                    dummy.Status = Status.REMOVED;
+                    MessageBox.Show("Warning: Tube at " + TB.ID + " has been removed.");
+                }
+
+                if (!wasSelected)
+                {
+                    for (int i = 0; i < _rack.TubeList.Count; i++)
+                    {
+                        if (_rack.TubeList[i].Status == Status.SELECTED)
+                        {
+                            UpdateTubeStatus(i, Status.READY_TO_LOAD);
+                            dummy.Barcode = _rack.TubeList[i].Barcode;
+                            break;
+                        }
+                    }
+                }
+
+                /* TODO: fix for output file */
+                //OutputTubeList.Add(dummy);
+
+            }
+        }
 
         /* Show well info when it is double clicked */
         private void button_DoubleClick(object sender, EventArgs e)

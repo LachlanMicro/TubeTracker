@@ -36,13 +36,20 @@ namespace TubeScanner
             rack = new Rack(8, 12);
         }
 
-        private void Startup_Load(object sender, EventArgs e)
+        private async void Startup_Load(object sender, EventArgs e)
         {
             /* Check if devices connected */
             devicesValid = ConnectDevices();
             readyToStart();
             EmptyInputFile();
-            
+
+            for (int row = 0; row < 8; row++)
+            {
+                for (int col = 0; col < 12; col++)
+                {
+                    await _tScanner.DleCommands.selectLED((UInt16)(row + 1), (UInt16)(col + 1), DleCommands.LedColour.LED_GREEN, DleCommands.LedState.LED_STATE_OFF);
+                }
+            }
         }
 
         /* Connect button- user clicks to upate which devices are connected */

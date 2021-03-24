@@ -22,7 +22,8 @@ namespace TubeScanner.Classes
         private string _id;
         private int _number;
 
-        private string _barcode;        
+        private string _barcode;
+        public int _fillOrder;
         public Status Status;
 
         public int Number 
@@ -41,6 +42,12 @@ namespace TubeScanner.Classes
         {
             get { return _id; }
             set { _id = value; }
+        }
+
+        public int FillOrder
+        { 
+            get { return _fillOrder; }
+            set { _fillOrder = value; }
         }
 
         public Tube(string ID, int number)
