@@ -41,6 +41,12 @@ namespace TubeScanner
 
             button1.Enabled = false;
 
+            /* Write Output file headers */
+            string[] currDateTime = DateTime.Today.ToString().Split(' ');
+
+            string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
+            FileManager.WriteOutputFileHeaders(fileName, _rack.PlateID, currDateTime[0]);
+
             fillOrder = 1;
 
             await _tScanner.DleCommands.runStatus(DleCommands.RunState.RUNNING);
@@ -102,6 +108,8 @@ namespace TubeScanner
         /* Function to scan all tube positions */
         private async void FootSwitchEvent(object sender, EventArgs e)
         {
+            string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
+            
             if (_tScanner.dP.IsOpen || Configuration.simulationMode)
             {
                 Byte[] tubeData = null;
@@ -147,16 +155,17 @@ namespace TubeScanner
                         {
                             if (bitMap[row, col] == '1')
                             {
+                                /* TODO Initial or regular tube lis for selected */
                                 if (_rack.TubeList[bitNum].Status == Status.SELECTED)
                                 {
                                     rackControl.UpdateTubeStatus(bitNum, Status.LOADED);
 
                                     _rack.InitialTubeList[bitNum].Status = Status.LOADED;
 
-                                    rackControl.OutputTubeList.Add(_rack.InitialTubeList[bitNum]);
-
                                     _rack.InitialTubeList[bitNum].FillOrder = fillOrder;
                                     fillOrder++;
+
+                                    FileManager.WriteTubeToOutputFile(fileName, _rack.PlateID, _rack.InitialTubeList[bitNum]);
 
                                     /* turn on LED solid at position where tube is detected */
                                     await _tScanner.DleCommands.selectLED((UInt16)(row + 1), (UInt16)(col + 1), DleCommands.LedColour.LED_GREEN, DleCommands.LedState.LED_STATE_SOLID);
@@ -167,10 +176,10 @@ namespace TubeScanner
 
                                     _rack.InitialTubeList[bitNum].Status = Status.ERROR;
 
-                                    rackControl.OutputTubeList.Add(_rack.InitialTubeList[bitNum]);
-
                                     _rack.InitialTubeList[bitNum].FillOrder = fillOrder;
                                     fillOrder++;
+
+                                    FileManager.WriteTubeToOutputFile(fileName, _rack.PlateID, _rack.InitialTubeList[bitNum]);
 
                                     await _tScanner.DleCommands.selectLED((UInt16)(row + 1), (UInt16)(col + 1), DleCommands.LedColour.LED_RED, DleCommands.LedState.LED_STATE_FLASHING);
 
@@ -185,9 +194,9 @@ namespace TubeScanner
                                     _rack.InitialTubeList[bitNum].FillOrder = fillOrder;
                                     fillOrder++;
 
-                                    await _tScanner.DleCommands.selectLED((UInt16)(row + 1), (UInt16)(col + 1), DleCommands.LedColour.LED_RED, DleCommands.LedState.LED_STATE_FLASHING);
+                                    FileManager.WriteTubeToOutputFile(fileName, _rack.PlateID, _rack.InitialTubeList[bitNum]);
 
-                                    rackControl.OutputTubeList.Add(_rack.InitialTubeList[bitNum]);
+                                    await _tScanner.DleCommands.selectLED((UInt16)(row + 1), (UInt16)(col + 1), DleCommands.LedColour.LED_RED, DleCommands.LedState.LED_STATE_FLASHING);
                                 }
 
                             }
@@ -207,6 +216,8 @@ namespace TubeScanner
                                     rackControl.UpdateTubeStatus(bitNum, Status.READY_TO_LOAD);
 
                                     _rack.InitialTubeList[bitNum].Status = Status.READY_TO_LOAD;
+
+                                    await _tScanner.DleCommands.selectLED((UInt16)(row + 1), (UInt16)(col + 1), DleCommands.LedColour.LED_RED, DleCommands.LedState.LED_STATE_OFF);
                                 }
                                 if (_rack.InitialTubeList[bitNum].Status == Status.LOADED)
                                 {
@@ -218,6 +229,8 @@ namespace TubeScanner
 
                                     _rack.InitialTubeList[bitNum].FillOrder = fillOrder;
                                     fillOrder++;
+
+                                    FileManager.WriteTubeToOutputFile(fileName, _rack.PlateID, _rack.InitialTubeList[bitNum]);
 
                                     MessageBox.Show("Warning: Tube at " + _rack.InitialTubeList[bitNum].ID + " has been removed.");
                                 }
@@ -304,6 +317,8 @@ namespace TubeScanner
                     if (_rack.TubeList[i].Status == Status.SELECTED)
                     {
                         rackControl.UpdateTubeStatus(i, Status.READY_TO_LOAD);
+
+                        //_rack.InitialTubeList[i].Status = Status.SELECTED;
                     }
                 }
 
@@ -327,6 +342,7 @@ namespace TubeScanner
                             else
                             {
                                 rackControl.UpdateTubeStatus(scannedTube, Status.SELECTED);
+
                             }
                             found = true;
                             break;
@@ -384,12 +400,22 @@ namespace TubeScanner
         }
 
         /* When 10-30 second timer has expired, set selected tube back to normal if it is still unloaded */
-        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        private async void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             int num = rackControl.GetTubeNum(wellNumber);
             if (_rack.TubeList[num].Status == Status.SELECTED)
             {
                 rackControl.UpdateTubeStatus(num, Status.READY_TO_LOAD);
+
+                /* Turn off LEDs */
+                for (int row = 0; row < 8; row++)
+                {
+                    for (int col = 0; col < 12; col++)
+                    {
+                        await _tScanner.DleCommands.selectLED((UInt16)(row + 1), (UInt16)(col + 1), DleCommands.LedColour.LED_GREEN, DleCommands.LedState.LED_STATE_OFF);
+                    }
+                }
+
                 MessageBox.Show(String.Format("{0} second window to place scanned tube has expired. Please rescan and try again.", Configuration.interval));
             }
         }
@@ -476,10 +502,10 @@ namespace TubeScanner
                 if (dialogResult == DialogResult.Yes)
                 {
                     /* Save output file */
-                    string[] currDateTime = DateTime.Today.ToString().Split(' ');
+                    //string[] currDateTime = DateTime.Today.ToString().Split(' ');
 
-                    string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
-                    FileManager.WriteOutputFile(fileName, rackControl.OutputTubeList, _rack.PlateID, currDateTime[0]);
+                    //string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
+                    //FileManager.WriteOutputFile(fileName, rackControl.OutputTubeList, _rack.PlateID, currDateTime[0]);
 
                     for (int row = 0; row < 8; row++)
                     {

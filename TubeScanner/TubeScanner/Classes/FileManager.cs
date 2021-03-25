@@ -160,33 +160,47 @@ namespace TubeScanner.Classes
         }
 
         // Write all tube placements and removals to the output file
-        public static void WriteOutputFile(string filename, List<Tube> tList, string plateID, string date)
+        public static void WriteOutputFileHeaders(string filename, string plateID, string date)
         {
+            FileStream fileStream = File.Create(plateID + " Output Log.txt");
+            
             List<string> outputContent = new List<string>();
 
             /* Add file header */
-            outputContent.Add("BSD Tracker," + Program.currentUser + "," + plateID);
+            outputContent.Add("BSD Tracker," + Program.currentUser + "," + plateID  + ',' + date);
 
             /* Add a heading for the tube results */
             outputContent.Add("Grid Ref,Sample Barcode,Fill Order,Comment");
 
-            /* For each tube on tube rack, log the ID, barcode, fill order and a message based on the status at that time */
-            for (int i = 0; i < tList.Count; i++)
-            {
-                if (tList[i].Status == Status.ERROR)
-                {
-                    outputContent.Add(tList[i].ID + "," + tList[i].Barcode + "," + tList[i].FillOrder + "," + "Tube placed incorrectly");
-                }
-                if (tList[i].Status == Status.REMOVED)
-                {
-                    outputContent.Add(tList[i].ID + "," + tList[i].Barcode + "," + tList[i].FillOrder + "," + "Tube removed");
-                }
-                if (tList[i].Status == Status.LOADED)
-                {
-                    outputContent.Add(tList[i].ID + "," + tList[i].Barcode + "," + tList[i].FillOrder + "," + "Tube placed correctly");
-                }
-            }
             File.WriteAllLines(filename, outputContent);
+
+            fileStream.Close();
+        }
+
+        public static void WriteTubeToOutputFile(string filename, string plateID, Tube currTube)
+        {
+            FileStream fileStream = File.Create(plateID + " Output Log.txt");
+
+            List<string> outputContent = new List<string>();
+
+            /* For each tube on tube rack, log the ID, barcode, fill order and a message based on the status at that time */
+            
+            if (currTube.Status == Status.ERROR)
+            {
+                outputContent.Add(currTube.ID + "," + currTube.Barcode + "," + currTube.FillOrder + "," + "Tube placed incorrectly");
+            }
+            if (currTube.Status == Status.REMOVED)
+            {
+                outputContent.Add(currTube.ID + "," + currTube.Barcode + "," + currTube.FillOrder + "," + "Tube removed");
+            }
+            if (currTube.Status == Status.LOADED)
+            {
+                outputContent.Add(currTube.ID + "," + currTube.Barcode + "," + currTube.FillOrder + "," + "Tube placed correctly");
+            }
+            
+            File.AppendAllLines(filename, outputContent);
+
+            fileStream.Close();
         }
     }
 }

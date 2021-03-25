@@ -1,3 +1,6 @@
-BSD Tracker,Admin,BSD0007
+BSD Tracker,Admin,BSD0007,25/03/2021
 Grid Ref,Sample Barcode,Fill Order,Comment
-A01,NUMT439097,2,Tube removed
+B02,NUMT439389,1,Tube placed correctly
+H03,NUMT439884,2,Tube placed correctly
+E02,NUMT439510,3,Tube placed incorrectly
+F02,NUMT439635,4,Tube placed incorrectly

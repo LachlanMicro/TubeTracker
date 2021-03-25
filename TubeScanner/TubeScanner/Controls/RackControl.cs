@@ -356,7 +356,7 @@ namespace TubeScanner.Controls
 
                 /* TODO: fix for output file */
                 //OutputTubeList.Add(dummy);
-
+                
             }
         }
 
