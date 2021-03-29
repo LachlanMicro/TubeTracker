@@ -1,0 +1,7 @@
+-Should be able to continue with no rack barcode or non-matching rack barcode. Non-matching- overwrite in output file
+
+-Placing two tubes at once incorrectly causes problems, need to see this one
+
+-Exception error, seems to happen when multiple tubes placed at once. Crashing, so high priority
+
+

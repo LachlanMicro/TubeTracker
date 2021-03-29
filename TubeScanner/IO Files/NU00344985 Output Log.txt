@@ -1,0 +1,5 @@
+Plate ID	NU00344985
+User ID aaaa
+Date 14/12/2020
+Position	Lab Number	Errors
+B01	69	Tube placed correctly

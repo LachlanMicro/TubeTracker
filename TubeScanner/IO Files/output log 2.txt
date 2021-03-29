@@ -1,0 +1,13 @@
+Plate ID	CDNAEXT20201130-05
+User ID aaaa
+Date 10/12/2020
+Position	Lab Number	Errors
+C01	21	Tube placed correctly
+A01	20	Tube placed correctly
+D01	22	Tube placed correctly
+E01	23	Tube placed correctly
+F01	24	Tube placed correctly
+G01	43	Tube placed correctly
+H01	44	Tube placed correctly
+A02	45	Tube placed correctly
+B01	69	Tube placed correctly
