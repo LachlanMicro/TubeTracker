@@ -43,6 +43,8 @@ namespace TubeScanner
             readyToStart();
             EmptyInputFile();
 
+            await _bs.stopScan();
+
             for (int row = 0; row < 8; row++)
             {
                 for (int col = 0; col < 12; col++)

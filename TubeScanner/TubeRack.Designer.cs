@@ -30,8 +30,7 @@ namespace TubeScanner
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TubeRack));
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btn_pause = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -41,29 +40,20 @@ namespace TubeScanner
             this.lbl_Barcode = new System.Windows.Forms.Label();
             this.btn_endRun = new System.Windows.Forms.Button();
             this.lbl_Status = new System.Windows.Forms.Label();
+            this.txt_barcodeEntry = new System.Windows.Forms.TextBox();
+            this.btn_enter = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // btn_pause
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(825, 75);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(134, 37);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Scan";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(825, 141);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(134, 37);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Pause";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btn_pause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_pause.Location = new System.Drawing.Point(825, 595);
+            this.btn_pause.Name = "btn_pause";
+            this.btn_pause.Size = new System.Drawing.Size(134, 37);
+            this.btn_pause.TabIndex = 1;
+            this.btn_pause.Text = "Pause";
+            this.btn_pause.UseVisualStyleBackColor = true;
+            this.btn_pause.Click += new System.EventHandler(this.btn_Pause_Click);
             // 
             // button3
             // 
@@ -101,50 +91,50 @@ namespace TubeScanner
             // pID
             // 
             this.pID.AutoSize = true;
-            this.pID.Font = new System.Drawing.Font("Lucida Sans", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pID.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.pID.Location = new System.Drawing.Point(12, 9);
+            this.pID.Font = new System.Drawing.Font("Lucida Sans", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pID.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.pID.Location = new System.Drawing.Point(6, 40);
             this.pID.Name = "pID";
-            this.pID.Size = new System.Drawing.Size(114, 27);
+            this.pID.Size = new System.Drawing.Size(100, 23);
             this.pID.TabIndex = 8;
             this.pID.Text = "Plate ID:";
             // 
             // bc
             // 
             this.bc.AutoSize = true;
-            this.bc.Font = new System.Drawing.Font("Lucida Sans", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bc.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.bc.Location = new System.Drawing.Point(12, 39);
+            this.bc.Font = new System.Drawing.Font("Lucida Sans", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bc.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.bc.Location = new System.Drawing.Point(457, 40);
             this.bc.Name = "bc";
-            this.bc.Size = new System.Drawing.Size(116, 27);
+            this.bc.Size = new System.Drawing.Size(101, 23);
             this.bc.TabIndex = 9;
             this.bc.Text = "Barcode:";
             // 
             // lbl_PlateID
             // 
             this.lbl_PlateID.AutoSize = true;
-            this.lbl_PlateID.Font = new System.Drawing.Font("Lucida Sans", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_PlateID.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.lbl_PlateID.Location = new System.Drawing.Point(132, 9);
+            this.lbl_PlateID.Font = new System.Drawing.Font("Lucida Sans", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_PlateID.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lbl_PlateID.Location = new System.Drawing.Point(110, 40);
             this.lbl_PlateID.Name = "lbl_PlateID";
-            this.lbl_PlateID.Size = new System.Drawing.Size(0, 27);
+            this.lbl_PlateID.Size = new System.Drawing.Size(0, 23);
             this.lbl_PlateID.TabIndex = 10;
             // 
             // lbl_Barcode
             // 
             this.lbl_Barcode.AutoSize = true;
-            this.lbl_Barcode.Font = new System.Drawing.Font("Lucida Sans", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Barcode.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.lbl_Barcode.Location = new System.Drawing.Point(134, 39);
+            this.lbl_Barcode.Font = new System.Drawing.Font("Lucida Sans", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Barcode.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lbl_Barcode.Location = new System.Drawing.Point(561, 40);
             this.lbl_Barcode.Name = "lbl_Barcode";
-            this.lbl_Barcode.Size = new System.Drawing.Size(0, 27);
+            this.lbl_Barcode.Size = new System.Drawing.Size(0, 23);
             this.lbl_Barcode.TabIndex = 11;
             // 
             // btn_endRun
             // 
-            this.btn_endRun.Location = new System.Drawing.Point(825, 681);
+            this.btn_endRun.Location = new System.Drawing.Point(825, 647);
             this.btn_endRun.Name = "btn_endRun";
-            this.btn_endRun.Size = new System.Drawing.Size(134, 41);
+            this.btn_endRun.Size = new System.Drawing.Size(134, 75);
             this.btn_endRun.TabIndex = 12;
             this.btn_endRun.Text = "End Run";
             this.btn_endRun.UseVisualStyleBackColor = true;
@@ -153,12 +143,32 @@ namespace TubeScanner
             // lbl_Status
             // 
             this.lbl_Status.AutoSize = true;
-            this.lbl_Status.Font = new System.Drawing.Font("Lucida Sans", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Status.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.lbl_Status.Location = new System.Drawing.Point(12, 689);
+            this.lbl_Status.Font = new System.Drawing.Font("Lucida Sans", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Status.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lbl_Status.Location = new System.Drawing.Point(7, 689);
             this.lbl_Status.Name = "lbl_Status";
-            this.lbl_Status.Size = new System.Drawing.Size(0, 27);
+            this.lbl_Status.Size = new System.Drawing.Size(415, 27);
             this.lbl_Status.TabIndex = 14;
+            this.lbl_Status.Text = "SCAN OR ENTER PLATE BARCODE";
+            // 
+            // txt_barcodeEntry
+            // 
+            this.txt_barcodeEntry.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_barcodeEntry.Location = new System.Drawing.Point(428, 685);
+            this.txt_barcodeEntry.Name = "txt_barcodeEntry";
+            this.txt_barcodeEntry.Size = new System.Drawing.Size(276, 35);
+            this.txt_barcodeEntry.TabIndex = 15;
+            // 
+            // btn_enter
+            // 
+            this.btn_enter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_enter.Location = new System.Drawing.Point(710, 684);
+            this.btn_enter.Name = "btn_enter";
+            this.btn_enter.Size = new System.Drawing.Size(103, 37);
+            this.btn_enter.TabIndex = 16;
+            this.btn_enter.Text = "Enter";
+            this.btn_enter.UseVisualStyleBackColor = true;
+            this.btn_enter.Click += new System.EventHandler(this.btn_enter_Click);
             // 
             // TubeRack
             // 
@@ -166,6 +176,8 @@ namespace TubeScanner
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(982, 734);
+            this.Controls.Add(this.btn_enter);
+            this.Controls.Add(this.txt_barcodeEntry);
             this.Controls.Add(this.lbl_Status);
             this.Controls.Add(this.btn_endRun);
             this.Controls.Add(this.lbl_Barcode);
@@ -175,8 +187,7 @@ namespace TubeScanner
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btn_pause);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -190,9 +201,7 @@ namespace TubeScanner
         }
 
         #endregion
-
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btn_pause;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
@@ -202,6 +211,8 @@ namespace TubeScanner
         private System.Windows.Forms.Label lbl_PlateID;
         private System.Windows.Forms.Label lbl_Barcode;
         private System.Windows.Forms.Label lbl_Status;
+        private System.Windows.Forms.TextBox txt_barcodeEntry;
+        private System.Windows.Forms.Button btn_enter;
     }
 }
 

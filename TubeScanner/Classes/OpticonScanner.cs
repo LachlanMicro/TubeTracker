@@ -147,14 +147,28 @@ namespace TubeScanner.Classes
 
             _barcodeReceived = false;
             Barcode = "";
+
+            int timeout = 5000;
             await sendCommand(command, 10000);
 
+            Debug.WriteLine("X start");
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
             do
             {
                 await Task.Delay(50);
-            } while (_barcodeReceived == false);
+            } while (_barcodeReceived == false);// && watch.ElapsedMilliseconds < timeout);
 
-            return Barcode;
+            await stopScan();
+
+            Debug.WriteLine("X end");
+
+            if(_barcodeReceived)
+            {
+                return Barcode;
+            }
+
+            return String.Empty;
         }
 
         public async Task stopScan()

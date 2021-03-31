@@ -17,9 +17,13 @@ namespace TubeScanner
         public TScanner _tScanner;
         public OpticonScanner _bs;
         public bool scanning = false;
+        private bool correctBarcode = false;
+        private bool manualEntry = false;
         private static System.Timers.Timer scanTimer = null;
         private int fillOrder;
         string wellNumber;
+        string rackBarcode = "";
+        string barcode = "";
         Startup _startupForm;
 
         private static int scannedTube;
@@ -35,34 +39,37 @@ namespace TubeScanner
 
         private async void Form1_Load(object sender, EventArgs e)
         {
+            correctBarcode = false;
+
             rackControl = new RackControl(_rack, this);
             rackControl.Display(this, new Point(10, 75));
             rackControl.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Left);
-
-            button1.Enabled = false;
-
-            /* Write Output file headers */
-            string[] currDateTime = DateTime.Today.ToString().Split(' ');
-
-            string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
-            FileManager.WriteOutputFileHeaders(fileName, _rack.PlateID, currDateTime[0]);
 
             fillOrder = 1;
 
             await _tScanner.DleCommands.runStatus(DleCommands.RunState.RUNNING);
 
-            string rackBarcode = "";
-            bool correctBarcode = false;
-            lbl_Status.Text = "Scan rack barcode";
+            rackBarcode = "";
+            
+            lbl_Status.Text = "SCAN OR ENTER PLATE BARCODE";
+
+            /* For scanning tubes */
+
+            ScanTube();
 
             /* Do not proceed until first scan matches rack barcode in input file */
-            while (! correctBarcode)
+            while (!correctBarcode)
             {
+                
                 if (_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0)
                 {
                     try
                     {
-                        rackBarcode = await _bs.startScan();
+                        do
+                        {
+                            rackBarcode = await _bs.startScan();
+                        }
+                        while (String.IsNullOrEmpty(rackBarcode));
                     }
                     catch
                     {
@@ -78,38 +85,51 @@ namespace TubeScanner
                     break;
                 }
 
-                /* If the barcodes match, enable scan button to begin run */
-                if (rackBarcode == _rack.PlateID)
+                if (manualEntry)
                 {
-                    lbl_PlateID.Text = rackBarcode;
                     correctBarcode = true;
-                    button1.Enabled = true;
+                    break;
+                }
 
-                    lbl_Status.Text = "Barcode matches input file, click scan to begin";
-                }
-                else
-                {
-                    MessageBox.Show("Error: Rack barcode does not match input file. Please make sure the rack is correct and try again.");
-                }
+                ScanTubeRack();
             }
 
             _tScanner.DleCommands.OnFootSwitchEvent += FootSwitchEvent;
 
-            if (_tScanner.dP.IsOpen || Configuration.simulationMode)
-            {
-                await _tScanner.DleCommands.sendNullCommand();
-            }
-            else
-            {
-                await quitToStartupAsync();
-            }
+            //if (_tScanner.dP.IsOpen || Configuration.simulationMode)
+            //{
+            //    await _tScanner.DleCommands.sendNullCommand();
+            //}
+            //else
+            //{
+            //    await quitToStartupAsync();
+            //}
+        }
+
+        /* Prepares for tube scanning, returning a bool to indicate the program can progress */
+        private bool ReadyToScan(string rackBC)
+        {
+            /* Write Output file headers */
+            string[] currDateTime = DateTime.Today.ToString().Split(' ');
+
+            lbl_PlateID.Text = rackBC;
+
+            MessageBox.Show("Place rack ready for sample scanning", "Rack Ready");
+
+            lbl_Status.Text = "SCAN OR ENTER TUBE BARCODE";
+
+            /* Write the header for the output file */
+            string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
+            FileManager.WriteOutputFileHeaders(fileName, _rack.PlateID, currDateTime[0]);
+
+            return true;
         }
 
         /* Function to scan all tube positions */
         private async void FootSwitchEvent(object sender, EventArgs e)
         {
             string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
-            
+
             if (_tScanner.dP.IsOpen || Configuration.simulationMode)
             {
                 Byte[] tubeData = null;
@@ -170,7 +190,7 @@ namespace TubeScanner
                                     /* turn on LED solid at position where tube is detected */
                                     await _tScanner.DleCommands.selectLED((UInt16)(row + 1), (UInt16)(col + 1), DleCommands.LedColour.LED_GREEN, DleCommands.LedState.LED_STATE_SOLID);
                                 }
-                                else if (_rack.InitialTubeList[bitNum].Status == Status.READY_TO_LOAD) 
+                                else if (_rack.InitialTubeList[bitNum].Status == Status.READY_TO_LOAD)
                                 {
                                     rackControl.UpdateTubeStatus(bitNum, Status.ERROR);
 
@@ -236,7 +256,7 @@ namespace TubeScanner
                                 }
                             }
 
-                            
+
 
                             bitNum++;
                         }
@@ -261,9 +281,35 @@ namespace TubeScanner
             }
         }
 
-        /* Button to activate serial communication and barcode scanner */
-        private async void button1_Click(object sender, EventArgs e)
+        public void ScanTubeRack()
         {
+            /* If the barcodes match, enable scan button to begin run */
+            if (rackBarcode == _rack.PlateID)
+            {
+                correctBarcode = ReadyToScan(rackBarcode);
+            }
+            else
+            {
+                /* If plate barcode not matching, give option to overwrite the barcode with new barcode */
+
+                DialogResult dialogResult = MessageBox.Show("Plate barcode does not match input file. Would you like to use this instead?", "Incorrect Plate ID", MessageBoxButtons.YesNo);
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    _rack.PlateID = rackBarcode;
+
+                    correctBarcode = ReadyToScan(rackBarcode);
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    MessageBox.Show("Ensure the rack is correct and try scan again.");
+                }
+            }
+        }
+
+        /* Waits for scanner to scan tube */
+        private async void ScanTube()
+        { 
             // Update tube scanner state to running
             if (_tScanner.dP.IsOpen || Configuration.simulationMode)
             {
@@ -276,11 +322,7 @@ namespace TubeScanner
 
             while (scanning)
             {
-                string barcode = "";
                 bool found = false;
-
-                /* Update status msg */
-                lbl_Status.Text = "Ready for next scan";
 
                 if (!_tScanner.dP.IsOpen && !Configuration.simulationMode)
                 {
@@ -307,59 +349,62 @@ namespace TubeScanner
                     break;
                 }
 
-                lbl_Barcode.Text = barcode;
-
-                var lines = File.ReadAllLines(_rack.InputFilename);
-
-                // If any well is already selected, cancel it so only one is active
-                for (int i = 0; i < _rack.TubeList.Count; i++)
+                if (correctBarcode)
                 {
-                    if (_rack.TubeList[i].Status == Status.SELECTED)
-                    {
-                        rackControl.UpdateTubeStatus(i, Status.READY_TO_LOAD);
+                    lbl_Barcode.Text = barcode;
 
-                        //_rack.InitialTubeList[i].Status = Status.SELECTED;
-                    }
-                }
+                    var lines = File.ReadAllLines(_rack.InputFilename);
 
-                for (int line = 3; line < lines.Length; line++) 
-                {
-                    // Split file lines into well and barcode
-                    string[] splitLine = lines[line].Split('\t');
-                    if (splitLine[1].Equals(barcode))
+                    // If any well is already selected, cancel it so only one is active
+                    for (int i = 0; i < _rack.TubeList.Count; i++)
                     {
-                        // If barcode has not already been used, update well status to selected
-                        if (!_rack.BarcodesScanned.Contains(barcode))
+                        if (_rack.TubeList[i].Status == Status.SELECTED)
                         {
-                            wellNumber = splitLine[0];
-                            scannedTube = rackControl.GetTubeNum(wellNumber);
+                            rackControl.UpdateTubeStatus(i, Status.READY_TO_LOAD);
 
-                            // If the scanned barcode well is currently used, give an error message
-                            if (_rack.TubeList[scannedTube].Status == Status.ERROR)
-                            {
-                                MessageBox.Show("Error: There is currently a tube in the desired well. Please remove the tube and try again.");
-                            }
-                            else
-                            {
-                                rackControl.UpdateTubeStatus(scannedTube, Status.SELECTED);
-
-                            }
-                            found = true;
-                            break;
+                            //_rack.InitialTubeList[i].Status = Status.SELECTED;
                         }
                     }
+
+                    for (int line = 3; line < lines.Length; line++)
+                    {
+                        // Split file lines into well and barcode
+                        string[] splitLine = lines[line].Split('\t');
+                        if (splitLine[1].Equals(barcode))
+                        {
+                            // If barcode has not already been used, update well status to selected
+                            if (!_rack.BarcodesScanned.Contains(barcode))
+                            {
+                                wellNumber = splitLine[0];
+                                scannedTube = rackControl.GetTubeNum(wellNumber);
+
+                                // If the scanned barcode well is currently used, give an error message
+                                if (_rack.TubeList[scannedTube].Status == Status.ERROR)
+                                {
+                                    MessageBox.Show("Error: There is currently a tube in the desired well. Please remove the tube and try again.");
+                                }
+                                else
+                                {
+                                    rackControl.UpdateTubeStatus(scannedTube, Status.SELECTED);
+
+                                }
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        MessageBox.Show("Scanned barcode was not found in input file or has already been scanned");
+                    }
+
+
+                    /* Flash LEDs to scanned well position */
+                    int row = rackControl.GetTubeNum(wellNumber) / 12;
+                    int col = rackControl.GetTubeNum(wellNumber) % 12;
+                    _tScanner.DleCommands.selectLED((UInt16)(row + 1), (UInt16)(col + 1), DleCommands.LedColour.LED_GREEN, DleCommands.LedState.LED_STATE_FLASHING);
                 }
-
-                if (!found)
-                {
-                    MessageBox.Show("Scanned barcode was not found in input file or has already been scanned");
-                }
-
-                /* Flash LEDs to scanned well position */
-                int row = rackControl.GetTubeNum(wellNumber) / 12;
-                int col = rackControl.GetTubeNum(wellNumber) % 12;
-                await _tScanner.DleCommands.selectLED((UInt16)(row + 1), (UInt16)(col + 1), DleCommands.LedColour.LED_GREEN, DleCommands.LedState.LED_STATE_FLASHING);
-
                 //FootSwitchEvent(this, null);
 
                 // await _tScanner.DleCommands.selectLED(3, 4, DleCommands.LedColour.LED_GREEN, DleCommands.LedState.LED_STATE_FLASHING);
@@ -417,15 +462,6 @@ namespace TubeScanner
                 }
 
                 MessageBox.Show(String.Format("{0} second window to place scanned tube has expired. Please rescan and try again.", Configuration.interval));
-            }
-        }
-
-        private async void button2_Click(object sender, EventArgs e)
-        {
-            if (_tScanner.dP.IsOpen || Configuration.simulationMode)
-            {
-                await _tScanner.DleCommands.runStatus(DleCommands.RunState.PAUSED);
-                scanning = false;
             }
         }
 
@@ -497,15 +533,14 @@ namespace TubeScanner
                     }
                 }
 
-                DialogResult dialogResult = MessageBox.Show("Save Run?", "Ending Run", MessageBoxButtons.YesNoCancel);
+                DialogResult dialogResult = MessageBox.Show("End Run?", "Ending Run", MessageBoxButtons.YesNo);
 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    /* Save output file */
-                    //string[] currDateTime = DateTime.Today.ToString().Split(' ');
+                    /* Turn off barcode scanner and tube scanner LEDs */
+                    await _bs.stopScan();
 
-                    //string fileName = "../../IO Files/" + _rack.PlateID + " Output Log.txt";
-                    //FileManager.WriteOutputFile(fileName, rackControl.OutputTubeList, _rack.PlateID, currDateTime[0]);
+                    await quitToStartupAsync();
 
                     for (int row = 0; row < 8; row++)
                     {
@@ -514,21 +549,8 @@ namespace TubeScanner
                             await _tScanner.DleCommands.selectLED((UInt16)(row + 1), (UInt16)(col + 1), DleCommands.LedColour.LED_GREEN, DleCommands.LedState.LED_STATE_OFF);
                         }
                     }
+                }
 
-                    await quitToStartupAsync();
-                }
-                else if (dialogResult == DialogResult.No)
-                {
-                    await quitToStartupAsync();
-                }
-            }
-            else
-            {
-                if (!(_tScanner.deviceConnectionMonitor._scannerComPortsList.Count > 0))
-                {
-                    _bs.Stop();
-                }
-                await quitToStartupAsync();
             }
         }
 
@@ -570,6 +592,37 @@ namespace TubeScanner
 
             /* Close test window */
             this.Hide();
+        }
+
+        private void btn_enter_Click(object sender, EventArgs e)
+        {
+            /* For plate barcode */
+            if (!correctBarcode)
+            {
+                rackBarcode = txt_barcodeEntry.Text;
+
+                correctBarcode = true;
+
+                manualEntry = true;
+
+                ScanTubeRack();
+            }
+            /* For tube barcode */
+            else
+            {
+                barcode = txt_barcodeEntry.Text;
+
+                ScanTube();
+            }
+        }
+
+        private async void btn_Pause_Click(object sender, EventArgs e)
+        {
+            if (_tScanner.dP.IsOpen || Configuration.simulationMode)
+            {
+                await _tScanner.DleCommands.runStatus(DleCommands.RunState.PAUSED);
+                scanning = false;
+            }
         }
     }   
 }
